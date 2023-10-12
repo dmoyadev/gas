@@ -1,0 +1,32 @@
+# Ignore log files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Ignore generated files and directories
+node_modules/
+dist/
+dist-ssr/
+*.local/
+
+# Ignore editor-specific files and directories
+.vscode/
+!.vscode/extensions.json
+.idea/
+.DS_Store/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Ignore all .env files except the .env.example
+.env*
+!.env.example
+
+# Ignore npm lock files
+package-lock.json

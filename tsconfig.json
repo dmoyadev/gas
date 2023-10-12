@@ -1,0 +1,43 @@
+{
+	"compilerOptions": {
+		"target": "ESNext", // Target ECMAScript version
+		"useDefineForClassFields": true, // Enable class field declarations
+		"module": "ESNext", // Module system
+		"lib": [
+			"ES2020",
+			"DOM",
+			"DOM.Iterable"
+		], // List of libraries to include
+		"skipLibCheck": true, // Skip type checking of declaration files
+
+		/* Bundler mode */
+		"moduleResolution": "bundler", // Module resolution strategy
+		"allowImportingTsExtensions": true, // Allow importing TypeScript extensions
+		"resolveJsonModule": true, // Enable JSON module resolution
+		"isolatedModules": true, // Ensure module isolation
+		"noEmit": true, // Disable emitting output files
+		"jsx": "preserve", // JSX handling strategy
+
+		/* Linting */
+		"strict": true, // Enable strict type checking
+
+		/* Aliases */
+		"baseUrl": ".", // Base directory for module resolution
+		"paths": {
+			"@/*": [ "src/*" ] // Path mappings for module resolution
+		}
+	},
+
+	"include": [
+		"src/**/*.ts", // Include TypeScript source files
+		"src/**/*.d.ts", // Include TypeScript declaration files
+		"src/**/*.tsx", // Include TypeScript JSX source files
+		"src/**/*.vue" // Include Vue.js source files
+	],
+
+	"exclude": [
+		"dist", // Exclude the 'dist' directory
+		"node_modules", // Exclude the 'node_modules' directory
+		"src/**/*.spec.ts", // Exclude TypeScript spec files
+	]
+}

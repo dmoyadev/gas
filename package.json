@@ -1,0 +1,35 @@
+{
+	"name": "gas",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite --mode localhost --host --port 5777",
+		"build": "rm -rf dist && vue-tsc && vite build",
+		"preview": "vite preview --host --port 4777 ",
+		"lint": "eslint --fix ./src --ext .vue,.js,.ts --ignore-path .gitignore",
+		"check-typing": "vue-tsc --noEmit",
+		"build:ios": "npm run build && npm run sync-ios && npm run open-ios",
+		"sync-ios": "npx cap sync ios",
+		"open-ios": "npx cap open ios"
+	},
+	"dependencies": {
+		"firebase": "^10.4.0",
+		"vue": "^3.3.4",
+		"vue-i18n": "^9.5.0",
+		"vue-router": "^4.2.5"
+	},
+	"devDependencies": {
+		"@intlify/unplugin-vue-i18n": "^1.4.0",
+		"@typescript-eslint/eslint-plugin": "^6.7.5",
+		"@typescript-eslint/parser": "^6.7.5",
+		"@vitejs/plugin-vue": "^4.2.3",
+		"eslint": "^8.51.0",
+		"eslint-plugin-vue": "^9.17.0",
+		"sass": "^1.69.2",
+		"typescript": "^5.0.2",
+		"vite": "^4.4.5",
+		"vite-plugin-mkcert": "^1.16.0",
+		"vue-tsc": "^1.8.5"
+	}
+}
