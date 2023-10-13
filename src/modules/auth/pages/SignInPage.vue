@@ -91,7 +91,7 @@ async function doSignIn() {
 			<p>Controla repostajes y recargas, recuerda fechas importantes, y gestiona reparaciones.</p>
 		
 			<form @submit.prevent="doSignIn()">
-				<section v-if="!magicLinkFailed">
+				<section v-show="!magicLinkFailed">
 					<BaseInput
 						v-model="email"
 						:input-type="InputType.EMAIL"
@@ -123,10 +123,10 @@ async function doSignIn() {
 					</BaseButton>
 				</section>
 			
-				<section v-else>
+				<section v-show="magicLinkFailed">
 					<BaseInput
 						v-model="password"
-						:input-type="InputType.EMAIL"
+						:input-type="InputType.PASSWORD"
 						:form="InputForm.NOTCHED_RIGHT"
 						:has-error="triedSubmit && errorLogin"
 						class="notched"
@@ -212,7 +212,7 @@ async function doSignIn() {
 					<template v-if="!loadingLogin && !isMagicLinkReSent">
 						Volver a enviar
 					</template>
-					<template v-if="!loadingLogin">
+					<template v-else-if="!loadingLogin">
 						Espera unos minutos para volver a enviar el correo
 					</template>
 					<template v-else>
