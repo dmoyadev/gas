@@ -27,6 +27,3 @@ dist-ssr/
 # Ignore all .env files except the .env.example
 .env*
 !.env.example
-
-# Ignore npm lock files
-package-lock.json
