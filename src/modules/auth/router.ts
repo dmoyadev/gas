@@ -13,6 +13,9 @@ export const authRoutes: Array<RouteRecordRaw> = [
 			title: t('Sign in'),
 			isPublic: true,
 		},
+		beforeEnter: async () => {
+			await useAuthentication().checkUserLogin();
+		},
 	},
 	
 	{
