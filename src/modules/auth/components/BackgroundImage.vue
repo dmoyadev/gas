@@ -24,7 +24,7 @@
 				y="-37"
 				width="445.277361"
 				height="297"
-				xlink:href="assets/auth-bg.png"
+				xlink:href="/assets/auth-bg.png"
 			/>
 		</g>
 	</svg>
