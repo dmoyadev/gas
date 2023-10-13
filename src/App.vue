@@ -2,8 +2,12 @@
 </script>
 
 <template>
-	<router-view :key="$route.fullPath"/>
+	<router-view :key="$route.fullPath" />
 </template>
 
-<style scoped>
+<style lang="scss">
+html {
+	background: var(--color-secondary);
+	color: var(--color-secondary-accent);
+}
 </style>

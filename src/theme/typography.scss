@@ -1,0 +1,18 @@
+:root {
+	font-family: Avenir, serif;
+
+	--font-black: 900;
+	--font-heavy: 600;
+	--font-medium: 400;
+	--font-book: 300;
+	--font-light: 200;
+
+	--font-size-body: 16px;
+	--font-size-small: 14px;
+	--font-size-legal: 10px;
+
+	*:not(pre *) {
+		font-family: var(--font-family);
+		font-size: var(--font-size-body);
+	}
+}

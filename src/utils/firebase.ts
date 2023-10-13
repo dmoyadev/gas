@@ -1,6 +1,6 @@
 import { initializeApp, FirebaseApp } from 'firebase/app';
 import { getMessaging, Messaging } from 'firebase/messaging';
-import { getAuth, Auth } from "firebase/auth";
+import { getAuth, Auth } from 'firebase/auth';
 
 let firebaseApp: FirebaseApp;
 let messaging: Messaging;
