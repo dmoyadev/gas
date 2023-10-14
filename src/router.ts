@@ -60,7 +60,11 @@ router.beforeEach(async (to) => {
 	const isNotAllowed = !to.meta.isPublic && !user.value;
 	if (isNotAllowed && to.name !== 'Logout') {
 		console.error('🔴 User can not be here!');
-		window.location.href = '/logout?redirect=' + to.fullPath;
+		if(to.fullPath === '/') {
+			window.location.href = '/logout';
+		} else {
+			window.location.href = '/logout?redirect=' + to.fullPath;
+		}
 	}
 });
 
