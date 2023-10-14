@@ -211,8 +211,25 @@ div {
 			}
 			
 			&.has-error {
-				input {
+				@keyframes shake {
+					0% {
+						margin-left: 0;
+					}
+					25% {
+						margin-left: 0.5rem;
+					}
+					75% {
+						margin-left: -0.5rem;
+					}
+					100% {
+						margin-left: 0;
+					}
+				}
+				
+				input,
+				input:invalid {
 					border-color: var(--color-danger) !important;
+					animation: shake 0.2s ease-in-out 0s 2;
 				}
 				
 				&.input-form {
