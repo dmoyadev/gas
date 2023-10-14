@@ -9,6 +9,7 @@ import { ButtonColor, ButtonForm } from '@/components/button/types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import BaseInput from '@/components/input/BaseInput.vue';
 import { InputForm, InputType } from '@/components/input/types.ts';
+import * as pkg from '@/../package.json';
 
 const { signInWithPassword } = useAuthentication();
 
@@ -75,7 +76,6 @@ async function doSignIn() {
 			<BaseInput
 				v-model="email"
 				:input-type="InputType.EMAIL"
-				:form="InputForm.NOTCHED_RIGHT"
 				:has-error="!isEmailValid || (triedSubmit && errorLogin)"
 				:disabled="loadingLogin"
 				class="notched"
@@ -128,6 +128,8 @@ async function doSignIn() {
 		</form>
 		
 		<small>
+			v.{{ pkg.version }}
+			<br>
 			Continuando, indicas que aceptas nuestros
 			<a href="#">Términos y condiciones</a> y la <a href="#">Política de privacidad</a>
 		</small>
