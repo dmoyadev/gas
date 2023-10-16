@@ -2,9 +2,8 @@
 </script>
 
 <template>
-	Management!
+	Create vehicle!
 </template>
 
 <style lang="scss" scoped>
-
 </style>

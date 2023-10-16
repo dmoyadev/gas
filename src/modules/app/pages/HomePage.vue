@@ -1,120 +1,221 @@
 <script setup lang="ts">
 import BaseIcon from '@/components/icon/BaseIcon.vue';
-import { onMounted, onUnmounted, ref } from 'vue';
+import { ref } from 'vue';
+import { useDB } from '@/modules/app/composables/useDB.ts';
+import { useStickyObserver } from '@/modules/app/composables/useStickyObserver.ts';
+import { Vehicle } from '@/modules/app/models/Vehicle.ts';
+import { where } from 'firebase/firestore';
+import BaseButton from '@/components/button/BaseButton.vue';
 
-// Adds a class to the header when it's stuck (sticky affects) to the top of the screen.
-// More info: https://css-tricks.com/how-to-detect-when-a-sticky-element-gets-pinned/
-const $header = ref<HTMLElement | null>(null);
-let observer: IntersectionObserver;
-onMounted(() => {
-	observer = new IntersectionObserver(
-		([e]) => e.target.classList.toggle('stuck', e.intersectionRatio < 1),
-		{ threshold: [1] },
-	);
-	
-	if ($header.value) {
-		observer.observe($header.value);
-	}
-});
+const $header = ref<HTMLElement>();
+useStickyObserver($header);
 
-onUnmounted(() => {
-	if ($header.value) {
-		observer.unobserve($header.value);
-	}
-});
+const { getBy, loading, error } = useDB('vehicles');
+const data = ref<Vehicle>();
+getBy<Vehicle>(where('selected', '==', true))
+	.then((vehicles) => {
+		data.value = vehicles.length ? vehicles[0] : undefined;
+	});
 </script>
 
 <template>
-	<header ref="$header">
-		<div class="car-brand">
-			<span class="skeleton-item skeleton-item--icon" />
-			<span
-				class="skeleton-item"
-				style="width: 15ch"
-			/>
-		</div>
-		<span
-			class="car-brand--model skeleton-item skeleton-item--title"
-			style="width: 25ch;"
-		/>
-	</header>
-	
-	<main>
-		<section class="car-details">
-			<div class="car-details__info">
-				<div class="car-details__info--card">
-					<div class="car-details__info--card__title">
-						<BaseIcon icon="fa-solid fa-address-card" />
-						<span>Matrícula</span>
-					</div>
-					<span class="skeleton-item" />
-				</div>
-				
-				<div class="car-details__info--card">
-					<div class="car-details__info--card__title">
-						<BaseIcon icon="fa-solid fa-gauge" />
-						<span>Kilómetros</span>
-					</div>
-					<span class="skeleton-item" />
-				</div>
+	<!-- ⏳ Loading state -->
+	<template v-if="loading">
+		<header ref="$header">
+			<div class="car-brand">
+				<span class="skeleton-item skeleton-item--icon" />
+				<span
+					class="skeleton-item"
+					style="width: 15ch"
+				/>
 			</div>
-			
-			<img
-				src="/images/car-silhouette.svg"
-				alt="Silueta de coche"
-				class="car-details__image"
-			>
-		</section>
-		
-		<section class="car-actions">
-			<span class="skeleton-item skeleton-item--big-square" />
-			<span class="skeleton-item skeleton-item--big-square" />
-			<span class="skeleton-item skeleton-item--big-square" />
-		</section>
-		
-		<section class="car-recent-refuels">
 			<span
-				class="skeleton-item"
+				class="car-brand--model skeleton-item skeleton-item--title"
 				style="width: 25ch;"
 			/>
-			
-			<ul class="car-recent-refuels__list">
-				<li
-					v-for="n in 5"
-					:key="n"
-					class="car-recent-refuels__list__item"
+		</header>
+		
+		<main>
+			<section class="car-details">
+				<div class="car-details__info">
+					<div class="car-details__info--card">
+						<div class="car-details__info--card__title">
+							<BaseIcon icon="fa-solid fa-address-card" />
+							<span>Matrícula</span>
+						</div>
+						<span class="skeleton-item" />
+					</div>
+					
+					<div class="car-details__info--card">
+						<div class="car-details__info--card__title">
+							<BaseIcon icon="fa-solid fa-gauge" />
+							<span>Kilómetros</span>
+						</div>
+						<span class="skeleton-item" />
+					</div>
+				</div>
+				
+				<img
+					src="/images/car-silhouette.svg"
+					alt="Silueta de coche"
+					class="car-details__image"
 				>
-					<span class="skeleton-item skeleton-item--icon" />
-					
-					<div class="car-recent-refuels__list__item__info">
-						<span
-							class="skeleton-item skeleton-item--small"
-							style="width: 8ch;"
-						/>
-						<span
-							class="skeleton-item skeleton-item--small"
-							style="width: 15ch;"
-						/>
-						<span
-							class="skeleton-item skeleton-item--small"
-							style="width: 12ch;"
-						/>
+			</section>
+			
+			<section class="car-actions">
+				<span class="skeleton-item skeleton-item--big-square" />
+				<span class="skeleton-item skeleton-item--big-square" />
+				<span class="skeleton-item skeleton-item--big-square" />
+			</section>
+			
+			<section class="car-recent-refuels">
+				<span
+					class="skeleton-item"
+					style="width: 25ch;"
+				/>
+				
+				<ul class="car-recent-refuels__list">
+					<li
+						v-for="n in 5"
+						:key="n"
+						class="car-recent-refuels__list__item"
+					>
+						<span class="skeleton-item skeleton-item--icon" />
+						
+						<div class="car-recent-refuels__list__item__info">
+							<span
+								class="skeleton-item skeleton-item--small"
+								style="width: 8ch;"
+							/>
+							<span
+								class="skeleton-item skeleton-item--small"
+								style="width: 15ch;"
+							/>
+							<span
+								class="skeleton-item skeleton-item--small"
+								style="width: 12ch;"
+							/>
+						</div>
+						
+						<div class="car-recent-refuels__list__item__price">
+							<span
+								class="skeleton-item skeleton-item--title"
+								style="width: 8ch;"
+							/>
+							<span
+								class="skeleton-item skeleton-item--small"
+								style="width: 15ch;"
+							/>
+						</div>
+					</li>
+				</ul>
+			</section>
+		</main>
+	</template>
+	
+	<!-- 🚨 Error state -->
+	<template v-else-if="error">
+		Error
+	</template>
+	
+	<!-- 📃 Empty state -->
+	<template v-else-if="!data">
+		<main class="empty-state">
+			<img
+				src="/assets/isotype.svg"
+				alt="Logo"
+				class="empty-state--image"
+			>
+			<p class="empty-state--title">
+				Todavía no has añadido ningún vehículo a la aplicación...
+				<span class="empty-state__highlight">¿Empezamos?</span>
+			</p>
+			
+			<BaseButton
+				class="empty-state--button"
+				to="/vehicles/__new__"
+			>
+				Añadir vehículo
+			</BaseButton>
+		</main>
+	</template>
+	
+	<!-- ✅ Success state -->
+	<!-- TODO -->
+	<template v-else>
+		<header ref="$header">
+			<div class="car-brand">
+				<BaseIcon
+					:icon="data.brand.icon"
+					:color="data.brand.color"
+				/>
+				<span>{{ data.brand.name }}</span>
+			</div>
+			<span
+				class="car-brand--model"
+				:class="{ 'skeleton-item': loading }"
+			>
+				{{ data.model }}
+			</span>
+		</header>
+		
+		<main>
+			<section class="car-details">
+				<div class="car-details__info">
+					<div class="car-details__info--card">
+						<div class="car-details__info--card__title">
+							<BaseIcon icon="fa-solid fa-address-card" />
+							<span>Matrícula</span>
+						</div>
+						<span>{{ data.plate }}</span>
 					</div>
 					
-					<div class="car-recent-refuels__list__item__price">
-						<span
-							class="skeleton-item skeleton-item--title"
-							style="width: 8ch;"
-						/>
-						<span
-							class="skeleton-item skeleton-item--small"
-							style="width: 15ch;"
-						/>
+					<div class="car-details__info--card">
+						<div class="car-details__info--card__title">
+							<BaseIcon icon="fa-solid fa-gauge" />
+							<span>Kilómetros</span>
+						</div>
+						<span>{{ data.kilometers }}</span>
 					</div>
-				</li>
-			</ul>
-		</section>
-	</main>
+				</div>
+				
+				<img
+					:src="data.image"
+					:alt="`Imagen de ${data.brand.name} ${data.model}`"
+					class="car-details__image"
+				>
+			</section>
+			
+			<section class="car-actions">
+				<BaseIcon
+					icon="fa-solid fa-gas-pump"
+					:color="data.brand.color"
+				/>
+				<BaseIcon
+					icon="fa-solid fa-wrench"
+					:color="data.brand.color"
+				/>
+				<BaseIcon
+					icon="fa-solid fa-file-invoice-dollar"
+					:color="data.brand.color"
+				/>
+			</section>
+			
+			<section class="car-recent-refuels">
+				<h2 class="car-recent-refuels__title">
+					Últimos repostajes
+				</h2>
+				
+				<ul class="car-recent-refuels__list">
+					<li
+						v-for="refuel in data.refuels"
+						:key="refuel.id"
+						class="car-recent-refuels__list__item"
+					/>
+				</ul>
+			</section>
+		</main>
+	</template>
 </template>
 
 <style lang="scss" scoped>
@@ -153,6 +254,30 @@ main {
 	display: flex;
 	flex-direction: column;
 	gap: 24px;
+	
+	&.empty-state {
+		height: 100svh;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		
+		.empty-state {
+			&--title {
+				font-size: var(--font-size-big);
+				display: flex;
+				flex-direction: column;
+				gap: 4px;
+				max-width: 304px;
+			}
+			
+			&__highlight {
+				font-size: var(--font-size-big);
+				color: var(--color-primary);
+			}
+		}
+	}
 	
 	.car-details {
 		display: flex;
