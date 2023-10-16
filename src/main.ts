@@ -6,7 +6,6 @@ import './icons';
 
 /* Theme variables */
 import './theme/reset.css';
-import './theme/fonts.css';
 import './theme/colors.scss';
 import './theme/typography.scss';
 import './theme/skeleton.scss';

@@ -11,6 +11,12 @@ import {
 	faSearch,
 	faEnvelopeCircleCheck,
 	faCircleCheck,
+	faCar,
+	faGasPump,
+	faBookBookmark,
+	faGears,
+	faAddressCard,
+	faGauge,
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -33,6 +39,12 @@ library.add(
 	faCircleDotRegular,
 	faEnvelopeCircleCheck,
 	faCircleCheck,
+	faCar,
+	faGasPump,
+	faBookBookmark,
+	faGears,
+	faAddressCard,
+	faGauge,
 );
 
 export default library;

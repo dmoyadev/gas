@@ -12,12 +12,37 @@ const { t } = i18n.global;
 
 const routes: Array<RouteRecordRaw> = [
 	...authRoutes,
-    
+	
 	{
 		path: '/',
-		name: 'Home',
-		component: () => import('@/modules/app/pages/HomePage.vue'),
-		meta: { title: t('Home') },
+		name: 'Tabs',
+		component: () => import('@/layouts/TabsLayout.vue'),
+		children: [
+			{
+				path: '/',
+				name: 'Home',
+				component: () => import('@/modules/app/pages/HomePage.vue'),
+				meta: { title: t('Home') },
+			},
+			{
+				path: '/management',
+				name: 'Management',
+				component: () => import('@/modules/management/pages/ManagementPage.vue'),
+				meta: { title: t('Management') },
+			},
+			{
+				path: '/history',
+				name: 'History',
+				component: () => import('@/modules/history/pages/HistoryPage.vue'),
+				meta: { title: t('History') },
+			},
+			{
+				path: '/settings',
+				name: 'Settings',
+				component: () => import('@/modules/settings/pages/SettingsPage.vue'),
+				meta: { title: t('Settings') },
+			},
+		],
 	},
  
 	{

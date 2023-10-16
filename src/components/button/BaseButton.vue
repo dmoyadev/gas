@@ -81,6 +81,7 @@ function createRippleEffect(event: MouseEvent) {
 			[`button-form-${form}`]: true,
 			'button-disabled': loading,
 		}"
+		:to="to"
 		@click="createRippleEffect($event)"
 	>
 		<!-- @slot Content of the button -->
@@ -116,6 +117,10 @@ router-link {
 	font-weight: var(--font-heavy);
 	position: relative;
 	overflow: hidden;
+	
+	@media (max-width: 768px) {
+		cursor: default;
+	}
 	
 	&.button-color {
 		&-primary {
