@@ -15,6 +15,7 @@ module.exports = {
 		// Rules for code quality and style:
 		'@typescript-eslint/ban-ts-comment': 'off', // Disable TypeScript-specific comment rule.
 		'@typescript-eslint/no-explicit-any': 'off', // Disable explicit 'any' type rule in TypeScript.
+		'@typescript-eslint/no-unused-vars': 'warn', // Warn about unused variables in TypeScript.
 		'no-console': 'off', // Allows console statements (console.log(), console.warn(), etc.).
 		'no-debugger': 'warn', // Warn about 'debugger' statements.
 		'no-alert': 'warn', // Warn about 'alert' statements.

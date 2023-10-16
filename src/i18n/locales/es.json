@@ -3,5 +3,8 @@
 	"Sign in": "Entrar",
 	"Login": "Iniciar sesión",
 	"Logout": "Cerrar sesión",
-	"Home": "Inicio"
+	"Home": "Inicio",
+	"Management": "Gestión",
+	"History": "Historial",
+	"Settings": "Ajustes"
 }

@@ -1,0 +1,21 @@
+<script setup lang="ts">
+import BaseButton from '@/components/button/BaseButton.vue';
+import { useAuthentication } from '@/modules/auth/composables/useAuthentication.ts';
+
+
+const { user, logout } = useAuthentication();
+</script>
+
+<template>
+	Settings!
+	
+	<pre>{{ user }}</pre>
+	
+	<BaseButton @click="logout()">
+		Cerrar sesión
+	</BaseButton>
+</template>
+
+<style lang="scss"  scoped>
+
+</style>

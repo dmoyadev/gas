@@ -33,7 +33,7 @@ withDefaults(
 
 <style scoped lang="scss">
 i {
-	--icon-s: 8px;
+	--icon-s: 12px;
 	--icon-m: 16px;
 	--icon-l: 24px;
 	--icon-xl: 32px;
@@ -48,6 +48,7 @@ i {
 		width: var(--icon-s);
 		height: var(--icon-s);
 		font-size: var(--icon-s);
+		line-height: var(--icon-s);
 	}
 	
 	&.m,
@@ -55,6 +56,7 @@ i {
 		width: var(--icon-m);
 		height: var(--icon-m);
 		font-size: var(--icon-m);
+		line-height: var(--icon-m);
 	}
 	
 	&.l,
@@ -62,6 +64,7 @@ i {
 		width: var(--icon-l);
 		height: var(--icon-l);
 		font-size: var(--icon-l);
+		line-height: var(--icon-l);
 	}
 	
 	&.xl,
@@ -69,6 +72,7 @@ i {
 		width: var(--icon-xl);
 		height: var(--icon-xl);
 		font-size: var(--icon-xl);
+		line-height: var(--icon-xl);
 	}
 	
 	&.xxl,
@@ -76,6 +80,7 @@ i {
 		width: var(--icon-xxl);
 		height: var(--icon-xxl);
 		font-size: var(--icon-xxl);
+		line-height: var(--icon-xxl);
 	}
 }
 </style>

@@ -101,6 +101,7 @@ async function doSignIn() {
 					:disabled="loadingLogin"
 					autocomplete="current-password"
 					is-required
+					autofocus
 				>
 					Introduce tu contraseña
 					<template #error>
@@ -113,7 +114,7 @@ async function doSignIn() {
 					:form="ButtonForm.CIRCLE"
 					:color="(triedSubmit && errorLogin) ? ButtonColor.DANGER : ButtonColor.PRIMARY"
 					:loading="loadingLogin"
-					:disabled="!isEmailValid"
+					:disabled="!isEmailValid || loadingLogin"
 				>
 					<BaseIcon
 						v-if="(triedSubmit && errorLogin)"
