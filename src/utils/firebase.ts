@@ -1,10 +1,12 @@
 import { initializeApp, FirebaseApp } from 'firebase/app';
 import { getMessaging, Messaging } from 'firebase/messaging';
 import { getAuth, Auth } from 'firebase/auth';
+import { getFirestore, Firestore } from 'firebase/firestore';
 
 let firebaseApp: FirebaseApp;
 let messaging: Messaging;
 let auth: Auth;
+let db: Firestore;
 
 try {
 	firebaseApp = initializeApp({
@@ -20,6 +22,7 @@ try {
 
 	messaging = getMessaging(firebaseApp);
 	auth = getAuth(firebaseApp);
+	db = getFirestore(firebaseApp);
 } catch(error) {
 	console.error('🔴 Something went wrong: ', error);
 }
@@ -28,4 +31,5 @@ export {
 	firebaseApp,
 	messaging,
 	auth,
+	db,
 };

@@ -44,6 +44,12 @@ const routes: Array<RouteRecordRaw> = [
 			},
 		],
 	},
+	
+	{
+		path: '/vehicles/__new__',
+		name: 'Vehicle',
+		component: () => import('@/modules/management/pages/CreateVehiclePage.vue'),
+	},
  
 	{
 		path: '/showcase',
