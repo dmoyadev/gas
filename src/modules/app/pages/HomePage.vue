@@ -5,7 +5,7 @@ import { useDB } from '@/modules/app/composables/useDB.ts';
 import { useStickyObserver } from '@/modules/app/composables/useStickyObserver.ts';
 import { Vehicle } from '@/modules/app/models/Vehicle.ts';
 import { where } from 'firebase/firestore';
-import BaseButton from '@/components/button/BaseButton.vue';
+import HomeEmptyPartial from '@/modules/app/partials/HomeEmptyPartial.vue';
 
 const $header = ref<HTMLElement>();
 useStickyObserver($header);
@@ -119,102 +119,83 @@ getBy<Vehicle>(where('selected', '==', true))
 	</template>
 	
 	<!-- 📃 Empty state -->
-	<template v-else-if="!data">
-		<main class="empty-state">
-			<img
-				src="/assets/isotype.svg"
-				alt="Logo"
-				class="empty-state--image"
-			>
-			<p class="empty-state--title">
-				Todavía no has añadido ningún vehículo a la aplicación...
-				<span class="empty-state__highlight">¿Empezamos?</span>
-			</p>
-			
-			<BaseButton
-				class="empty-state--button"
-				to="/vehicles/__new__"
-			>
-				Añadir vehículo
-			</BaseButton>
-		</main>
-	</template>
+	<HomeEmptyPartial v-else-if="!data" />
 	
 	<!-- ✅ Success state -->
 	<!-- TODO -->
 	<template v-else>
-		<header ref="$header">
-			<div class="car-brand">
-				<BaseIcon
-					:icon="data.brand.icon"
-					:color="data.brand.color"
-				/>
-				<span>{{ data.brand.name }}</span>
-			</div>
-			<span
-				class="car-brand--model"
-				:class="{ 'skeleton-item': loading }"
-			>
-				{{ data.model }}
-			</span>
-		</header>
-		
-		<main>
-			<section class="car-details">
-				<div class="car-details__info">
-					<div class="car-details__info--card">
-						<div class="car-details__info--card__title">
-							<BaseIcon icon="fa-solid fa-address-card" />
-							<span>Matrícula</span>
-						</div>
-						<span>{{ data.plate }}</span>
-					</div>
-					
-					<div class="car-details__info--card">
-						<div class="car-details__info--card__title">
-							<BaseIcon icon="fa-solid fa-gauge" />
-							<span>Kilómetros</span>
-						</div>
-						<span>{{ data.kilometers }}</span>
-					</div>
-				</div>
-				
-				<img
-					:src="data.image"
-					:alt="`Imagen de ${data.brand.name} ${data.model}`"
-					class="car-details__image"
-				>
-			</section>
-			
-			<section class="car-actions">
-				<BaseIcon
-					icon="fa-solid fa-gas-pump"
-					:color="data.brand.color"
-				/>
-				<BaseIcon
-					icon="fa-solid fa-wrench"
-					:color="data.brand.color"
-				/>
-				<BaseIcon
-					icon="fa-solid fa-file-invoice-dollar"
-					:color="data.brand.color"
-				/>
-			</section>
-			
-			<section class="car-recent-refuels">
-				<h2 class="car-recent-refuels__title">
-					Últimos repostajes
-				</h2>
-				
-				<ul class="car-recent-refuels__list">
-					<li
-						v-for="refuel in data.refuels"
-						:key="refuel.id"
-						class="car-recent-refuels__list__item"
-					/>
-				</ul>
-			</section>
-		</main>
+		<!--		<header ref="$header">-->
+		<!--			<div class="car-brand">-->
+		<!--				<BaseIcon-->
+		<!--					:icon="data.brand.icon"-->
+		<!--					:color="data.brand.color"-->
+		<!--				/>-->
+		<!--				<span>{{ data.brand.name }}</span>-->
+		<!--			</div>-->
+		<!--			<span-->
+		<!--				class="car-brand&#45;&#45;model"-->
+		<!--				:class="{ 'skeleton-item': loading }"-->
+		<!--			>-->
+		<!--				{{ data.model }}-->
+		<!--			</span>-->
+		<!--		</header>-->
+		<!--		-->
+		<!--		<main>-->
+		<!--			<section class="car-details">-->
+		<!--				<div class="car-details__info">-->
+		<!--					<div class="car-details__info&#45;&#45;card">-->
+		<!--						<div class="car-details__info&#45;&#45;card__title">-->
+		<!--							<BaseIcon icon="fa-solid fa-address-card" />-->
+		<!--							<span>Matrícula</span>-->
+		<!--						</div>-->
+		<!--						<span>{{ data.plate }}</span>-->
+		<!--					</div>-->
+		<!--					-->
+		<!--					<div class="car-details__info&#45;&#45;card">-->
+		<!--						<div class="car-details__info&#45;&#45;card__title">-->
+		<!--							<BaseIcon icon="fa-solid fa-gauge" />-->
+		<!--							<span>Kilómetros</span>-->
+		<!--						</div>-->
+		<!--						<span>{{ data.kilometers }}</span>-->
+		<!--					</div>-->
+		<!--				</div>-->
+		<!--				-->
+		<!--				<img-->
+		<!--					:src="data.image"-->
+		<!--					:alt="`Imagen de ${data.brand.name} ${data.model}`"-->
+		<!--					class="car-details__image"-->
+		<!--				>-->
+		<!--			</section>-->
+		<!--			-->
+		<!--			<section class="car-actions">-->
+		<!--				<BaseIcon-->
+		<!--					icon="fa-solid fa-gas-pump"-->
+		<!--					:color="data.brand.color"-->
+		<!--				/>-->
+		<!--				<BaseIcon-->
+		<!--					icon="fa-solid fa-wrench"-->
+		<!--					:color="data.brand.color"-->
+		<!--				/>-->
+		<!--				<BaseIcon-->
+		<!--					icon="fa-solid fa-file-invoice-dollar"-->
+		<!--					:color="data.brand.color"-->
+		<!--				/>-->
+		<!--			</section>-->
+		<!--			-->
+		<!--			<section class="car-recent-refuels">-->
+		<!--				<h2 class="car-recent-refuels__title">-->
+		<!--					Últimos repostajes-->
+		<!--				</h2>-->
+		<!--				-->
+		<!--				<ul class="car-recent-refuels__list">-->
+		<!--					<li-->
+		<!--						v-for="refuel in data.refuels"-->
+		<!--						:key="refuel.id"-->
+		<!--						class="car-recent-refuels__list__item"-->
+		<!--					/>-->
+		<!--				</ul>-->
+		<!--			</section>-->
+		<!--		</main>-->
 	</template>
 </template>
 
@@ -254,30 +235,6 @@ main {
 	display: flex;
 	flex-direction: column;
 	gap: 24px;
-	
-	&.empty-state {
-		height: 100svh;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		text-align: center;
-		
-		.empty-state {
-			&--title {
-				font-size: var(--font-size-big);
-				display: flex;
-				flex-direction: column;
-				gap: 4px;
-				max-width: 304px;
-			}
-			
-			&__highlight {
-				font-size: var(--font-size-big);
-				color: var(--color-primary);
-			}
-		}
-	}
 	
 	.car-details {
 		display: flex;
