@@ -14,14 +14,30 @@ const { getBy, loading, error } = useDB('vehicles');
 const data = ref<Vehicle>();
 getBy<Vehicle>(where('selected', '==', true))
 	.then((vehicles) => {
-		data.value = vehicles.length ? vehicles[0] : undefined;
+		if(vehicles.length ) {
+			data.value = vehicles[0];
+		} else {
+			processNoVehicle();
+		}
 	});
+
+const emptyLoading = ref(false);
+function processNoVehicle() {
+	emptyLoading.value = true;
+	setTimeout(() => {
+		emptyLoading.value = false;
+		data.value = undefined;
+	}, 300);
+}
 </script>
 
 <template>
 	<!-- ⏳ Loading state -->
-	<template v-if="loading">
-		<header ref="$header">
+	<template v-if="loading || emptyLoading">
+		<header
+			ref="$header"
+			:class="{ 'broken': emptyLoading }"
+		>
 			<div class="car-brand">
 				<span class="skeleton-item skeleton-item--icon" />
 				<span
@@ -35,7 +51,7 @@ getBy<Vehicle>(where('selected', '==', true))
 			/>
 		</header>
 		
-		<main>
+		<main :class="{ 'broken': emptyLoading }">
 			<section class="car-details">
 				<div class="car-details__info">
 					<div class="car-details__info--card">
@@ -226,6 +242,29 @@ header {
 		
 		.car-brand--model {
 			display: none;
+		}
+	}
+}
+
+.broken {
+	animation: break .5s ease-in-out forwards, fall .5s ease-in-out;
+	
+	@keyframes break {
+		0% {
+			transform: scale(1);
+		}
+		100% {
+			transform: scale(0);
+			opacity: 0;
+		}
+	}
+	
+	@keyframes fall {
+		0% {
+			transform: translateY(0);
+		}
+		100% {
+			transform: translateY(200px);
 		}
 	}
 }
