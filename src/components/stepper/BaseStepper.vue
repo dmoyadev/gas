@@ -45,7 +45,22 @@ nav {
 
 		&.active {
 			border: none;
-			background-color: var(--color-primary);
+			animation: pop .5s ease-in-out forwards;
+			
+			@keyframes pop {
+			0% {
+				transform: scale(1);
+				background: var(--color-secondary-accent);
+			}
+			50% {
+				transform: scale(1.2);
+				background-color: var(--color-primary);
+			}
+			100% {
+				transform: scale(1);
+				background-color: var(--color-primary);
+			}
+		}
 		}
 	}
 }

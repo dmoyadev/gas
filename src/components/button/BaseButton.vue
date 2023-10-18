@@ -235,6 +235,7 @@ router-link {
 			position: relative;
 			overflow: hidden;
 			display: inline-flex;
+			flex: 1;
 			
 			&:before {
 				content: '';

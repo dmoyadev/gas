@@ -1,14 +1,44 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import BaseStepper from '@/components/stepper/BaseStepper.vue';
-import StepOnePartial from '@/modules/management/pages/partials/create-vehicle/StepOnePartial.vue';
+import Step1Partial from '@/modules/management/partials/create-vehicle/Step1Partial.vue';
+import Step2Partial from '@/modules/management/partials/create-vehicle/Step2Partial.vue';
 import BaseButton from '@/components/button/BaseButton.vue';
 import { ButtonForm, ButtonMode } from '@/components/button/types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
+import { Vehicle } from '@/modules/app/models/Vehicle.ts';
+import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
+import { useStorage } from '@/modules/app/composables/useStorage.ts';
 
-const vehicleType = ref<'car' | 'motorcycle' | undefined>();
+const vehicle = useStorage<Vehicle>('new-vehicle', {} as Vehicle);
+onBeforeRouteLeave(() => localStorage.removeItem('new-vehicle'));
 
-const currentStep = ref(0);
+const route = useRoute();
+const router = useRouter();
+function getInitialStep(): number {
+	let routeStep = +(route.query?.step ?? 0);
+	
+	if (routeStep === 2 && !vehicle.value!.fuelType) {
+		routeStep = 1;
+	}
+	
+	if (routeStep === 1 && !vehicle.value!.vehicleType) {
+		routeStep = 0;
+	}
+	
+	return routeStep;
+}
+
+const currentStep = ref(getInitialStep());
+watch(currentStep, async (value) => {
+	if(!isNaN(value)) {
+		await router.push({
+			path: route.path,
+			query: { step: value },
+		});
+	}
+}, { immediate: true });
+
 function submitStep(step: number) {
 	currentStep.value = step + 1;
 }
@@ -19,7 +49,7 @@ function submitStep(step: number) {
 		<header>
 			<BaseButton
 				v-if="currentStep < 4"
-				:mode="ButtonMode.OUTLINE"
+				:mode="ButtonMode.CLEAR"
 				:form="ButtonForm.CIRCLE"
 				to="/"
 			>
@@ -36,10 +66,18 @@ function submitStep(step: number) {
 		</header>
 		
 		<!-- Step 1 -->
-		<StepOnePartial
+		<Step1Partial
 			v-if="currentStep === 0"
-			v-model="vehicleType"
+			v-model="vehicle!.vehicleType"
 			@send-step="submitStep(0)"
+		/>
+		
+		<!-- Step 2 -->
+		<Step2Partial
+			v-if="currentStep === 1"
+			v-model="vehicle!.fuelType"
+			@send-step="submitStep(1)"
+			@step-back="currentStep = 0"
 		/>
 		
 		<BaseStepper

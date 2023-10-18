@@ -14,7 +14,7 @@ const i18nOptions: I18nOptions = {
 	fallbackLocale: [ import.meta.env.VITE_I18N_FALLBACK_LOCALE, 'es' ],
 	formatFallbackMessages: true, // See details of the fallback interpolation here https://kazupon.github.io/vue-i18n/guide/fallback.html#fallback-interpolation
 	silentFallbackWarn: true,
-	availableLocales: [ 'es' ],
+	availableLocales: ['es'],
 	messages,
 };
 

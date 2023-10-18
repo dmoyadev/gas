@@ -8,6 +8,7 @@ import BaseButton from '@/components/button/BaseButton.vue';
 			src="/assets/isotype.svg"
 			alt="Logo"
 			class="empty-state--image"
+			height="80"
 		>
 		<p class="empty-state--title">
 			Todavía no has añadido ningún vehículo a la aplicación...
