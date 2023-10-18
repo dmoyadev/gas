@@ -78,7 +78,6 @@ async function doSignIn() {
 				:input-type="InputType.EMAIL"
 				:has-error="!isEmailValid || (triedSubmit && errorLogin)"
 				:disabled="loadingLogin"
-				class="notched"
 				autocomplete="username"
 				is-required
 			>
@@ -97,7 +96,6 @@ async function doSignIn() {
 					:input-type="InputType.PASSWORD"
 					:form="InputForm.NOTCHED_RIGHT"
 					:has-error="triedSubmit && errorLogin"
-					class="notched"
 					:disabled="loadingLogin"
 					autocomplete="current-password"
 					is-required
@@ -160,10 +158,6 @@ form {
 	section {
 		display: flex;
 		gap: 4px;
-		
-		.notched {
-			flex: 1;
-		}
 	}
 }
 
@@ -206,10 +200,6 @@ form {
 		width: 100%;
 		display: flex;
 		gap: 4px;
-		
-		.notched {
-			flex: 1;
-		}
 	}
 }
 

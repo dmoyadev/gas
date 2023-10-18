@@ -149,6 +149,11 @@ div {
 	justify-content: flex-end;
 	gap: 4px;
 	
+	&:has(.input-form-notched-left),
+	&:has(.input-form-notched-right) {
+		flex: 1;
+	}
+	
 	label {
 		position: relative;
 		

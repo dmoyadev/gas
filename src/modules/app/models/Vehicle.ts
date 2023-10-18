@@ -17,7 +17,7 @@ export interface Vehicle {
 	odometer: number;
 	plate: string;
 	year: number;
-	type: VehicleType;
+	vehicleType: VehicleType;
 	fuelType: VehicleFuelType;
 }
 

@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import BaseButton from '@/components/button/BaseButton.vue';
+import { VehicleType } from '@/modules/app/models/Vehicle.ts';
 
 defineProps<{
-	modelValue?: 'car' | 'motorcycle'
+	modelValue?: VehicleType
 }>();
 
 defineEmits<{
-	'update:modelValue': [value: 'car' | 'motorcycle']
+	'update:modelValue': [value?: VehicleType]
 	'sendStep': []
 }>();
 </script>
@@ -21,14 +22,15 @@ defineEmits<{
 			<section class="vehicle-type">
 				<label
 					class="car"
-					:class="{ 'unselected': modelValue && modelValue !== 'car' }"
+					:class="{ 'unselected': modelValue && modelValue !== VehicleType.CAR }"
 				>
 					<input
 						id="car"
 						type="radio"
 						name="vehicle-type"
-						value="car"
-						@change="$emit('update:modelValue', ($event.target as HTMLInputElement).value as 'car' | 'motorcycle')"
+						:checked="modelValue === VehicleType.CAR"
+						:value="VehicleType.CAR"
+						@change="$emit('update:modelValue', ($event.target as HTMLInputElement).value as VehicleType)"
 					>
 					
 					<span class="img-wrapper">
@@ -41,14 +43,15 @@ defineEmits<{
 				
 				<label
 					class="motorcycle"
-					:class="{ 'unselected': modelValue && modelValue !== 'motorcycle' }"
+					:class="{ 'unselected': modelValue && modelValue !== VehicleType.BIKE }"
 				>
 					<input
 						id="car"
 						type="radio"
 						name="vehicle-type"
-						value="motorcycle"
-						@change="$emit('update:modelValue', ($event.target as HTMLInputElement).value as 'car' | 'motorcycle')"
+						:checked="modelValue === VehicleType.BIKE"
+						:value="VehicleType.BIKE"
+						@change="$emit('update:modelValue', ($event.target as HTMLInputElement).value as VehicleType)"
 					>
 					
 					<span class="img-wrapper">
@@ -76,6 +79,9 @@ defineEmits<{
 	
 	form {
 		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
 		
 		.vehicle-type {
 			margin: 32px 0;
