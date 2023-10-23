@@ -6,7 +6,11 @@
 </template>
 
 <style lang="scss">
-html {
+body {
+	background: black;
+}
+
+#app {
 	background: var(--color-secondary);
 	color: var(--color-secondary-accent);
 }

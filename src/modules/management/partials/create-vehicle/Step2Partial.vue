@@ -31,8 +31,10 @@ const buttonText = computed<string>(() => {
 
 <template>
 	<main class="step-2">
-		<h1>¡Vale! Y... ¿cómo se mueve?</h1>
-		<p>Es importante para darte solo las opciones que necesites. Ni más, ni menos.</p>
+		<div class="instructions">
+			<h1>¡Vale! Y... ¿cómo se mueve?</h1>
+			<p>Es importante para darte solo las opciones que necesites. Ni más, ni menos.</p>
+		</div>
 		
 		<form @submit.prevent="$emit('sendStep')">
 			<section class="fuel-type">
@@ -136,14 +138,17 @@ const buttonText = computed<string>(() => {
 
 <style scoped lang="scss">
 .step-2 {
+	gap: 16px;
+	
 	form {
+		flex: 1;
 		height: 100%;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
+		gap: 16px;
 		
 		.fuel-type {
-			margin: 32px 0;
 			width: 100%;
 			display: flex;
 			flex-direction: column;
@@ -194,6 +199,7 @@ const buttonText = computed<string>(() => {
 		}
 		
 		.actions {
+			margin-top: auto;
 			display: flex;
 			justify-content: space-between;
 		}

@@ -1,6 +1,6 @@
 export enum VehicleType {
 	CAR = 'car',
-	BIKE = 'bike',
+	MOTORCYCLE = 'motorcycle',
 }
 
 export enum VehicleFuelType {
@@ -10,8 +10,14 @@ export enum VehicleFuelType {
 	HYBRID = 'hybrid',
 }
 
+export interface VehicleBrand {
+	name: string;
+	logo: string;
+	highlighted?: boolean;
+}
+
 export interface Vehicle {
-	brand: string;
+	brand: VehicleBrand;
 	model: string;
 	name: string;
 	odometer: number;

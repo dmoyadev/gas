@@ -18,6 +18,7 @@ import {
 	faGears,
 	faAddressCard,
 	faGauge,
+	faEllipsis,
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -47,6 +48,7 @@ library.add(
 	faGears,
 	faAddressCard,
 	faGauge,
+	faEllipsis,
 );
 
 export default library;
