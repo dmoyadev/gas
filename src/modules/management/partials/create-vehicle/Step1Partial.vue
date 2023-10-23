@@ -14,8 +14,10 @@ defineEmits<{
 
 <template>
 	<main class="step-1">
-		<h1>Añade tu vehículo</h1>
-		<p>Con estos datos personalizaremos cómo usas la aplicación. No te preocupes, podrás editar todos estos datos más adelante.</p>
+		<div class="instructions">
+			<h1>Añade tu vehículo</h1>
+			<p>Con estos datos personalizaremos cómo usas la aplicación. No te preocupes, podrás editar todos estos datos más adelante.</p>
+		</div>
 		
 		<h2>¿Qué tipo de vehículo es?</h2>
 		<form @submit.prevent="$emit('sendStep')">
@@ -43,14 +45,14 @@ defineEmits<{
 				
 				<label
 					class="motorcycle"
-					:class="{ 'unselected': modelValue && modelValue !== VehicleType.BIKE }"
+					:class="{ 'unselected': modelValue && modelValue !== VehicleType.MOTORCYCLE }"
 				>
 					<input
 						id="car"
 						type="radio"
 						name="vehicle-type"
-						:checked="modelValue === VehicleType.BIKE"
-						:value="VehicleType.BIKE"
+						:checked="modelValue === VehicleType.MOTORCYCLE"
+						:value="VehicleType.MOTORCYCLE"
 						@change="$emit('update:modelValue', ($event.target as HTMLInputElement).value as VehicleType)"
 					>
 					

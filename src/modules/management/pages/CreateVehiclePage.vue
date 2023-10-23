@@ -3,6 +3,7 @@ import { ref, watch } from 'vue';
 import BaseStepper from '@/components/stepper/BaseStepper.vue';
 import Step1Partial from '@/modules/management/partials/create-vehicle/Step1Partial.vue';
 import Step2Partial from '@/modules/management/partials/create-vehicle/Step2Partial.vue';
+import Step3Partial from '@/modules/management/partials/create-vehicle/Step3Partial.vue';
 import BaseButton from '@/components/button/BaseButton.vue';
 import { ButtonForm, ButtonMode } from '@/components/button/types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
@@ -80,6 +81,17 @@ function submitStep(step: number) {
 			@step-back="currentStep = 0"
 		/>
 		
+		<!-- Step 3 -->
+		<Step3Partial
+			v-if="currentStep === 2"
+			v-model:brand="vehicle!.brand"
+			v-model:model="vehicle!.model"
+			v-model:year="vehicle!.year"
+			:vehicle-type="vehicle!.vehicleType"
+			@send-step="submitStep(2)"
+			@step-back="currentStep = 1"
+		/>
+		
 		<BaseStepper
 			class="stepper"
 			:current-step="currentStep"
@@ -90,7 +102,7 @@ function submitStep(step: number) {
 
 <style lang="scss" scoped>
 .content {
-	height: 100svh;
+	min-height: 100svh;
 	display: flex;
 	flex-direction: column;
 }
@@ -115,21 +127,23 @@ header {
 }
 
 :deep(main) {
-	height: 100%;
+	flex: 1;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: space-between;
 	padding: 16px;
 	
-	h1 {
-		font-size: var(--font-size-big);
-		font-weight: var(--font-heavy);
-		margin-bottom: 8px;
-	}
-	
-	p {
-		color: var(--color-primary);
-		font-weight: var(--font-light);
+	.instructions {
+		h1 {
+			font-size: var(--font-size-big);
+			font-weight: var(--font-heavy);
+			margin-bottom: 8px;
+		}
+		
+		p {
+			color: var(--color-primary);
+			font-weight: var(--font-light);
+		}
 	}
 	
 	h2 {
