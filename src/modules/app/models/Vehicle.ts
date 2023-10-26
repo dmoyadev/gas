@@ -21,6 +21,8 @@ export interface Vehicle {
 	model: string;
 	name: string;
 	odometer: number;
+	batteryCapacity: number;
+	alias: string;
 	plate: string;
 	year: number;
 	vehicleType: VehicleType;

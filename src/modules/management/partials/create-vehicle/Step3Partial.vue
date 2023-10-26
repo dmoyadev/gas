@@ -33,7 +33,7 @@ const modelProp = computed<string | undefined>({
 });
 
 const yearProp = computed<number | undefined>({
-	get: () => (props.year && isNaN(props.year)) ? undefined : +props.year!,
+	get: () => isNaN(+(props.year || 0)) ? undefined : +props.year!,
 	set: (value) => emit('update:year', value ? +value : undefined),
 });
 
@@ -48,7 +48,7 @@ const highlightedBrands = computed<VehicleBrand[]>(() => {
 		? carManufacturers
 		: motorcycleManufacturers;
 	
-	const highlightedBrands = brands.filter((brand) => brand.highlight);
+	const highlightedBrands = brands.filter((brand) => brand.highlighted);
 	if(props.brand && !highlightedBrands.find((brand) => brand.name === props.brand?.name)) {
 		highlightedBrands.pop();
 		highlightedBrands.push(props.brand);

@@ -10,6 +10,7 @@ import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { Vehicle } from '@/modules/app/models/Vehicle.ts';
 import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 import { useStorage } from '@/modules/app/composables/useStorage.ts';
+import Step4Partial from "@/modules/management/partials/create-vehicle/Step4Partial.vue";
 
 const vehicle = useStorage<Vehicle>('new-vehicle', {} as Vehicle);
 onBeforeRouteLeave(() => localStorage.removeItem('new-vehicle'));
@@ -90,6 +91,18 @@ function submitStep(step: number) {
 			:vehicle-type="vehicle!.vehicleType"
 			@send-step="submitStep(2)"
 			@step-back="currentStep = 1"
+		/>
+		
+		<!-- Step 4 -->
+		<Step4Partial
+			v-if="currentStep === 3"
+			v-model:plate="vehicle!.plate"
+			v-model:odometer="vehicle!.odometer"
+			v-model:battery-capacity="vehicle!.batteryCapacity"
+			v-model:alias="vehicle!.alias"
+			:fuel-type="vehicle!.fuelType"
+			@send-step="submitStep(3)"
+			@step-back="currentStep = 2"
 		/>
 		
 		<BaseStepper
