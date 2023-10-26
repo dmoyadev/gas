@@ -20,7 +20,7 @@ export const carManufacturers: VehicleBrand[] = [
 	{
 		name: 'Audi',
 		logo: '/manufacturers/car/audi.svg',
-		highlight: true,
+		highlighted: true,
 	},
 	{
 		name: 'Bentley',
@@ -29,7 +29,7 @@ export const carManufacturers: VehicleBrand[] = [
 	{
 		name: 'BMW',
 		logo: '/manufacturers/car/bmw.svg',
-		highlight: true,
+		highlighted: true,
 	},
 	{
 		name: 'Bugatti',
@@ -54,7 +54,7 @@ export const carManufacturers: VehicleBrand[] = [
 	{
 		name: 'Citroen',
 		logo: '/manufacturers/car/citroen.svg',
-		highlight: true,
+		highlighted: true,
 	},
 	{
 		name: 'Corvette',
@@ -131,7 +131,7 @@ export const carManufacturers: VehicleBrand[] = [
 	{
 		name: 'Kia',
 		logo: '/manufacturers/car/kia.svg',
-		highlight: true,
+		highlighted: true,
 	},
 	{
 		name: 'KTM',
@@ -196,7 +196,7 @@ export const carManufacturers: VehicleBrand[] = [
 	{
 		name: 'Mercedes-Benz',
 		logo: '/manufacturers/car/mercedes-benz.svg',
-		highlight: true,
+		highlighted: true,
 	},
 	{
 		name: 'MG',
@@ -221,7 +221,7 @@ export const carManufacturers: VehicleBrand[] = [
 	{
 		name: 'Peugeot',
 		logo: '/manufacturers/car/peugeot.svg',
-		highlight: true,
+		highlighted: true,
 	},
 	{
 		name: 'Polestar',
@@ -234,7 +234,7 @@ export const carManufacturers: VehicleBrand[] = [
 	{
 		name: 'Renault',
 		logo: '/manufacturers/car/renault.svg',
-		highlight: true,
+		highlighted: true,
 	},
 	{
 		name: 'Rolls-Royce',
@@ -251,7 +251,7 @@ export const carManufacturers: VehicleBrand[] = [
 	{
 		name: 'SEAT',
 		logo: '/manufacturers/car/seat.svg',
-		highlight: true,
+		highlighted: true,
 	},
 	{
 		name: 'Skoda',
@@ -284,7 +284,7 @@ export const carManufacturers: VehicleBrand[] = [
 	{
 		name: 'Volkswagen',
 		logo: '/manufacturers/car/volkswagen.svg',
-		highlight: true,
+		highlighted: true,
 	},
 	{
 		name: 'Volvo',

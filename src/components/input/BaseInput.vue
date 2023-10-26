@@ -139,6 +139,15 @@ const showPassword = ref(false);
 			<!-- @slot Error message of the input -->
 			<slot name="error" />
 		</p>
+		
+		<!-- Helper slot -->
+		<p
+			v-if="hasSlotContent($slots.helper)"
+			class="helper"
+		>
+			<!-- @slot Helper message of the input -->
+			<slot name="helper" />
+		</p>
 	</div>
 </template>
 
@@ -326,6 +335,12 @@ div {
 	
 	.error {
 		color: var(--color-danger);
+		font-size: var(--font-size-small);
+		line-height: var(--font-size-small);
+	}
+	
+	.helper {
+		color: var(--color-primary);
 		font-size: var(--font-size-small);
 		line-height: var(--font-size-small);
 	}

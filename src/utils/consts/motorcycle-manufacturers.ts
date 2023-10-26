@@ -20,7 +20,7 @@ export const motorcycleManufacturers: VehicleBrand[] = [
 	{
 		name: 'BMW',
 		logo: '/manufacturers/motorcycle/bmw.svg',
-		highlight: true,
+		highlighted: true,
 	},
 	{
 		name: 'Ducati',
@@ -37,7 +37,7 @@ export const motorcycleManufacturers: VehicleBrand[] = [
 	{
 		name: 'Honda',
 		logo: '/manufacturers/motorcycle/honda.svg',
-		highlight: true,
+		highlighted: true,
 	},
 	{
 		name: 'Indian Motorcycles',
@@ -46,7 +46,7 @@ export const motorcycleManufacturers: VehicleBrand[] = [
 	{
 		name: 'Kawasaki',
 		logo: '/manufacturers/motorcycle/kawasaki.svg',
-		highlight: true,
+		highlighted: true,
 	},
 	{
 		name: 'KTM',
@@ -55,7 +55,7 @@ export const motorcycleManufacturers: VehicleBrand[] = [
 	{
 		name: 'KYMCO',
 		logo: '/manufacturers/motorcycle/kymco.svg',
-		highlight: true,
+		highlighted: true,
 	},
 	{
 		name: 'Moto Guzzi',
@@ -72,12 +72,12 @@ export const motorcycleManufacturers: VehicleBrand[] = [
 	{
 		name: 'Peugeot',
 		logo: '/manufacturers/motorcycle/peugeot.svg',
-		highlight: true,
+		highlighted: true,
 	},
 	{
 		name: 'Piaggio',
 		logo: '/manufacturers/motorcycle/piaggio.svg',
-		highlight: true,
+		highlighted: true,
 	},
 	{
 		name: 'Royal Enfield',
@@ -90,7 +90,7 @@ export const motorcycleManufacturers: VehicleBrand[] = [
 	{
 		name: 'SYM',
 		logo: '/manufacturers/motorcycle/sym.svg',
-		highlight: true,
+		highlighted: true,
 	},
 	{
 		name: 'Triumph',
@@ -99,7 +99,7 @@ export const motorcycleManufacturers: VehicleBrand[] = [
 	{
 		name: 'Yamaha',
 		logo: '/manufacturers/motorcycle/yamaha.svg',
-		highlight: true,
+		highlighted: true,
 	},
 	{ 
 		name: 'Victory',
@@ -108,7 +108,7 @@ export const motorcycleManufacturers: VehicleBrand[] = [
 	{
 		name: 'Vespa',
 		logo: '/manufacturers/motorcycle/vespa.svg',
-		highlight: true,
+		highlighted: true,
 	},
 	{
 		name: 'Wottan',
