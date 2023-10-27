@@ -51,6 +51,13 @@ const routes: Array<RouteRecordRaw> = [
 		component: () => import('@/modules/management/pages/CreateVehiclePage.vue'),
 		meta: { title: 'Nuevo vehículo' },
 	},
+	
+	{
+		path: '/vehicles/:id/success',
+		name: 'Vehicle Creation Success',
+		component: () => import('@/modules/management/pages/CreateVehicleSuccessPage.vue'),
+		meta: { title: 'Vehículo creado' },
+	},
  
 	{
 		path: '/showcase',

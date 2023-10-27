@@ -58,7 +58,8 @@ defineEmits<{
 					
 					<span class="img-wrapper">
 						<img
-							src="/images/bike-silhouette.svg"
+							class="flip"
+							src="/images/motorcycle-silhouette.svg"
 							alt="motorcycle"
 						>
 					</span>
@@ -105,6 +106,10 @@ defineEmits<{
 				display: flex;
 				align-items: flex-end;
 				opacity: .4;
+				
+				.flip {
+					transform: scaleX(-1);
+				}
 			}
 			
 			.car {

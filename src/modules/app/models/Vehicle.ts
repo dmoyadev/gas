@@ -17,9 +17,9 @@ export interface VehicleBrand {
 }
 
 export interface Vehicle {
+	id: string;
 	brand: VehicleBrand;
 	model: string;
-	name: string;
 	odometer: number;
 	batteryCapacity: number;
 	alias: string;
@@ -27,6 +27,7 @@ export interface Vehicle {
 	year: number;
 	vehicleType: VehicleType;
 	fuelType: VehicleFuelType;
+	selected: boolean;
 }
 
 export interface ElectricVehicle extends Vehicle {
