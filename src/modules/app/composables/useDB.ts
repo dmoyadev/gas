@@ -13,6 +13,7 @@ import {
 	WithFieldValue,
 } from 'firebase/firestore';
 import { ref } from 'vue';
+import { useAuthentication } from '@/modules/auth/composables/useAuthentication.ts';
 
 export function useDB(collectionName: string) {
 	const loading = ref(false);
@@ -37,7 +38,12 @@ export function useDB(collectionName: string) {
 					if(snapshot.empty) {
 						resolve([] as T[]);
 					} else {
-						resolve(snapshot.docs.map((doc) => doc.data()) as T[]);
+						resolve(snapshot.docs.map((doc) => {
+							return {
+								...doc.data(),
+								id: doc.id,
+							};
+						}) as T[]);
 					}
 				})
 				.catch((error) => {
@@ -53,23 +59,33 @@ export function useDB(collectionName: string) {
 		const docRef = doc(db, collectionName, id).withConverter(getConverter<T>());
 		const docSnap = await getDoc(docRef);
 		return docSnap.exists()
-			? docSnap.data()
+			? {
+				...docSnap.data(),
+				id: docSnap.id,
+			}
 			: null;
 	}
 	
 	async function getBy<T>(searchQuery: QueryConstraint): Promise<T[]> {
 		console.log(`From API: getBy (${collectionName})`);
 		
+		const { user } = useAuthentication();
+		
 		loading.value = true;
 		return new Promise((resolve, reject) => {
 			const collectionRef = collection(db, collectionName).withConverter(getConverter<T>());
-			const collectionQuery = query(collectionRef, where('user_uuid', '==', 'user-uuid'), searchQuery);
+			const collectionQuery = query(collectionRef, where('user_uuid', '==', user.value?.uid), searchQuery);
 			getDocs(collectionQuery)
 				.then((snapshot) => {
 					if(snapshot.empty) {
 						resolve([] as T[]);
 					} else {
-						resolve(snapshot.docs.map((doc) => doc.data()) as T[]);
+						resolve(snapshot.docs.map((doc) => {
+							return {
+								...doc.data(),
+								id: doc.id,
+							};
+						}) as T[]);
 					}
 				})
 				.catch((error) => {
@@ -81,10 +97,16 @@ export function useDB(collectionName: string) {
 	
 	async function create<T>(element: WithFieldValue<T>) {
 		console.log(`From API: create (${collectionName})`);
+		const { user } = useAuthentication();
 		
 		const collectionRef = collection(db, collectionName).withConverter(getConverter<T>());
 		const elementRef = doc(collectionRef);
-		await setDoc(elementRef, element);
+		if (typeof element === 'object') {
+			await setDoc(elementRef, {
+				...element,
+				user_uuid: user.value?.uid,
+			});
+		}
 	}
 	
 	return {

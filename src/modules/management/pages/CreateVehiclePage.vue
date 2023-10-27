@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import BaseStepper from '@/components/stepper/BaseStepper.vue';
 import Step1Partial from '@/modules/management/partials/create-vehicle/Step1Partial.vue';
 import Step2Partial from '@/modules/management/partials/create-vehicle/Step2Partial.vue';
 import Step3Partial from '@/modules/management/partials/create-vehicle/Step3Partial.vue';
+import Step4Partial from '@/modules/management/partials/create-vehicle/Step4Partial.vue';
+import Step5Partial from '@/modules/management/partials/create-vehicle/Step5Partial.vue';
 import BaseButton from '@/components/button/BaseButton.vue';
 import { ButtonForm, ButtonMode } from '@/components/button/types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { Vehicle } from '@/modules/app/models/Vehicle.ts';
 import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 import { useStorage } from '@/modules/app/composables/useStorage.ts';
-import Step4Partial from "@/modules/management/partials/create-vehicle/Step4Partial.vue";
 
 const vehicle = useStorage<Vehicle>('new-vehicle', {} as Vehicle);
 onBeforeRouteLeave(() => localStorage.removeItem('new-vehicle'));
@@ -18,31 +19,28 @@ onBeforeRouteLeave(() => localStorage.removeItem('new-vehicle'));
 const route = useRoute();
 const router = useRouter();
 function getInitialStep(): number {
-	let routeStep = +(route.query?.step ?? 0);
+	let routeStep = +(route.query?.step ?? 1);
 	
-	if (routeStep === 2 && !vehicle.value!.fuelType) {
-		routeStep = 1;
+	if (routeStep === 3 && !vehicle.value!.fuelType) {
+		routeStep = 2;
 	}
 	
-	if (routeStep === 1 && !vehicle.value!.vehicleType) {
-		routeStep = 0;
+	if (routeStep === 2 && !vehicle.value!.vehicleType) {
+		routeStep = 1;
 	}
 	
 	return routeStep;
 }
 
 const currentStep = ref(getInitialStep());
-watch(currentStep, async (value) => {
-	if(!isNaN(value)) {
+
+async function submitStep(step: number) {
+	if(!isNaN(step)) {
 		await router.push({
 			path: route.path,
-			query: { step: value },
+			query: { step: step + 1 },
 		});
 	}
-}, { immediate: true });
-
-function submitStep(step: number) {
-	currentStep.value = step + 1;
 }
 </script>
 
@@ -50,7 +48,7 @@ function submitStep(step: number) {
 	<div class="content">
 		<header>
 			<BaseButton
-				v-if="currentStep < 4"
+				v-if="currentStep < 5"
 				:mode="ButtonMode.CLEAR"
 				:form="ButtonForm.CIRCLE"
 				to="/"
@@ -64,45 +62,51 @@ function submitStep(step: number) {
 			>
 			
 			<!-- This is a placeholder for the logo to be centered -->
-			<span v-if="currentStep < 4" />
+			<span v-if="currentStep < 5" />
 		</header>
 		
 		<!-- Step 1 -->
 		<Step1Partial
-			v-if="currentStep === 0"
+			v-if="currentStep === 1"
 			v-model="vehicle!.vehicleType"
-			@send-step="submitStep(0)"
+			@send-step="submitStep(1)"
 		/>
 		
 		<!-- Step 2 -->
 		<Step2Partial
-			v-if="currentStep === 1"
-			v-model="vehicle!.fuelType"
-			@send-step="submitStep(1)"
-			@step-back="currentStep = 0"
-		/>
-		
-		<!-- Step 3 -->
-		<Step3Partial
 			v-if="currentStep === 2"
-			v-model:brand="vehicle!.brand"
-			v-model:model="vehicle!.model"
-			v-model:year="vehicle!.year"
-			:vehicle-type="vehicle!.vehicleType"
+			v-model="vehicle!.fuelType"
 			@send-step="submitStep(2)"
 			@step-back="currentStep = 1"
 		/>
 		
+		<!-- Step 3 -->
+		<Step3Partial
+			v-if="currentStep === 3"
+			v-model:brand="vehicle!.brand"
+			v-model:model="vehicle!.model"
+			v-model:year="vehicle!.year"
+			:vehicle-type="vehicle!.vehicleType"
+			@send-step="submitStep(3)"
+			@step-back="currentStep = 2"
+		/>
+		
 		<!-- Step 4 -->
 		<Step4Partial
-			v-if="currentStep === 3"
+			v-if="currentStep === 4"
 			v-model:plate="vehicle!.plate"
 			v-model:odometer="vehicle!.odometer"
 			v-model:battery-capacity="vehicle!.batteryCapacity"
 			v-model:alias="vehicle!.alias"
 			:fuel-type="vehicle!.fuelType"
-			@send-step="submitStep(3)"
-			@step-back="currentStep = 2"
+			@send-step="submitStep(4)"
+			@step-back="currentStep = 3"
+		/>
+		
+		<!-- Step 5 -->
+		<Step5Partial
+			v-if="currentStep === 5"
+			@step-back="currentStep = 4"
 		/>
 		
 		<BaseStepper

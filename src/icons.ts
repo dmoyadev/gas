@@ -19,12 +19,16 @@ import {
 	faAddressCard,
 	faGauge,
 	faEllipsis,
+	faWrench,
+	faFileInvoiceDollar,
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
 	faCircleDot as faCircleDotRegular,
 	faEye as faEyeRegular,
 	faEyeSlash as faEyeSlashRegular,
+	faCircleXmark as faCircleXmarkRegular,
+	faCircleCheck as faCircleCheckRegular,
 } from '@fortawesome/free-regular-svg-icons';
 
 library.add(
@@ -49,6 +53,10 @@ library.add(
 	faAddressCard,
 	faGauge,
 	faEllipsis,
+	faCircleXmarkRegular,
+	faWrench,
+	faFileInvoiceDollar,
+	faCircleCheckRegular,
 );
 
 export default library;
