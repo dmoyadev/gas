@@ -11,7 +11,7 @@ withDefaults(
 		/**
 		 * The value of the input
 		 */
-		modelValue: string | number | null,
+		modelValue?: string | number,
 		/**
 		 * The type of the input
 		 */
@@ -35,8 +35,7 @@ withDefaults(
 		loading?: boolean;
 	}>(),
 	{
-		modelValue: '',
-		inputId: '',
+		modelValue: undefined,
 		form: InputForm.BLOCK,
 		inputType: InputType.TEXT,
 	},
@@ -68,7 +67,9 @@ const showPassword = ref(false);
 			>
 				<!-- Actual input -->
 				<input
+					v-if="inputType !== InputType.TEXTAREA"
 					:id="($attrs.id as string) || _componentUID"
+					step="any"
 					v-bind="$attrs"
 					:type="(showPassword ? InputType.TEXT : inputType)"
 					:value="modelValue"
@@ -78,6 +79,18 @@ const showPassword = ref(false);
 					aria-label=""
 					@input="$emit('update:modelValue', (($event.target as HTMLInputElement).value))"
 				>
+				
+				<textarea
+					v-else
+					:id="($attrs.id as string) || _componentUID"
+					v-bind="$attrs"
+					:value="modelValue as (string | undefined)"
+					:readonly="!!($attrs.readonly || loading)"
+					:disabled="!!($attrs.disabled || loading)"
+					:required="!!isRequired"
+					aria-label=""
+					@input="$emit('update:modelValue', (($event.target as HTMLInputElement).value))"
+				/>
 				
 				<!-- Icon right -->
 				<span
@@ -190,7 +203,7 @@ div {
 				}
 				
 				&-notched-left {
-					input {
+					input, textarea {
 						border-radius: 0 4px 4px 0;
 						padding-left: 22px;
 					}
@@ -205,7 +218,7 @@ div {
 				}
 				
 				&-notched-right {
-					input {
+					input, textarea {
 						border-radius: 4px 0 0 4px;
 						padding-right: 22px;
 					}
@@ -241,7 +254,9 @@ div {
 				}
 				
 				input,
-				input:invalid {
+				input:invalid,
+				textarea,
+				textarea:invalid {
 					border-color: var(--color-danger) !important;
 					animation: shake 0.2s ease-in-out 0s 2;
 				}
@@ -257,7 +272,8 @@ div {
 			}
 			
 			&:not(:has(:disabled)):focus-within {
-				input {
+				input,
+				textarea {
 					border-color: var(--color-primary);
 				}
 				
@@ -274,7 +290,7 @@ div {
 			&:not(:has(:disabled)):focus-within,
 			&.has-value {
 				& ~ .label {
-					top: -12px;
+					top: -6px;
 					transform: none;
 					font-size: var(--font-size-small);
 					z-index: 10;
@@ -292,7 +308,8 @@ div {
 				}
 			}
 			
-			input {
+			input,
+			textarea {
 				height: 42px;
 				width: 100%;
 				border: 1px solid var(--color-secondary-accent);
@@ -303,6 +320,10 @@ div {
 				&::placeholder {
 					color: transparent;
 				}
+			}
+			
+			textarea {
+				height: 84px;
 			}
 			
 			.append {
@@ -322,13 +343,22 @@ div {
 		.label {
 			position: absolute;
 			left: 12px;
-			top: 50%;
-			transform: translateY(-50%);
 			transition: all .15s ease-out;
 		}
 		
+		:has(input) ~ .label {
+			top: 50%;
+			transform: translateY(-50%);
+		}
+		
+		:has(textarea) ~ .label {
+			top: 12px;
+		}
+		
 		&:has(input:read-only),
-		&:has(input:disabled) {
+		&:has(input:disabled),
+		&:has(textarea:read-only),
+		&:has(textarea:disabled) {
 			opacity: .5;
 		}
 	}
