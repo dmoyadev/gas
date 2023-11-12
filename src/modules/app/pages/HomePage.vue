@@ -1,30 +1,19 @@
 <script setup lang="ts">
 import BaseIcon from '@/components/icon/BaseIcon.vue';
-import { computed, ref } from 'vue';
-import { useDB } from '@/modules/app/composables/useDB.ts';
-import { isElectricVehicle, Vehicle, VehicleFuelType } from '@/modules/app/models/Vehicle.ts';
-import { where } from 'firebase/firestore';
+import { computed } from 'vue';
+import { isElectricVehicle, VehicleFuelType } from '@/modules/app/models/Vehicle.ts';
 import HomeEmptyPartial from '@/modules/app/partials/HomeEmptyPartial.vue';
 import { IconSize } from '@/components/icon/types.ts';
-import RecentRefuels from '@/modules/app/components/RecentRefuels.vue';
+import RecentRefills from '@/modules/app/components/RecentRefills.vue';
 import HomeHeader from '@/modules/app/components/HomeHeader.vue';
+import { useSelectedVehicle } from '@/modules/vehicles/composables/useSelectedVehicle.ts';
 
-const { getBy, loading, error } = useDB('vehicles');
-const vehicle = ref<Vehicle>();
-
-const emptyLoading = ref(false);
-getBy<Vehicle>(where('selected', '==', true))
-	.then((vehicles) => {
-		if(vehicles.length ) {
-			vehicle.value = vehicles[0];
-		} else {
-			emptyLoading.value = true;
-			setTimeout(() => {
-				emptyLoading.value = false;
-				vehicle.value = undefined;
-			}, 300);
-		}
-	});
+const {
+	vehicle,
+	loading,
+	error,
+	emptyLoading,
+} = useSelectedVehicle();
 
 const fuelText = computed<string>(() => {
 	if(!vehicle.value) { return ''; }
@@ -82,7 +71,7 @@ const fuelText = computed<string>(() => {
 				<span class="skeleton-item skeleton-item--big-square" />
 			</section>
 			
-			<RecentRefuels />
+			<RecentRefills />
 		</main>
 	</template>
 	
@@ -128,7 +117,7 @@ const fuelText = computed<string>(() => {
 			<section class="car-actions">
 				<router-link 
 					class="car-actions--action"
-					:to="`/vehicles/${vehicle?.id}/fuel`"
+					:to="`/vehicles/${vehicle?.id}/refill`"
 				>
 					<BaseIcon
 						v-if="!isElectricVehicle(vehicle)"
@@ -144,12 +133,12 @@ const fuelText = computed<string>(() => {
 						<BaseIcon
 							class="icon"
 							icon="fa-solid fa-gas-pump"
-							:icon-size="IconSize.L"
+							:icon-size="IconSize.M"
 						/>
 						<BaseIcon
 							class="icon"
 							icon="fa-solid fa-charging-station"
-							:icon-size="IconSize.L"
+							:icon-size="IconSize.M"
 						/>
 					</div>
 					
@@ -183,7 +172,7 @@ const fuelText = computed<string>(() => {
 				</router-link>
 			</section>
 			
-			<RecentRefuels :vehicle="vehicle" />
+			<RecentRefills :vehicle="vehicle" />
 		</main>
 	</template>
 </template>
@@ -213,6 +202,7 @@ const fuelText = computed<string>(() => {
 }
 
 main {
+	min-height: 100svh;
 	padding: 0 16px calc(var(--tab-height) + 16px);
 	display: flex;
 	flex-direction: column;
@@ -284,6 +274,15 @@ main {
 			gap: 8px;
 			font-size: var(--font-size-small);
 			font-weight: var(--font-heavy);
+			
+			div {
+				display: flex;
+				height: 32px;
+				
+				.icon:last-child {
+					align-self: flex-end;
+				}
+			}
 		}
 	}
 }

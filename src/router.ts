@@ -25,15 +25,15 @@ const routes: Array<RouteRecordRaw> = [
 				meta: { title: t('Home') },
 			},
 			{
-				path: '/management',
+				path: '/vehicles',
 				name: 'Management',
-				component: () => import('@/modules/management/pages/ManagementPage.vue'),
+				component: () => import('@/modules/vehicles/pages/ManagementPage.vue'),
 				meta: { title: t('Management') },
 			},
 			{
-				path: '/history',
+				path: '/refills',
 				name: 'History',
-				component: () => import('@/modules/history/pages/HistoryPage.vue'),
+				component: () => import('@/modules/refills/pages/HistoryPage.vue'),
 				meta: { title: t('History') },
 			},
 			{
@@ -48,25 +48,36 @@ const routes: Array<RouteRecordRaw> = [
 	{
 		path: '/vehicles/__new__',
 		name: 'Vehicle',
-		component: () => import('@/modules/management/pages/CreateVehiclePage.vue'),
+		component: () => import('@/modules/vehicles/pages/CreateVehiclePage.vue'),
 		meta: { title: 'Nuevo vehículo' },
 	},
 	
 	{
 		path: '/vehicles/:id/success',
 		name: 'Vehicle Creation Success',
-		component: () => import('@/modules/management/pages/CreateVehicleSuccessPage.vue'),
+		component: () => import('@/modules/vehicles/pages/CreateVehicleSuccessPage.vue'),
 		meta: { title: 'Vehículo creado' },
+	},
+	
+	{
+		path: '/vehicles/:id/refill',
+		name: 'Vehicle Refill',
+		component: () => import('@/modules/refills/pages/RefillPage.vue'),
+		meta: { title: 'Repostajes' },
 	},
  
 	{
 		path: '/showcase',
 		name: 'Showcase',
 		component: () => import('@/showcase/ShowcasePage.vue'),
-		meta: {
-			title: t('Showcase'),
-			isPublic: true,
-		},
+		meta: { title: t('Showcase') },
+	},
+	
+	{
+		path: '/:pathMatch(.*)*',
+		name: 'NotFound',
+		component: () => import('@/modules/app/pages/NotFoundPage.vue'),
+		meta: { title: t('Not Found') },
 	},
 ];
 

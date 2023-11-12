@@ -12,12 +12,12 @@ const tabs = [
 	{
 		icon: 'fa-solid fa-gas-pump',
 		text: 'Gestión',
-		route: '/management',
+		route: '/vehicles',
 	},
 	{
 		icon: 'fa-solid fa-book-bookmark',
 		text: 'Historial',
-		route: '/history',
+		route: '/refills',
 	},
 	{
 		icon: 'fa-solid fa-gears',
