@@ -4,6 +4,7 @@ export enum InputType {
 	PASSWORD = 'password',
 	NUMBER = 'number',
 	EMAIL = 'email',
+	TEXTAREA = 'textarea'
 }
 
 export enum InputForm {
