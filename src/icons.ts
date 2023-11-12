@@ -21,6 +21,9 @@ import {
 	faEllipsis,
 	faWrench,
 	faFileInvoiceDollar,
+	faBattery2,
+	faBatteryFull,
+	faPlugCircleBolt,
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -57,6 +60,9 @@ library.add(
 	faWrench,
 	faFileInvoiceDollar,
 	faCircleCheckRegular,
+	faBattery2,
+	faBatteryFull,
+	faPlugCircleBolt,
 );
 
 export default library;
