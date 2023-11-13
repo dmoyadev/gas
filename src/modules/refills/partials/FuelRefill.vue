@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, watchEffect } from 'vue';
 import BaseBigNumberInput from '@/components/big-number-input/BaseBigNumberInput.vue';
 import BaseInput from '@/components/input/BaseInput.vue';
 import { InputType } from '@/components/input/types.ts';
@@ -74,6 +74,18 @@ watch(vehicle, (value) => {
 		data.value.fuelType = fuelTypes.value[0];
 	}
 }, { immediate: true });
+
+function updateUnits(unitCost?: number) {
+	if(data.value.totalCost && unitCost) {
+		data.value.units = +(data.value.totalCost / unitCost).toFixed(2);
+	}
+}
+
+function updateUnitCost(units?: number) {
+	if(data.value.totalCost && units) {
+		data.value.unitCost = +(data.value.totalCost / units).toFixed(3);
+	}
+}
 </script>
 
 <template>
@@ -114,6 +126,7 @@ watch(vehicle, (value) => {
 				v-model.number="data.unitCost"
 				placeholder="·,···"
 				is-required
+				@update:model-value="updateUnits($event)"
 			>
 				Precio del litro
 				
@@ -126,6 +139,7 @@ watch(vehicle, (value) => {
 				v-model.number="data.units"
 				placeholder="·,···"
 				is-required
+				@update:model-value="updateUnitCost($event)"
 			>
 				Litros repostados
 				

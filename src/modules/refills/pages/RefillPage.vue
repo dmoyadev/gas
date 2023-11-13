@@ -40,6 +40,11 @@ const fuelText = computed<string>(() => {
 });
 
 const refill = ref<Refill>({} as Refill);
+watch(refillType, (value, oldValue) => {
+	if(value === oldValue) { return; }
+	
+	refill.value = {} as Refill;
+});
 </script>
 
 <template>
