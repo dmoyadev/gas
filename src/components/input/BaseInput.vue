@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import BaseButton from '@/components/button/BaseButton.vue';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { InputForm, InputType } from '@/components/input/types';
 import { ButtonColor, ButtonForm, ButtonMode } from '@/components/button/types';
 import { hasSlotContent } from '@/utils/helpers.ts';
 
-withDefaults(
+const props = withDefaults(
 	defineProps<{
 		/**
 		 * The value of the input
@@ -26,6 +26,10 @@ withDefaults(
 		 */
 		hasError?: boolean;
 		/**
+		 * The error message of the input
+		 */
+		customValidity?: string;
+		/**
 		 * Indicates if the input is required
 		 */
 		isRequired?: boolean;
@@ -38,6 +42,7 @@ withDefaults(
 		modelValue: undefined,
 		form: InputForm.BLOCK,
 		inputType: InputType.TEXT,
+		customValidity: '',
 	},
 );
 
@@ -52,6 +57,18 @@ defineEmits<{
 const _componentUID =  Date.now().toString(36) + Math.random().toString(36).substring(2);
 
 const showPassword = ref(false);
+
+watch(() => props.hasError, (value) => {
+	const input = document.getElementById(_componentUID) as HTMLInputElement;
+	if(!input) { return; }
+	
+	if(!value) {
+		input.setCustomValidity('');
+		return;
+	}
+	
+	input.setCustomValidity(props.customValidity);
+});
 </script>
 
 <template>
@@ -149,8 +166,10 @@ const showPassword = ref(false);
 			v-if="!loading && hasError && hasSlotContent($slots.error)"
 			class="error"
 		>
-			<!-- @slot Error message of the input -->
-			<slot name="error" />
+			<!-- @slot Error message of the input. Defaults to the customValidity prop -->
+			<slot name="error">
+				{{ customValidity }}
+			</slot>
 		</p>
 		
 		<!-- Helper slot -->

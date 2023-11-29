@@ -10,7 +10,7 @@ import { useSelectedVehicle } from '@/modules/vehicles/composables/useSelectedVe
 
 const {
 	vehicle,
-	loading,
+	loadingVehicle: loading,
 	error,
 	emptyLoading,
 } = useSelectedVehicle();

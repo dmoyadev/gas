@@ -1,55 +1,21 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import { useDB } from '@/modules/app/composables/useDB.ts';
+import { computed } from 'vue';
 import { Vehicle, VehicleFuelType } from '@/modules/app/models/Vehicle.ts';
-import {
-	where,
-	orderBy,
-	limit,
-} from 'firebase/firestore';
-import { Refill } from '@/modules/refills/models/Refill.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { IconSize } from '@/components/icon/types.ts';
 import BaseButton from '@/components/button/BaseButton.vue';
 import RecentRefillItem from '@/modules/app/components/RecentRefillItem.vue';
+import { useRecentRefills } from '@/modules/refills/composables/useRecentRefills.ts';
 
 const props = defineProps<{
 	vehicle?: Vehicle
 }>();
 
 const {
-	getBy,
+	refills,
+	loadingRefills: loading,
 	error,
-	loading,
-} = useDB('refills');
-const refills = ref<Refill[]>();
-loading.value = true;
-
-const emptyLoading = ref(false);
-watch(() => props.vehicle, (value) => {
-	if(!value) { return; }
-	
-	loading.value = false;
-	try {
-		const vehicleQuery = where('idVehicle', '==', value.id);
-		const orderByQuery = orderBy('created_at', 'desc');
-		const limitQuery = limit(5);
-		getBy<Refill>(vehicleQuery, orderByQuery, limitQuery)
-			.then((data) => {
-				if (data.length) {
-					refills.value = data;
-				} else {
-					emptyLoading.value = true;
-					setTimeout(() => {
-						emptyLoading.value = false;
-						refills.value = [];
-					}, 300);
-				}
-			});
-	} catch(err) {
-		error.value = err;
-	}
-}, { immediate: true });
+} = useRecentRefills();
 
 const emptyRefillsText = computed<string>(() => {
 	if(!props.vehicle) { return ''; }
