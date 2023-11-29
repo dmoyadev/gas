@@ -1,4 +1,5 @@
 export interface Refill {
+	idVehicle: string
 	totalCost: number
 	unitCost: number
 	chargeInitial: number
