@@ -9,6 +9,8 @@ import BaseSpinner from '@/components/spinner/BaseSpinner.vue';
 import ElectricRefill from '@/modules/refills/partials/ElectricRefill.vue';
 import FuelRefill from '@/modules/refills/partials/FuelRefill.vue';
 import { Refill } from '@/modules/refills/models/Refill.ts';
+import { useDB } from '@/modules/app/composables/useDB.ts';
+import { useRouter } from 'vue-router';
 
 const {
 	vehicle,
@@ -45,6 +47,33 @@ watch(refillType, (value, oldValue) => {
 	
 	refill.value = {} as Refill;
 });
+const {
+	loading: loadingRefill,
+	create,
+} = useDB('refills');
+const router = useRouter();
+function createRefill() {
+	loadingRefill.value = true;
+	if(!refill.value.fuelType) {
+		refill.value.fuelType = {
+			name: 'Enchufe',
+			type: 'electric',
+		};
+	}
+	create<Refill>({
+		...refill.value,
+		idVehicle: vehicle.value!.id,
+	})
+		.then(() => {
+			router.push({
+				name: 'Home',
+				query: { refill_success: 'true' },
+			});
+		})
+		.finally(() => {
+			loadingRefill.value = false;
+		});
+}
 </script>
 
 <template>
@@ -85,7 +114,7 @@ watch(refillType, (value, oldValue) => {
 				</button>
 			</nav>
 			
-			<form @submit.prevent>
+			<form @submit.prevent="createRefill()">
 				<!-- 🔋 Electric refill -->
 				<ElectricRefill
 					v-if="refillType === 'electric'"
@@ -98,7 +127,10 @@ watch(refillType, (value, oldValue) => {
 					:refill="refill"
 				/>
 				
-				<BaseButton type="submit">
+				<BaseButton
+					type="submit"
+					:loading="loadingRefill"
+				>
 					Guardar
 				</BaseButton>
 			</form>

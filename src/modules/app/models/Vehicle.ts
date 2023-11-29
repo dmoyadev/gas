@@ -1,3 +1,5 @@
+import { DTO } from '@/modules/app/models/DTO.ts';
+
 export enum VehicleType {
 	CAR = 'car',
 	MOTORCYCLE = 'motorcycle',
@@ -16,7 +18,7 @@ export interface VehicleBrand {
 	highlighted?: boolean;
 }
 
-export interface Vehicle {
+export interface Vehicle extends DTO {
 	id: string;
 	brand: VehicleBrand;
 	model: string;
