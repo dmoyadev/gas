@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { IconSize } from '@/components/icon/types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import BaseBigNumberInput from '@/components/big-number-input/BaseBigNumberInput.vue';
@@ -37,6 +37,9 @@ const filledCapacity = computed<string>(() => {
 const totalCost = computed<string>(() => {
 	if(!data.value.unitCost) { return ''; }
 	return (+filledCapacity.value * (data.value.unitCost ?? 0)).toFixed(2);
+});
+watch(totalCost, (value) => {
+	data.value.totalCost = +value;
 });
 </script>
 

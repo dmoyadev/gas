@@ -1,4 +1,6 @@
-export interface Refill {
+import { DTO } from '@/modules/app/models/DTO.ts';
+
+export interface Refill extends DTO {
 	idVehicle: string
 	totalCost: number
 	unitCost: number

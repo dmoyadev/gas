@@ -24,6 +24,8 @@ import {
 	faBattery2,
 	faBatteryFull,
 	faPlugCircleBolt,
+	faWarning,
+	faOilCan,
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -63,6 +65,8 @@ library.add(
 	faBattery2,
 	faBatteryFull,
 	faPlugCircleBolt,
+	faWarning,
+	faOilCan,
 );
 
 export default library;

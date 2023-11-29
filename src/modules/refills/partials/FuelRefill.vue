@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch, watchEffect } from 'vue';
+import { computed, ref, watch } from 'vue';
 import BaseBigNumberInput from '@/components/big-number-input/BaseBigNumberInput.vue';
 import BaseInput from '@/components/input/BaseInput.vue';
 import { InputType } from '@/components/input/types.ts';
@@ -86,6 +86,14 @@ function updateUnitCost(units?: number) {
 		data.value.unitCost = +(data.value.totalCost / units).toFixed(3);
 	}
 }
+
+function updateUnitsAndUnitCost(totalCost?: number) {
+	if(totalCost && data.value.units) {
+		data.value.unitCost = +(totalCost / data.value.units).toFixed(3);
+	} else if(totalCost && data.value.unitCost) {
+		data.value.units = +(totalCost / data.value.unitCost).toFixed(2);
+	}
+}
 </script>
 
 <template>
@@ -113,6 +121,7 @@ function updateUnitCost(units?: number) {
 			v-model.number="data.totalCost"
 			placeholder="·,···"
 			is-required
+			@update:model-value="updateUnitsAndUnitCost($event)"
 		>
 			Coste total
 			

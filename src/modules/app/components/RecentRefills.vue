@@ -2,11 +2,16 @@
 import { computed, ref, watch } from 'vue';
 import { useDB } from '@/modules/app/composables/useDB.ts';
 import { Vehicle, VehicleFuelType } from '@/modules/app/models/Vehicle.ts';
-import { where } from 'firebase/firestore';
+import {
+	where,
+	orderBy,
+	limit,
+} from 'firebase/firestore';
 import { Refill } from '@/modules/refills/models/Refill.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { IconSize } from '@/components/icon/types.ts';
 import BaseButton from '@/components/button/BaseButton.vue';
+import RecentRefillItem from '@/modules/app/components/RecentRefillItem.vue';
 
 const props = defineProps<{
 	vehicle?: Vehicle
@@ -14,6 +19,7 @@ const props = defineProps<{
 
 const {
 	getBy,
+	error,
 	loading,
 } = useDB('refills');
 const refills = ref<Refill[]>();
@@ -24,21 +30,28 @@ watch(() => props.vehicle, (value) => {
 	if(!value) { return; }
 	
 	loading.value = false;
-	getBy<Refill>(where('idVehicle', '==', value.id))
-		.then((data) => {
-			if(data.length ) {
-				refills.value = data;
-			} else {
-				emptyLoading.value = true;
-				setTimeout(() => {
-					emptyLoading.value = false;
-					refills.value = [];
-				}, 300);
-			}
-		});
+	try {
+		const vehicleQuery = where('idVehicle', '==', value.id);
+		const orderByQuery = orderBy('created_at', 'desc');
+		const limitQuery = limit(5);
+		getBy<Refill>(vehicleQuery, orderByQuery, limitQuery)
+			.then((data) => {
+				if (data.length) {
+					refills.value = data;
+				} else {
+					emptyLoading.value = true;
+					setTimeout(() => {
+						emptyLoading.value = false;
+						refills.value = [];
+					}, 300);
+				}
+			});
+	} catch(err) {
+		error.value = err;
+	}
 }, { immediate: true });
 
-const refillText = computed<string>(() => {
+const emptyRefillsText = computed<string>(() => {
 	if(!props.vehicle) { return ''; }
 	
 	switch(props.vehicle?.fuelType) {
@@ -49,6 +62,19 @@ const refillText = computed<string>(() => {
 			return 'las últimas recargas';
 		default:
 			return 'los últimos suministros';
+	}
+});
+const refillsText = computed<string>(() => {
+	if(!props.vehicle) { return ''; }
+	
+	switch(props.vehicle?.fuelType) {
+		case VehicleFuelType.GASOLINE:
+		case VehicleFuelType.DIESEL:
+			return 'Últimos repostajes';
+		case VehicleFuelType.ELECTRIC:
+			return 'Últimas recargas';
+		default:
+			return 'Últimos suministros';
 	}
 });
 </script>
@@ -62,39 +88,30 @@ const refillText = computed<string>(() => {
 		/>
 		
 		<ul>
-			<li
+			<RecentRefillItem
 				v-for="n in 5"
 				:key="n"
-			>
-				<span class="skeleton-item skeleton-item--icon" />
-				
-				<div class="info">
-					<span
-						class="skeleton-item skeleton-item--small"
-						style="width: 8ch;"
-					/>
-					<span
-						class="skeleton-item skeleton-item--small"
-						style="width: 15ch;"
-					/>
-					<span
-						class="skeleton-item skeleton-item--small"
-						style="width: 12ch;"
-					/>
-				</div>
-				
-				<div class="price">
-					<span
-						class="title"
-						style="width: 8ch;"
-					/>
-					<span
-						class="skeleton-item skeleton-item--small"
-						style="width: 15ch;"
-					/>
-				</div>
-			</li>
+				loading
+			/>
 		</ul>
+	</section>
+	
+	<!-- 🚨 Error state -->
+	<section
+		v-else-if="error"
+		class="error-state"
+	>
+		<BaseIcon
+			icon="fa-solid fa-warning"
+			:icon-size="IconSize.XL"
+		/>
+		
+		<p>
+			Ha habido un problema con {{ emptyRefillsText }}.
+			<br>
+			<br>
+			Vuelve a intentarlo más tarde.
+		</p>
 	</section>
 	
 	<!-- 📃 Empty state -->
@@ -110,7 +127,7 @@ const refillText = computed<string>(() => {
 		/>
 		
 		<p>
-			Aquí aparecerán {{ refillText }} que le hayas hecho a tu vehículo,
+			Aquí aparecerán {{ emptyRefillsText }} que le hayas hecho a tu vehículo,
 			<br>
 			¿Por qué no pruebas a añadir uno?
 		</p>
@@ -121,6 +138,28 @@ const refillText = computed<string>(() => {
 			Añadir repostaje
 		</BaseButton>
 	</section>
+	
+	<!-- ✅ Success state -->
+	<section v-else>
+		<h2>
+			<BaseIcon
+				:icon="vehicle?.fuelType === VehicleFuelType.ELECTRIC
+					? 'fa-solid fa-charging-station'
+					: 'fa-solid fa-gas-pump'"
+				:icon-size="IconSize.M"
+			/>
+			{{ refillsText }}
+		</h2>
+		
+		<ul>
+			<RecentRefillItem
+				v-for="(refill, index) in refills"
+				:key="index"
+				:refill="refill"
+				:previous-odometer="refills[index - 1]?.odometer"
+			/>
+		</ul>
+	</section>
 </template>
 
 <style lang="scss" scoped>
@@ -129,7 +168,8 @@ section {
 	flex-direction: column;
 	gap: 16px;
 	
-	&.empty-state {
+	&.empty-state,
+	&.error-state {
 		align-items: center;
 		justify-content: center;
 		text-align: center;
@@ -139,33 +179,18 @@ section {
 		}
 	}
 	
+	h2 {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		font-weight: var(--font-heavy);
+		font-size: var(--font-size-body);
+	}
+	
 	ul {
 		display: flex;
 		flex-direction: column;
 		gap: 16px;
-		
-		li {
-			display: flex;
-			align-items: center;
-			gap: 16px;
-			
-			.info {
-				display: flex;
-				flex-direction: column;
-				gap: 4px;
-				flex: 1;
-			}
-			
-			.price {
-				height: 100%;
-				display: flex;
-				flex-direction: column;
-				align-items: flex-end;
-				gap: 4px;
-				margin-left: auto;
-				flex-shrink: 0;
-			}
-		}
 	}
 }
 </style>

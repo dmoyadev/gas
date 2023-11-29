@@ -9,6 +9,7 @@ import {
 	query,
 	QueryConstraint,
 	setDoc,
+	Timestamp,
 	where,
 	WithFieldValue,
 } from 'firebase/firestore';
@@ -66,7 +67,7 @@ export function useDB(collectionName: string) {
 			: null;
 	}
 	
-	async function getBy<T>(searchQuery: QueryConstraint): Promise<T[]> {
+	async function getBy<T>(...searchQueries: QueryConstraint[]): Promise<T[]> {
 		console.log(`From API: getBy (${collectionName})`);
 		
 		const { user } = useAuthentication();
@@ -74,7 +75,7 @@ export function useDB(collectionName: string) {
 		loading.value = true;
 		return new Promise((resolve, reject) => {
 			const collectionRef = collection(db, collectionName).withConverter(getConverter<T>());
-			const collectionQuery = query(collectionRef, where('user_uuid', '==', user.value?.uid), searchQuery);
+			const collectionQuery = query(collectionRef, where('user_uuid', '==', user.value?.uid), ...searchQueries);
 			getDocs(collectionQuery)
 				.then((snapshot) => {
 					if(snapshot.empty) {
@@ -102,9 +103,12 @@ export function useDB(collectionName: string) {
 		const collectionRef = collection(db, collectionName).withConverter(getConverter<T>());
 		const elementRef = doc(collectionRef);
 		if (typeof element === 'object') {
+			const date: Timestamp = Timestamp.now();
 			await setDoc(elementRef, {
 				...element,
 				user_uuid: user.value?.uid,
+				created_at: date,
+				updated_at: date,
 			});
 		}
 	}
