@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import BaseIcon from '@/components/icon/BaseIcon.vue';
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { isElectricVehicle, VehicleFuelType } from '@/modules/app/models/Vehicle.ts';
 import HomeEmptyPartial from '@/modules/app/partials/HomeEmptyPartial.vue';
 import { IconSize } from '@/components/icon/types.ts';
 import RecentRefills from '@/modules/app/components/RecentRefills.vue';
 import HomeHeader from '@/modules/app/components/HomeHeader.vue';
 import { useSelectedVehicle } from '@/modules/vehicles/composables/useSelectedVehicle.ts';
+import { Refill } from '@/modules/refills/models/Refill.ts';
+import { useDB } from '@/modules/app/composables/useDB.ts';
 
 const {
 	vehicle,
@@ -122,12 +124,12 @@ const fuelText = computed<string>(() => {
 					<BaseIcon
 						v-if="!isElectricVehicle(vehicle)"
 						icon="fa-solid fa-gas-pump"
-						:icon-size="IconSize.L"
+						:icon-size="IconSize.XL"
 					/>
 					<BaseIcon
 						v-else-if="vehicle?.fuelType === VehicleFuelType.ELECTRIC"
 						icon="fa-solid fa-charging-station"
-						:icon-size="IconSize.L"
+						:icon-size="IconSize.XL"
 					/>
 					<div v-else>
 						<BaseIcon
@@ -152,7 +154,7 @@ const fuelText = computed<string>(() => {
 					<BaseIcon
 						class="icon"
 						icon="fa-solid fa-wrench"
-						:icon-size="IconSize.L"
+						:icon-size="IconSize.XL"
 					/>
 					
 					Taller
@@ -165,7 +167,7 @@ const fuelText = computed<string>(() => {
 					<BaseIcon
 						class="icon"
 						icon="fa-solid fa-file-invoice-dollar"
-						:icon-size="IconSize.L"
+						:icon-size="IconSize.XL"
 					/>
 					
 					Otros
@@ -237,6 +239,7 @@ main {
 					
 					span {
 						font-size: var(--font-size-small);
+						font-weight: var(--font-light);
 					}
 				}
 				
