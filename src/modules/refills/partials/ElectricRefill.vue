@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { IconSize } from '@/components/icon/types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import BaseBigNumberInput from '@/components/big-number-input/BaseBigNumberInput.vue';
@@ -7,6 +7,7 @@ import { Refill } from '@/modules/refills/models/Refill.ts';
 import { InputType } from '@/components/input/types.ts';
 import BaseInput from '@/components/input/BaseInput.vue';
 import { useSelectedVehicle } from '@/modules/vehicles/composables/useSelectedVehicle.ts';
+import { useRecentRefills } from "@/modules/refills/composables/useRecentRefills.ts";
 
 const props = defineProps<{
 	refill: Refill
@@ -19,6 +20,16 @@ const emit = defineEmits<{
 const data = computed<Refill>({
 	get: () => props.refill,
 	set: (value: Refill) => emit('update:refill', value),
+});
+
+const { refills } = useRecentRefills();
+const canCheckOdometer = ref(false);
+const odometerError = computed<boolean>(() => {
+	if(!canCheckOdometer.value) { return false; }
+	if(!data.value.odometer) { return false; }
+	if(!refills.value[0]) { return false; }
+	
+	return data.value.odometer < refills.value[0].odometer;
 });
 
 const hasBatteryError = computed<boolean>(() => {
@@ -129,7 +140,10 @@ watch(totalCost, (value) => {
 		<BaseInput
 			v-model.number="data.odometer"
 			:input-type="InputType.NUMBER"
+			:has-error="odometerError"
+			custom-validity="El kilometraje actual no puede ser inferior al anterior"
 			is-required
+			@blur="canCheckOdometer = true"
 		>
 			Kilometraje actual
 			
@@ -180,7 +194,7 @@ main {
 				font-size: 32px;
 				font-weight: var(--font-heavy);
 				color: var(--color-success);
-				font-family: 'Anonymous Pro', serif;
+				font-family: var(--font-family-monospace);
 				display: flex;
 				align-items: flex-end;
 				justify-content: flex-end;
@@ -213,13 +227,13 @@ main {
 				
 				.filled-capacity {
 					font-weight: var(--font-heavy);
-					font-family: 'Anonymous Pro', serif;
+					font-family: var(--font-family-monospace);
 				}
 				
 				.battery-capacity {
 					font-size: var(--font-size-small);
 					font-weight: var(--font-light);
-					font-family: 'Anonymous Pro', serif;
+					font-family: var(--font-family-monospace);
 				}
 			}
 		}

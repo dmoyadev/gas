@@ -8,6 +8,7 @@ import { useSelectedVehicle } from '@/modules/vehicles/composables/useSelectedVe
 import { VehicleFuelType } from '@/modules/app/models/Vehicle.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { IconSize } from '@/components/icon/types.ts';
+import { useRecentRefills } from "@/modules/refills/composables/useRecentRefills.ts";
 
 const props = defineProps<{
 	refill: Refill
@@ -23,6 +24,16 @@ const data = computed<Refill>({
 });
 
 const { vehicle } = useSelectedVehicle();
+
+const { refills } = useRecentRefills();
+const canCheckOdometer = ref(false);
+const odometerError = computed<boolean>(() => {
+	if(!canCheckOdometer.value) { return false; }
+	if(!data.value.odometer) { return false; }
+	if(!refills.value[0]) { return false; }
+	
+	return data.value.odometer < refills.value[0].odometer;
+});
 
 const fuelTypes = ref<Fuel[]>([]);
 watch(vehicle, (value) => {
@@ -161,7 +172,10 @@ function updateUnitsAndUnitCost(totalCost?: number) {
 		<BaseInput
 			v-model.number="data.odometer"
 			:input-type="InputType.NUMBER"
+			:has-error="odometerError"
+			custom-validity="El kilometraje actual no puede ser inferior al anterior"
 			is-required
+			@blur="canCheckOdometer = true"
 		>
 			Kilometraje actual
 			

@@ -42,6 +42,9 @@ i {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	
+	position: relative;
+	bottom: 1px;
 
 	&.s,
 	&.s svg {

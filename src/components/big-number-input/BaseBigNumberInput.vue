@@ -135,7 +135,7 @@ label {
 			text-align: right;
 			font-size: 32px;
 			font-weight: var(--font-heavy);
-			font-family: 'Anonymous Pro', serif;
+			font-family: var(--font-family-monospace);
 			color: var(--color-primary);
 		}
 		

@@ -11,10 +11,11 @@ import FuelRefill from '@/modules/refills/partials/FuelRefill.vue';
 import { Refill } from '@/modules/refills/models/Refill.ts';
 import { useDB } from '@/modules/app/composables/useDB.ts';
 import { useRouter } from 'vue-router';
+import LastRefill from '@/modules/refills/components/LastRefill.vue';
 
 const {
 	vehicle,
-	loading,
+	loadingVehicle: loading,
 } = useSelectedVehicle();
 
 const refillType = ref<'fuel' | 'electric'>('fuel');
@@ -114,6 +115,8 @@ function createRefill() {
 				</button>
 			</nav>
 			
+			<LastRefill class="last-refill" />
+			
 			<form @submit.prevent="createRefill()">
 				<!-- 🔋 Electric refill -->
 				<ElectricRefill
@@ -154,6 +157,10 @@ header {
 		font-size: var(--font-size-title);
 		font-weight: var(--font-heavy);
 	}
+}
+
+.last-refill {
+	margin: 16px;
 }
 
 .icon-loading {
