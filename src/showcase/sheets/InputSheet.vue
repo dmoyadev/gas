@@ -1,81 +1,110 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import BaseInput from '@/components/input/BaseInput.vue';
-import { InputForm, InputType } from '@/components/input/types';
-import { capitalize } from '@/utils/helpers';
+import { InputForm, InputType } from '@/components/input/BaseInput.types.ts';
 import ShowcaseElements from '@/showcase/ShowcaseElements.vue';
+import BaseIcon from '@/components/icon/BaseIcon.vue';
+import { IconSize } from '@/components/icon/BaseIcon.types.ts';
 
-const showLabelOptions = [false, true];
-const readonlyOptions = [false, true];
-const hasErrorOptions = [false, true];
-const isLoadingOptions = [false, true];
-
-const text = ref('');
+const testText = ref('');
 </script>
 
 <template>
 	<section class="sheet">
-		<template
-			v-for="(type, t) in InputType"
-			:key="t"
-		>
-			<template
-				v-for="(form, f) in InputForm"
-				:key="f"
-			>
-				<template
-					v-for="(showLabel, s) in showLabelOptions"
-					:key="s"
-				>
-					<template
-						v-for="(isReadonly, r) in readonlyOptions"
-						:key="r"
-					>
-						<template
-							v-for="(hasError, e) in hasErrorOptions"
-							:key="e"
-						>
-							<template
-								v-for="(isLoading, l) in isLoadingOptions"
-								:key="l"
-							>
-								<ShowcaseElements>
-									<template #title>
-										{{ capitalize(type) }}
-										{{ capitalize(form) }}
-										{{ showLabel ? 'with label' : '' }}
-										{{ isReadonly ? 'readonly' : '' }}
-										{{ hasError ? 'with error' : '' }}
-										{{ isLoading ? 'loading' : '' }}
-									</template>
-
-									<BaseInput
-										v-model="text"
-										placeholder="Input placeholder"
-										:input-type="type"
-										:readonly="isReadonly"
-										:form="form"
-										:has-error="hasError"
-										:loading="isLoading"
-										class="input"
-									>
-										<template v-if="showLabel">
-											Input label
-										</template>
-
-										<template
-											v-if="hasError"
-											#error
-										>
-											This is an error message
-										</template>
-									</BaseInput>
-								</ShowcaseElements>
-							</template>
-						</template>
-					</template>
+		<template v-for="form in InputForm">
+			<ShowcaseElements>
+				<template #title>
+					Text input
 				</template>
-			</template>
+
+				<BaseInput
+					v-model="testText"
+					:form
+					class="input"
+				>
+					{{ form }} input
+
+					<template #append>
+						<BaseIcon icon="fa-solid fa-car" />
+					</template>
+
+					<template #helper>
+						<BaseIcon icon="fa-solid fa-circle-check" :icon-size="IconSize.S" />
+						Did you know?
+					</template>
+				</BaseInput>
+
+				<BaseInput
+					v-model="testText"
+					:form
+					has-error
+					class="input"
+				>
+					{{ form }} input
+
+					<template #append>
+						<BaseIcon icon="fa-solid fa-car" />
+					</template>
+
+					<template #error>
+						<BaseIcon icon="fa-solid fa-warning" :icon-size="IconSize.S" />
+						There is an error
+					</template>
+				</BaseInput>
+
+				<BaseInput
+					v-model="testText"
+					:form
+					class="input"
+					loading
+				>
+					{{ form }} input
+				</BaseInput>
+			</ShowcaseElements>
+
+			<ShowcaseElements>
+				<template #title>
+					Other remarkable inputs
+				</template>
+
+				<BaseInput
+					v-model="testText"
+					:input-type="InputType.SEARCH"
+					:form
+					class="input"
+				>
+					Search input
+				</BaseInput>
+
+				<BaseInput
+					v-model="testText"
+					:form
+					:input-type="InputType.PASSWORD"
+					autocomplete="new-password"
+					class="input"
+				>
+					Password input
+				</BaseInput>
+			</ShowcaseElements>
+
+			<ShowcaseElements>
+				<template #title>
+					Textarea
+				</template>
+
+				<BaseInput
+					v-model="testText"
+					:form
+					:input-type="InputType.TEXTAREA"
+					class="input"
+				>
+					Textarea input
+
+					<template #append>
+						<BaseIcon icon="fa-solid fa-car" />
+					</template>
+				</BaseInput>
+			</ShowcaseElements>
 		</template>
 	</section>
 </template>

@@ -8,7 +8,7 @@ import BaseButton from '@/components/button/BaseButton.vue';
 import { ButtonColor, ButtonForm } from '@/components/button/BaseButton.types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import BaseInput from '@/components/input/BaseInput.vue';
-import { InputForm, InputType } from '@/components/input/types.ts';
+import { InputForm, InputType } from '@/components/input/BaseInput.types.ts';
 import * as pkg from '@/../package.json';
 
 const { signInWithPassword } = useAuthentication();
@@ -79,7 +79,7 @@ async function doSignIn() {
 				:has-error="!isEmailValid || (triedSubmit && errorLogin)"
 				:disabled="loadingLogin"
 				autocomplete="username"
-				is-required
+				required
 			>
 				Introduce tu email
 				<template
@@ -98,7 +98,7 @@ async function doSignIn() {
 					:has-error="triedSubmit && errorLogin"
 					:disabled="loadingLogin"
 					autocomplete="current-password"
-					is-required
+					required
 					autofocus
 				>
 					Introduce tu contraseña

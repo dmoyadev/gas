@@ -2,74 +2,41 @@
 import { ref, watch } from 'vue';
 import BaseButton from '@/components/button/BaseButton.vue';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
-import { InputForm, InputType } from '@/components/input/types';
-import { ButtonColor, ButtonForm, ButtonMode } from '@/components/button/BaseButton.types.ts';
+import { InputForm, InputType } from '@/components/input/BaseInput.types.ts';
+import { ButtonForm, ButtonMode } from '@/components/button/BaseButton.types.ts';
 import { hasSlotContent } from '@/utils/helpers.ts';
 
+interface Props {
+	inputType?: InputType; /* The type of the input. @defaults InputForm.BLOCK */
+	form?: InputForm; /* The form of the input. @defaults InputForm.TEXT */
+	hasError?: boolean; /* Indicates if the input has an error. Determines if the `error` slot will be shown */
+	customValidity?: string; /* The error message of the input */
+	loading?: boolean; /* Indicates if the input is loading */
+	isClearable?: boolean; /* Indicates if the input is clearable. @defaults true */
+}
+
 const props = withDefaults(
-	defineProps<{
-		/**
-		 * The value of the input
-		 */
-		modelValue?: string | number;
-		/**
-		 * The type of the input
-		 */
-		inputType?: InputType;
-		/**
-		 * The form of the input
-		 */
-		form?: InputForm;
-		/**
-		 * Indicates if the input has an error. Determines if the `error` slot
-		 * will be shown
-		 */
-		hasError?: boolean;
-		/**
-		 * The error message of the input
-		 */
-		customValidity?: string;
-		/**
-		 * Indicates if the input is required
-		 */
-		isRequired?: boolean;
-		/**
-		 * Indicates if the input is loading
-		 */
-		loading?: boolean;
-	}>(),
+	defineProps<Props>(),
 	{
-		modelValue: undefined,
 		form: InputForm.BLOCK,
 		inputType: InputType.TEXT,
-		customValidity: '',
+		isClearable: true,
 	},
 );
 
-defineEmits<{
-	/**
-	 * Emitted when the input value changes
-	 * @arg {string | number} value - The new value of the input
-	 */
-	'update:modelValue': [value: string | number];
-}>();
+const modelValue = defineModel<string | number>();
 
 const _componentUID = Date.now().toString(36) + Math.random().toString(36).substring(2);
 
 const showPassword = ref(false);
 
+const $input = ref<HTMLInputElement>();
 watch(() => props.hasError, (value) => {
-	const input = document.getElementById(_componentUID) as HTMLInputElement;
-	if (!input) {
+	if (!$input.value) {
 		return;
 	}
 
-	if (!value) {
-		input.setCustomValidity('');
-		return;
-	}
-
-	input.setCustomValidity(props.customValidity);
+	$input.value.setCustomValidity((value && props.customValidity) ? props.customValidity : '');
 });
 </script>
 
@@ -88,15 +55,16 @@ watch(() => props.hasError, (value) => {
 				<input
 					v-if="inputType !== InputType.TEXTAREA"
 					:id="($attrs.id as string) || _componentUID"
+					ref="$input"
 					step="any"
 					v-bind="$attrs"
 					:type="(showPassword ? InputType.TEXT : inputType)"
 					:value="modelValue"
 					:readonly="!!($attrs.readonly || loading)"
 					:disabled="!!($attrs.disabled || loading)"
-					:required="!!isRequired"
+					:required="!!$attrs.required"
 					aria-label=""
-					@input="$emit('update:modelValue', (($event.target as HTMLInputElement).value))"
+					@input="modelValue = ($event.target as HTMLInputElement).value"
 				>
 
 				<textarea
@@ -106,16 +74,16 @@ watch(() => props.hasError, (value) => {
 					:value="modelValue as (string | undefined)"
 					:readonly="!!($attrs.readonly || loading)"
 					:disabled="!!($attrs.disabled || loading)"
-					:required="!!isRequired"
+					:required="!!$attrs.required"
 					aria-label=""
-					@input="$emit('update:modelValue', (($event.target as HTMLInputElement).value))"
+					@input="modelValue = ($event.target as HTMLInputElement).value"
 				/>
 
 				<!-- Icon right -->
 				<span
 					v-if="$slots.append
 						|| loading
-						|| [InputType.TEXT, InputType.SEARCH, InputType.PASSWORD].includes(inputType)"
+						|| [InputType.SEARCH, InputType.PASSWORD].includes(inputType)"
 					class="append"
 				>
 					<!-- @slot Element shown on the inside right of the input -->
@@ -132,7 +100,6 @@ watch(() => props.hasError, (value) => {
 						<!-- Toggle password visibility button -->
 						<BaseButton
 							v-if="inputType === InputType.PASSWORD"
-							:color="ButtonColor.PRIMARY"
 							:mode="ButtonMode.CLEAR"
 							:form="ButtonForm.INLINE"
 							:disabled="(!!($attrs.disabled || loading || $attrs.readonly))"
@@ -145,11 +112,27 @@ watch(() => props.hasError, (value) => {
 					</slot>
 
 					<BaseIcon
-						v-else
+						v-else-if="loading"
 						icon="fa-solid fa-gear"
 						spin-pulse
 						spin-reverse
 					/>
+
+					<!-- Clearable button -->
+					<BaseButton
+						v-if="isClearable
+							&& !!modelValue
+							&& !loading
+							&& inputType !== InputType.PASSWORD
+							&& !($attrs.disabled || $attrs.readonly)"
+						:mode="ButtonMode.CLEAR"
+						:form="ButtonForm.CIRCLE"
+						type="button"
+						class="input-button"
+						@click="modelValue = inputType === InputType.NUMBER ? 0 : ''"
+					>
+						<BaseIcon icon="fa-solid fa-delete-left" />
+					</BaseButton>
 				</span>
 			</span>
 
@@ -343,10 +326,6 @@ div {
 				}
 			}
 
-			textarea {
-				height: 84px;
-			}
-
 			.append {
 				position: absolute;
 				top: 50%;
@@ -357,6 +336,15 @@ div {
 					right: 12px;
 					height: 16px;
 					width: 16px;
+				}
+			}
+
+			textarea {
+				height: 84px;
+
+				~ .append {
+					top: 12px;
+					transform: none;
 				}
 			}
 		}
@@ -388,12 +376,18 @@ div {
 		color: var(--color-danger);
 		font-size: var(--font-size-small);
 		line-height: var(--font-size-small);
+		display: flex;
+		align-items: center;
+		gap: 4px;
 	}
 
 	.helper {
 		color: var(--color-primary);
 		font-size: var(--font-size-small);
 		line-height: var(--font-size-small);
+		display: flex;
+		align-items: center;
+		gap: 4px;
 	}
 }
 

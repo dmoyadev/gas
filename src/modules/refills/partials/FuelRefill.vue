@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue';
 import BaseBigNumberInput from '@/components/big-number-input/BaseBigNumberInput.vue';
 import BaseInput from '@/components/input/BaseInput.vue';
-import { InputType } from '@/components/input/types.ts';
+import { InputType } from '@/components/input/BaseInput.types.ts';
 import type { Fuel, Refill } from '@/modules/refills/models/Refill.ts';
 import { useSelectedVehicle } from '@/modules/vehicles/composables/useSelectedVehicle.ts';
 import { VehicleFuelType } from '@/modules/app/models/Vehicle.ts';
@@ -182,7 +182,7 @@ function updateUnitsAndUnitCost(totalCost?: number) {
 			:input-type="InputType.NUMBER"
 			:has-error="odometerError"
 			custom-validity="El kilometraje actual no puede ser inferior al anterior"
-			is-required
+			required
 			@blur="canCheckOdometer = true"
 		>
 			Kilometraje actual

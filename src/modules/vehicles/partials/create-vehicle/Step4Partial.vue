@@ -5,7 +5,7 @@ import { ButtonForm, ButtonMode } from '@/components/button/BaseButton.types.ts'
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { VehicleFuelType } from '@/modules/app/models/Vehicle.ts';
 import BaseInput from '@/components/input/BaseInput.vue';
-import { InputType } from '@/components/input/types.ts';
+import { InputType } from '@/components/input/BaseInput.types.ts';
 
 const props = defineProps<{
 	fuelType: VehicleFuelType;
