@@ -27,7 +27,7 @@ export function useAnalytics() {
 	function sendEvent(name: string, params: Record<string, unknown> = {}) {
 		params.version = pkg.version;
 
-		if(import.meta.env.VITE_FAKE_METRICS === 'true') {
+		if (import.meta.env.VITE_FAKE_METRICS === 'true') {
 			console.log('ℹ️ Event log faked: ', {
 				name,
 				params,
@@ -43,7 +43,7 @@ export function useAnalytics() {
 	 * @param {AnalyticsUser} user User data
 	 */
 	function sendUser({ email, name }: AnalyticsUser) {
-		if(import.meta.env.VITE_FAKE_METRICS === 'true') {
+		if (import.meta.env.VITE_FAKE_METRICS === 'true') {
 			console.error('ℹ️ User log faked: ', {
 				email,
 				name,

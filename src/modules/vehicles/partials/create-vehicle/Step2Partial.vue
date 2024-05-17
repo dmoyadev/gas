@@ -7,18 +7,20 @@ import { IconSize } from '@/components/icon/types.ts';
 import { VehicleFuelType } from '@/modules/app/models/Vehicle.ts';
 
 const props = defineProps<{
-	modelValue?: VehicleFuelType
+	modelValue?: VehicleFuelType;
 }>();
 
 defineEmits<{
-	'update:modelValue': [value?: VehicleFuelType]
-	'sendStep': []
-	'stepBack': []
+	'update:modelValue': [value?: VehicleFuelType];
+	'sendStep': [];
+	'stepBack': [];
 }>();
 
 const buttonText = computed<string>(() => {
-	if(!props.modelValue) { return 'Elige una opción'; }
-	
+	if (!props.modelValue) {
+		return 'Elige una opción';
+	}
+
 	const text = {
 		diesel: 'Es diésel',
 		gasoline: 'Es gasolina',
@@ -35,7 +37,7 @@ const buttonText = computed<string>(() => {
 			<h1>¡Vale! Y... ¿cómo se mueve?</h1>
 			<p>Es importante para darte solo las opciones que necesites. Ni más, ni menos.</p>
 		</div>
-		
+
 		<form @submit.prevent="$emit('sendStep')">
 			<section class="fuel-type">
 				<label class="fuel-type__item">
@@ -47,7 +49,7 @@ const buttonText = computed<string>(() => {
 						:value="VehicleFuelType.GASOLINE"
 						@change="$emit('update:modelValue', ($event.target as HTMLInputElement).value as VehicleFuelType)"
 					>
-					
+
 					<span class="fuel-type__item__content">
 						<BaseIcon
 							icon="fa-solid fa-gas-pump"
@@ -56,7 +58,7 @@ const buttonText = computed<string>(() => {
 						Gasolina
 					</span>
 				</label>
-				
+
 				<label class="fuel-type__item">
 					<input
 						id="car"
@@ -66,7 +68,7 @@ const buttonText = computed<string>(() => {
 						:value="VehicleFuelType.DIESEL"
 						@change="$emit('update:modelValue', ($event.target as HTMLInputElement).value as VehicleFuelType)"
 					>
-					
+
 					<span class="fuel-type__item__content">
 						<BaseIcon
 							icon="fa-solid fa-gas-pump"
@@ -75,7 +77,7 @@ const buttonText = computed<string>(() => {
 						Diésel
 					</span>
 				</label>
-				
+
 				<label class="fuel-type__item">
 					<input
 						id="car"
@@ -85,7 +87,7 @@ const buttonText = computed<string>(() => {
 						:value="VehicleFuelType.ELECTRIC"
 						@change="$emit('update:modelValue', ($event.target as HTMLInputElement).value as VehicleFuelType)"
 					>
-					
+
 					<span class="fuel-type__item__content">
 						<BaseIcon
 							icon="fa-solid fa-charging-station"
@@ -94,7 +96,7 @@ const buttonText = computed<string>(() => {
 						Eléctrico
 					</span>
 				</label>
-				
+
 				<label class="fuel-type__item">
 					<input
 						id="car"
@@ -104,7 +106,7 @@ const buttonText = computed<string>(() => {
 						:value="VehicleFuelType.HYBRID"
 						@change="$emit('update:modelValue', ($event.target as HTMLInputElement).value as VehicleFuelType)"
 					>
-					
+
 					<span class="fuel-type__item__content">
 						<span class="fuel-type__item__content__icon">
 							<BaseIcon icon="fa-solid fa-gas-pump" />
@@ -114,7 +116,7 @@ const buttonText = computed<string>(() => {
 					</span>
 				</label>
 			</section>
-			
+
 			<section class="actions">
 				<BaseButton
 					type="button"
@@ -139,7 +141,7 @@ const buttonText = computed<string>(() => {
 <style scoped lang="scss">
 .step-2 {
 	gap: 16px;
-	
+
 	form {
 		flex: 1;
 		height: 100%;
@@ -147,17 +149,17 @@ const buttonText = computed<string>(() => {
 		flex-direction: column;
 		justify-content: space-between;
 		gap: 16px;
-		
+
 		.fuel-type {
 			width: 100%;
 			display: flex;
 			flex-direction: column;
 			gap: 16px;
-			
+
 			input[type=radio] {
 				display: none;
 			}
-			
+
 			&__item {
 				display: flex;
 				align-items: center;
@@ -168,28 +170,28 @@ const buttonText = computed<string>(() => {
 				padding: 12px;
 				font-size: 24px;
 				max-height: 56px;
-				
+
 				&:has(input:checked) {
 					border: none;
 					background: var(--color-primary);
 					color: var(--color-secondary);
 				}
-				
+
 				&__content {
 					display: flex;
 					align-items: center;
 					font-size: 24px;
 					gap: 12px;
 					height: 32px;
-					
+
 					&__icon {
 						display: flex;
 						height: 100%;
-						
+
 						:first-child {
 							align-self: flex-start;
 						}
-						
+
 						:last-child {
 							align-self: flex-end;
 						}
@@ -197,7 +199,7 @@ const buttonText = computed<string>(() => {
 				}
 			}
 		}
-		
+
 		.actions {
 			margin-top: auto;
 			display: flex;

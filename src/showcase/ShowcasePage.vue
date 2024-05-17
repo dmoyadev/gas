@@ -8,7 +8,7 @@ const sheets = [
 		name: 'Button',
 		component: ButtonSheet,
 	},
-	
+
 	{
 		name: 'Input',
 		component: InputSheet,

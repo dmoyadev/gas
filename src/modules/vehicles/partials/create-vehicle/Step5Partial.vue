@@ -1,15 +1,15 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { IconSize } from '@/components/icon/types.ts';
 import { useDB } from '@/modules/app/composables/useDB.ts';
-import { Vehicle } from '@/modules/app/models/Vehicle.ts';
+import type { Vehicle } from '@/modules/app/models/Vehicle.ts';
 import { useStorage } from '@/modules/app/composables/useStorage.ts';
 import BaseButton from '@/components/button/BaseButton.vue';
-import { useRouter } from 'vue-router';
 import BaseSpinner from '@/components/spinner/BaseSpinner.vue';
 
 defineEmits<{
-	'stepBack': []
+	stepBack: [];
 }>();
 
 const vehicle = useStorage<Vehicle>('new-vehicle', {} as Vehicle);
@@ -22,7 +22,7 @@ const {
 } = useDB('vehicles');
 
 loading.value = true;
-if(vehicle.value) {
+if (vehicle.value) {
 	create<Vehicle>({
 		...vehicle.value,
 		selected: true,
@@ -46,7 +46,7 @@ if(vehicle.value) {
 			<p>Estamos guardando los datos y terminando de configurar la aplicación para que puedas empezar a utilizarla, esto quizá tarde unos segundos…</p>
 		</div>
 	</main>
-	
+
 	<main
 		v-else-if="error"
 		class="step-5"
@@ -60,7 +60,7 @@ if(vehicle.value) {
 			<h1>Ha habido algún error...</h1>
 			<p>Lo sentimos, vuelve a intentarlo dentro de un rato</p>
 		</div>
-		
+
 		<BaseButton @click="$emit('stepBack')">
 			Volver atrás
 		</BaseButton>
@@ -72,7 +72,7 @@ if(vehicle.value) {
 	align-items: center;
 	justify-content: center;
 	gap: 24px;
-	
+
 	.icon-xmark {
 		color: var(--color-danger);
 	}

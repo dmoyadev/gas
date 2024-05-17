@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useAuthentication } from '@/modules/auth/composables/useAuthentication.ts';
 import { computed, ref, watch } from 'vue';
-import router from '@/router.ts';
 import { useRoute } from 'vue-router';
+import { useAuthentication } from '@/modules/auth/composables/useAuthentication.ts';
+import router from '@/router.ts';
 import AuthLayout from '@/layouts/AuthLayout.vue';
 import BaseButton from '@/components/button/BaseButton.vue';
 import { ButtonColor, ButtonForm } from '@/components/button/types.ts';
@@ -22,11 +22,11 @@ watch(email, () => triedSubmit.value = false);
 const isEmailValid = computed<boolean>(() => {
 	return !triedSubmit.value
 		|| (triedSubmit.value
-			&& !!email.value
-			&& /.+@.+\..+/.test(email.value));
+		&& !!email.value
+		&& /.[^\n\r@\u2028\u2029]*@.+\..+/.test(email.value));
 });
 watch(password, (value) => {
-	if(!value) {
+	if (!value) {
 		errorLogin.value = false;
 	}
 });
@@ -40,26 +40,26 @@ async function doSignIn() {
 	errorLogin.value = false;
 	loadingLogin.value = true;
 	triedSubmit.value = true;
-	
-	if(!isEmailValid.value) {
+
+	if (!isEmailValid.value) {
 		loadingLogin.value = false;
 		return;
 	}
-	
-	if(!password.value) {
+
+	if (!password.value) {
 		isEmailSet.value = true;
 		loadingLogin.value = false;
 		return;
 	}
-	
+
 	signInWithPassword(email.value, password.value)
 		.then(async () => {
 			// If there is a redirect query param, redirect to it
-			if(route.query?.redirect) {
+			if (route.query?.redirect) {
 				await router.push(route.query.redirect as string);
 				return;
 			}
-			
+
 			await router.push('/');
 		})
 		.catch(() => errorLogin.value = true)
@@ -71,7 +71,7 @@ async function doSignIn() {
 	<AuthLayout>
 		<h1>Empieza a ahorrar gestionando tus vehículos</h1>
 		<p>Controla repostajes y recargas, recuerda fechas importantes, y gestiona reparaciones.</p>
-		
+
 		<form @submit.prevent="doSignIn()">
 			<BaseInput
 				v-model="email"
@@ -89,7 +89,7 @@ async function doSignIn() {
 					Esto no es un email válido
 				</template>
 			</BaseInput>
-			
+
 			<section>
 				<BaseInput
 					v-model="password"
@@ -106,7 +106,7 @@ async function doSignIn() {
 						Los datos de acceso no son válidos
 					</template>
 				</BaseInput>
-				
+
 				<BaseButton
 					type="submit"
 					:form="ButtonForm.CIRCLE"
@@ -125,7 +125,7 @@ async function doSignIn() {
 				</BaseButton>
 			</section>
 		</form>
-		
+
 		<small>
 			v.{{ pkg.version }}
 			<br>
@@ -154,7 +154,7 @@ form {
 	display: flex;
 	flex-direction: column;
 	gap: 34px;
-	
+
 	section {
 		display: flex;
 		gap: 4px;
@@ -170,17 +170,17 @@ form {
 	justify-content: center;
 	gap: 8px;
 	position: relative;
-	
+
 	.icon-sent {
 		text-shadow: 0 0 2px var(--color-secondary);
 	}
-	
+
 	.icon-resent {
 		position: absolute;
 		top: 8px;
 		left: calc(50% + 18px);
 	}
-	
+
 	.instructions {
 		.main {
 			font-size: var(--font-size-body);
@@ -188,13 +188,13 @@ form {
 			text-align: center;
 			color: var(--color-secondary-accent);
 		}
-		
+
 		.hint {
 			text-align: center;
 			font-size: var(--font-size-small);
 		}
 	}
-	
+
 	.cta {
 		margin-top: 28px;
 		width: 100%;
@@ -211,7 +211,7 @@ small {
 	color: var(--color-primary);
 	text-align: center;
 	max-width: 230px;
-	
+
 	a {
 		color: var(--color-secondary-accent);
 		font-size: var(--font-size-legal);

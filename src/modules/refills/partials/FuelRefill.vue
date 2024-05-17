@@ -3,19 +3,19 @@ import { computed, ref, watch } from 'vue';
 import BaseBigNumberInput from '@/components/big-number-input/BaseBigNumberInput.vue';
 import BaseInput from '@/components/input/BaseInput.vue';
 import { InputType } from '@/components/input/types.ts';
-import { Fuel, Refill } from '@/modules/refills/models/Refill.ts';
+import type { Fuel, Refill } from '@/modules/refills/models/Refill.ts';
 import { useSelectedVehicle } from '@/modules/vehicles/composables/useSelectedVehicle.ts';
 import { VehicleFuelType } from '@/modules/app/models/Vehicle.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { IconSize } from '@/components/icon/types.ts';
-import { useRecentRefills } from "@/modules/refills/composables/useRecentRefills.ts";
+import { useRecentRefills } from '@/modules/refills/composables/useRecentRefills.ts';
 
 const props = defineProps<{
-	refill: Refill
+	refill: Refill;
 }>();
 
 const emit = defineEmits<{
-	'update:refill': [value: Refill]
+	'update:refill': [value: Refill];
 }>();
 
 const data = computed<Refill>({
@@ -28,17 +28,25 @@ const { vehicle } = useSelectedVehicle();
 const { refills } = useRecentRefills();
 const canCheckOdometer = ref(false);
 const odometerError = computed<boolean>(() => {
-	if(!canCheckOdometer.value) { return false; }
-	if(!data.value.odometer) { return false; }
-	if(!refills.value[0]) { return false; }
-	
+	if (!canCheckOdometer.value) {
+		return false;
+	}
+	if (!data.value.odometer) {
+		return false;
+	}
+	if (!refills.value[0]) {
+		return false;
+	}
+
 	return data.value.odometer < refills.value[0].odometer;
 });
 
 const fuelTypes = ref<Fuel[]>([]);
 watch(vehicle, (value) => {
-	if(!value) { return; }
-	
+	if (!value) {
+		return;
+	}
+
 	switch (value.fuelType) {
 		case VehicleFuelType.GASOLINE:
 			fuelTypes.value = [
@@ -80,28 +88,28 @@ watch(vehicle, (value) => {
 			fuelTypes.value = [];
 			break;
 	}
-	
-	if(fuelTypes.value.length > 0) {
+
+	if (fuelTypes.value.length > 0) {
 		data.value.fuelType = fuelTypes.value[0];
 	}
 }, { immediate: true });
 
 function updateUnits(unitCost?: number) {
-	if(data.value.totalCost && unitCost) {
+	if (data.value.totalCost && unitCost) {
 		data.value.units = +(data.value.totalCost / unitCost).toFixed(2);
 	}
 }
 
 function updateUnitCost(units?: number) {
-	if(data.value.totalCost && units) {
+	if (data.value.totalCost && units) {
 		data.value.unitCost = +(data.value.totalCost / units).toFixed(3);
 	}
 }
 
 function updateUnitsAndUnitCost(totalCost?: number) {
-	if(totalCost && data.value.units) {
+	if (totalCost && data.value.units) {
 		data.value.unitCost = +(totalCost / data.value.units).toFixed(3);
-	} else if(totalCost && data.value.unitCost) {
+	} else if (totalCost && data.value.unitCost) {
 		data.value.units = +(totalCost / data.value.unitCost).toFixed(2);
 	}
 }
@@ -127,7 +135,7 @@ function updateUnitsAndUnitCost(totalCost?: number) {
 				{{ fuelType.name }}
 			</label>
 		</section>
-		
+
 		<BaseBigNumberInput
 			v-model.number="data.totalCost"
 			placeholder="·,···"
@@ -135,12 +143,12 @@ function updateUnitsAndUnitCost(totalCost?: number) {
 			@update:model-value="updateUnitsAndUnitCost($event)"
 		>
 			Coste total
-			
+
 			<template #append>
 				€
 			</template>
 		</BaseBigNumberInput>
-		
+
 		<section class="refill-cost">
 			<BaseBigNumberInput
 				v-model.number="data.unitCost"
@@ -149,12 +157,12 @@ function updateUnitsAndUnitCost(totalCost?: number) {
 				@update:model-value="updateUnits($event)"
 			>
 				Precio del litro
-				
+
 				<template #append>
 					€/L
 				</template>
 			</BaseBigNumberInput>
-			
+
 			<BaseBigNumberInput
 				v-model.number="data.units"
 				placeholder="·,···"
@@ -162,13 +170,13 @@ function updateUnitsAndUnitCost(totalCost?: number) {
 				@update:model-value="updateUnitCost($event)"
 			>
 				Litros repostados
-				
+
 				<template #append>
 					L
 				</template>
 			</BaseBigNumberInput>
 		</section>
-		
+
 		<BaseInput
 			v-model.number="data.odometer"
 			:input-type="InputType.NUMBER"
@@ -178,12 +186,12 @@ function updateUnitsAndUnitCost(totalCost?: number) {
 			@blur="canCheckOdometer = true"
 		>
 			Kilometraje actual
-			
+
 			<template #append>
 				Km
 			</template>
 		</BaseInput>
-		
+
 		<BaseInput
 			v-model="data.notes"
 			:input-type="InputType.TEXTAREA"
@@ -198,14 +206,14 @@ main {
 	display: flex;
 	flex-direction: column;
 	gap: 24px;
-	
+
 	.refill-cost {
 		display: flex;
 		align-items: center;
 		gap: 16px;
 		margin-bottom: 16px;
 	}
-	
+
 	.fuel-types {
 		display: flex;
 		align-items: center;
@@ -213,7 +221,7 @@ main {
 		overflow-x: auto;
 		padding: 0 16px 8px;
 		margin: 0 -16px -8px;
-		
+
 		.fuel-type {
 			display: flex;
 			align-items: center;
@@ -223,14 +231,14 @@ main {
 			border: 1px solid var(--color-secondary-accent);
 			cursor: pointer;
 			white-space: nowrap;
-			
+
 			&:has(input:checked) {
 				border: none;
 				padding: 9px 13px;
 				background-color: var(--color-primary);
 				color: var(--color-secondary);
 			}
-			
+
 			input {
 				display: none;
 			}

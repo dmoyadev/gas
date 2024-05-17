@@ -3,18 +3,18 @@ import { computed, ref, watch } from 'vue';
 import { IconSize } from '@/components/icon/types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import BaseBigNumberInput from '@/components/big-number-input/BaseBigNumberInput.vue';
-import { Refill } from '@/modules/refills/models/Refill.ts';
+import type { Refill } from '@/modules/refills/models/Refill.ts';
 import { InputType } from '@/components/input/types.ts';
 import BaseInput from '@/components/input/BaseInput.vue';
 import { useSelectedVehicle } from '@/modules/vehicles/composables/useSelectedVehicle.ts';
-import { useRecentRefills } from "@/modules/refills/composables/useRecentRefills.ts";
+import { useRecentRefills } from '@/modules/refills/composables/useRecentRefills.ts';
 
 const props = defineProps<{
-	refill: Refill
+	refill: Refill;
 }>();
 
 const emit = defineEmits<{
-	'update:refill': [value: Refill]
+	'update:refill': [value: Refill];
 }>();
 
 const data = computed<Refill>({
@@ -25,10 +25,16 @@ const data = computed<Refill>({
 const { refills } = useRecentRefills();
 const canCheckOdometer = ref(false);
 const odometerError = computed<boolean>(() => {
-	if(!canCheckOdometer.value) { return false; }
-	if(!data.value.odometer) { return false; }
-	if(!refills.value[0]) { return false; }
-	
+	if (!canCheckOdometer.value) {
+		return false;
+	}
+	if (!data.value.odometer) {
+		return false;
+	}
+	if (!refills.value[0]) {
+		return false;
+	}
+
 	return data.value.odometer < refills.value[0].odometer;
 });
 
@@ -38,15 +44,21 @@ const hasBatteryError = computed<boolean>(() => {
 
 const { vehicle } = useSelectedVehicle();
 const filledCapacity = computed<string>(() => {
-	if(!vehicle.value || !data.value.chargeFinal) { return (0).toFixed(2); }
-	if(data.value.chargeInitial > data.value.chargeFinal) { return (0).toFixed(2); }
-	
+	if (!vehicle.value || !data.value.chargeFinal) {
+		return (0).toFixed(2);
+	}
+	if (data.value.chargeInitial > data.value.chargeFinal) {
+		return (0).toFixed(2);
+	}
+
 	const filledBattery = data.value.chargeFinal - (data.value.chargeInitial ?? 0);
 	return (filledBattery * vehicle.value?.batteryCapacity / 100).toFixed(2);
 });
 
 const totalCost = computed<string>(() => {
-	if(!data.value.unitCost) { return ''; }
+	if (!data.value.unitCost) {
+		return '';
+	}
 	return (+filledCapacity.value * (data.value.unitCost ?? 0)).toFixed(2);
 });
 watch(totalCost, (value) => {
@@ -63,12 +75,12 @@ watch(totalCost, (value) => {
 				is-required
 			>
 				Precio del Kw
-				
+
 				<template #append>
 					€/Kw
 				</template>
 			</BaseBigNumberInput>
-			
+
 			<div class="total-cost">
 				<span class="label">Coste estimado</span>
 				<span class="cost">
@@ -77,7 +89,7 @@ watch(totalCost, (value) => {
 				</span>
 			</div>
 		</section>
-		
+
 		<section class="battery">
 			<BaseBigNumberInput
 				v-model.number="data.chargeInitial"
@@ -91,12 +103,12 @@ watch(totalCost, (value) => {
 					:icon-size="IconSize.M"
 				/>
 				Inicial
-				
+
 				<template #append>
 					%
 				</template>
 			</BaseBigNumberInput>
-			
+
 			<div class="capacity">
 				<BaseIcon
 					class="icon-battery"
@@ -108,7 +120,7 @@ watch(totalCost, (value) => {
 					<span class="battery-capacity">{{ vehicle?.batteryCapacity.toFixed(2) }}Kw</span>
 				</div>
 			</div>
-			
+
 			<BaseBigNumberInput
 				v-model.number="data.chargeFinal"
 				placeholder="···"
@@ -123,20 +135,20 @@ watch(totalCost, (value) => {
 					:icon-size="IconSize.M"
 				/>
 				Final
-				
+
 				<template #append>
 					%
 				</template>
 			</BaseBigNumberInput>
 		</section>
-		
+
 		<span
 			v-if="hasBatteryError"
 			class="error"
 		>
 			La batería final tiene que ser superior a la inicial
 		</span>
-		
+
 		<BaseInput
 			v-model.number="data.odometer"
 			:input-type="InputType.NUMBER"
@@ -146,12 +158,12 @@ watch(totalCost, (value) => {
 			@blur="canCheckOdometer = true"
 		>
 			Kilometraje actual
-			
+
 			<template #append>
 				Km
 			</template>
 		</BaseInput>
-		
+
 		<BaseInput
 			v-model="data.notes"
 			:input-type="InputType.TEXTAREA"
@@ -166,29 +178,29 @@ main {
 	display: flex;
 	flex-direction: column;
 	gap: 24px;
-	
+
 	.icon-battery {
 		color: var(--color-success);
 	}
-	
+
 	.costs {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		gap: 24px;
-		
+
 		.total-cost {
 			min-width: calc(50% - 12px);
 			display: flex;
 			flex-direction: column;
 			align-items: flex-end;
-			
+
 			.label {
 				font-size: var(--font-size-small);
 				font-weight: var(--font-light);
 				font-style: italic;
 			}
-			
+
 			.cost {
 				min-height: 32px;
 				font-size: 32px;
@@ -199,7 +211,7 @@ main {
 				align-items: flex-end;
 				justify-content: flex-end;
 				gap: 4px;
-				
+
 				.unit {
 					font-size: var(--font-size-body);
 					margin-bottom: 3px;
@@ -207,29 +219,29 @@ main {
 			}
 		}
 	}
-	
+
 	.battery {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		gap: 24px;
-		
+
 		.capacity {
 			display: flex;
 			align-items: center;
 			gap: 8px;
 			text-align: right;
-			
+
 			.capacity-info {
 				min-width: 8ch;
 				display: flex;
 				flex-direction: column;
-				
+
 				.filled-capacity {
 					font-weight: var(--font-heavy);
 					font-family: var(--font-family-monospace);
 				}
-				
+
 				.battery-capacity {
 					font-size: var(--font-size-small);
 					font-weight: var(--font-light);
@@ -238,7 +250,7 @@ main {
 			}
 		}
 	}
-	
+
 	.error {
 		font-size: var(--font-size-small);
 		font-style: italic;

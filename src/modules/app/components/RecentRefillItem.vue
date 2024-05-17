@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { Refill } from '@/modules/refills/models/Refill.ts';
+import { computed } from 'vue';
+import type { Refill } from '@/modules/refills/models/Refill.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { IconSize } from '@/components/icon/types.ts';
-import { computed } from 'vue';
 
 const props = defineProps<{
-	refill?: Refill
-	previousOdometer?: number
-	loading?: boolean
+	refill?: Refill;
+	previousOdometer?: number;
+	loading?: boolean;
 }>();
 
 const icon = computed<string>(() => {
-	if(props.refill?.fuelType?.type === 'electric') {
+	if (props.refill?.fuelType?.type === 'electric') {
 		return 'fa-solid fa-plug-circle-bolt';
 	} else {
 		return 'fa-solid fa-gas-pump';
@@ -19,7 +19,7 @@ const icon = computed<string>(() => {
 });
 
 const units = computed<string>(() => {
-	if(props.refill?.fuelType?.type === 'electric') {
+	if (props.refill?.fuelType?.type === 'electric') {
 		return ' / kW';
 	} else {
 		return ' / L';
@@ -27,10 +27,14 @@ const units = computed<string>(() => {
 });
 
 const kmUsed = computed<string>(() => {
-	if(!props.previousOdometer) { return 'Usando...'; }
-	if(!props.refill?.odometer) { return '??? Km'; }
-	
-	return ((props.previousOdometer - props.refill?.odometer).toLocaleString('es-ES') + ' Km');
+	if (!props.previousOdometer) {
+		return 'Usando...';
+	}
+	if (!props.refill?.odometer) {
+		return '??? Km';
+	}
+
+	return (`${(props.previousOdometer - props.refill?.odometer).toLocaleString('es-ES')} Km`);
 });
 </script>
 
@@ -39,7 +43,7 @@ const kmUsed = computed<string>(() => {
 	<template v-if="loading">
 		<li>
 			<span class="skeleton-item skeleton-item--icon" />
-				
+
 			<div class="info">
 				<span
 					class="skeleton-item skeleton-item--small"
@@ -54,7 +58,7 @@ const kmUsed = computed<string>(() => {
 					style="width: 12ch;"
 				/>
 			</div>
-				
+
 			<div class="price">
 				<span
 					class="title"
@@ -87,7 +91,7 @@ const kmUsed = computed<string>(() => {
 				:icon="icon"
 				:icon-size="IconSize.L"
 			/>
-				
+
 			<div class="info">
 				<span class="title">
 					{{ refill.station?.name || '???' }}
@@ -99,10 +103,10 @@ const kmUsed = computed<string>(() => {
 					day: 'numeric',
 				}) }}</span>
 			</div>
-				
+
 			<div
 				class="price"
-				:class="{ 'electric': refill.fuelType.type === 'electric' }"
+				:class="{ electric: refill.fuelType.type === 'electric' }"
 			>
 				<span class="title">
 					{{ refill?.unitCost?.toLocaleString('es-ES', {
@@ -158,34 +162,34 @@ li {
 	display: flex;
 	align-items: center;
 	gap: 16px;
-	
+
 	.logo-wrapper {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		width: 24px;
 		height: 24px;
-		
+
 		.logo {
 			width: 100%;
 			height: 100%;
 			object-fit: contain;
 		}
 	}
-	
+
 	.info {
 		display: flex;
 		flex-direction: column;
 		gap: 4px;
 		flex: 1;
 		font-size: var(--font-size-small);
-		
+
 		:not(.title) {
 			font-weight: var(--font-light);
 			font-size: var(--font-size-legal);
 		}
 	}
-	
+
 	.price {
 		display: flex;
 		flex-direction: column;
@@ -194,17 +198,17 @@ li {
 		gap: 2px;
 		margin-left: auto;
 		flex-shrink: 0;
-		
+
 		.title {
 			font-weight: var(--font-heavy);
 			font-size: var(--font-size-title);
 		}
-		
+
 		:not(.title) {
 			font-weight: var(--font-light);
 			font-size: var(--font-size-small);
 		}
-		
+
 		.units {
 			display: flex;
 			align-items: center;

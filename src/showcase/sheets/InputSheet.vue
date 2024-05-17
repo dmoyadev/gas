@@ -5,10 +5,10 @@ import { InputForm, InputType } from '@/components/input/types';
 import { capitalize } from '@/utils/helpers';
 import ShowcaseElements from '@/showcase/ShowcaseElements.vue';
 
-const showLabelOptions = [ false, true ];
-const readonlyOptions = [ false, true ];
-const hasErrorOptions = [ false, true ];
-const isLoadingOptions = [ false, true ];
+const showLabelOptions = [false, true];
+const readonlyOptions = [false, true];
+const hasErrorOptions = [false, true];
+const isLoadingOptions = [false, true];
 
 const text = ref('');
 </script>
@@ -48,7 +48,7 @@ const text = ref('');
 										{{ hasError ? 'with error' : '' }}
 										{{ isLoading ? 'loading' : '' }}
 									</template>
-									
+
 									<BaseInput
 										v-model="text"
 										placeholder="Input placeholder"
@@ -62,7 +62,7 @@ const text = ref('');
 										<template v-if="showLabel">
 											Input label
 										</template>
-										
+
 										<template
 											v-if="hasError"
 											#error

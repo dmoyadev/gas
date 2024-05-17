@@ -1,4 +1,4 @@
-import { DTO } from '@/modules/app/models/DTO.ts';
+import type { DTO } from '@/modules/app/models/DTO.ts';
 
 export enum VehicleType {
 	CAR = 'car',
@@ -37,6 +37,6 @@ export interface ElectricVehicle extends Vehicle {
 	fuelType: VehicleFuelType.ELECTRIC | VehicleFuelType.HYBRID;
 }
 
-export const isElectricVehicle = (vehicle: Vehicle): vehicle is ElectricVehicle => {
+export function isElectricVehicle(vehicle: Vehicle): vehicle is ElectricVehicle {
 	return vehicle.fuelType === VehicleFuelType.ELECTRIC || vehicle.fuelType === VehicleFuelType.HYBRID;
-};
+}

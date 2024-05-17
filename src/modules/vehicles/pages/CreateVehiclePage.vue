@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 import BaseStepper from '@/components/stepper/BaseStepper.vue';
 import Step1Partial from '@/modules/vehicles/partials/create-vehicle/Step1Partial.vue';
 import Step2Partial from '@/modules/vehicles/partials/create-vehicle/Step2Partial.vue';
@@ -9,8 +10,7 @@ import Step5Partial from '@/modules/vehicles/partials/create-vehicle/Step5Partia
 import BaseButton from '@/components/button/BaseButton.vue';
 import { ButtonForm, ButtonMode } from '@/components/button/types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
-import { Vehicle } from '@/modules/app/models/Vehicle.ts';
-import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
+import type { Vehicle } from '@/modules/app/models/Vehicle.ts';
 import { useStorage } from '@/modules/app/composables/useStorage.ts';
 
 const vehicle = useStorage<Vehicle>('new-vehicle', {} as Vehicle);
@@ -20,22 +20,22 @@ const route = useRoute();
 const router = useRouter();
 function getInitialStep(): number {
 	let routeStep = +(route.query?.step ?? 1);
-	
+
 	if (routeStep === 3 && !vehicle.value!.fuelType) {
 		routeStep = 2;
 	}
-	
+
 	if (routeStep === 2 && !vehicle.value!.vehicleType) {
 		routeStep = 1;
 	}
-	
+
 	return routeStep;
 }
 
 const currentStep = ref(getInitialStep());
 
 async function submitStep(step: number) {
-	if(!isNaN(step)) {
+	if (!isNaN(step)) {
 		await router.push({
 			path: route.path,
 			query: { step: step + 1 },
@@ -55,23 +55,23 @@ async function submitStep(step: number) {
 			>
 				<BaseIcon icon="fa-solid fa-arrow-left" />
 			</BaseButton>
-			
+
 			<img
 				src="/assets/logo.svg"
 				alt="logo"
 			>
-			
+
 			<!-- This is a placeholder for the logo to be centered -->
 			<span v-if="currentStep < 5" />
 		</header>
-		
+
 		<!-- Step 1 -->
 		<Step1Partial
 			v-if="currentStep === 1"
 			v-model="vehicle!.vehicleType"
 			@send-step="submitStep(1)"
 		/>
-		
+
 		<!-- Step 2 -->
 		<Step2Partial
 			v-if="currentStep === 2"
@@ -79,7 +79,7 @@ async function submitStep(step: number) {
 			@send-step="submitStep(2)"
 			@step-back="currentStep = 1"
 		/>
-		
+
 		<!-- Step 3 -->
 		<Step3Partial
 			v-if="currentStep === 3"
@@ -90,7 +90,7 @@ async function submitStep(step: number) {
 			@send-step="submitStep(3)"
 			@step-back="currentStep = 2"
 		/>
-		
+
 		<!-- Step 4 -->
 		<Step4Partial
 			v-if="currentStep === 4"
@@ -102,13 +102,13 @@ async function submitStep(step: number) {
 			@send-step="submitStep(4)"
 			@step-back="currentStep = 3"
 		/>
-		
+
 		<!-- Step 5 -->
 		<Step5Partial
 			v-if="currentStep === 5"
 			@step-back="currentStep = 4"
 		/>
-		
+
 		<BaseStepper
 			class="stepper"
 			:current-step="currentStep"
@@ -129,15 +129,15 @@ header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	
+
 	&:not(:has(span)) {
 		justify-content: center;
 	}
-	
+
 	img {
 		width: 104px;
 	}
-	
+
 	span {
 		width: 42px;
 	}
@@ -149,20 +149,20 @@ header {
 	flex-direction: column;
 	justify-content: space-between;
 	padding: 16px;
-	
+
 	.instructions {
 		h1 {
 			font-size: var(--font-size-big);
 			font-weight: var(--font-heavy);
 			margin-bottom: 8px;
 		}
-		
+
 		p {
 			color: var(--color-primary);
 			font-weight: var(--font-light);
 		}
 	}
-	
+
 	h2 {
 		margin-top: 32px;
 		font-size: 22px;

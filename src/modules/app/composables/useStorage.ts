@@ -1,4 +1,5 @@
-import { Ref, ref, watch } from 'vue';
+import type { Ref } from 'vue';
+import { ref, watch } from 'vue';
 
 /**
  * Use local storage to store data reactively
@@ -19,7 +20,7 @@ export function useStorage<T>(key: string, data: T | undefined = undefined): Ref
 	if (storedData) {
 		refData.value = storedData;
 	} else {
-		//If there is no data stored, set the data to the default value
+		// If there is no data stored, set the data to the default value
 		write();
 	}
 

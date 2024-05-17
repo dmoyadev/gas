@@ -1,13 +1,15 @@
 import { ref } from 'vue';
-import { auth } from '@/utils/firebase.ts';
-import {
-	signInWithEmailAndPassword,
-	onAuthStateChanged,
-	signOut,
+import type {
+	Unsubscribe,
 	User,
 	UserCredential,
-	Unsubscribe,
 } from 'firebase/auth';
+import {
+	onAuthStateChanged,
+	signInWithEmailAndPassword,
+	signOut,
+} from 'firebase/auth';
+import { auth } from '@/utils/firebase.ts';
 import router from '@/router.ts';
 
 const user = ref<User>();
@@ -21,8 +23,8 @@ let unsubscribeAuthWatcher: Unsubscribe;
  */
 export function useAuthentication() {
 	const loading = ref(true);
- 
-	if(unsubscribeAuthWatcher) {
+
+	if (unsubscribeAuthWatcher) {
 		unsubscribeAuthWatcher();
 	}
 	unsubscribeAuthWatcher = onAuthStateChanged(auth, async (state) => {
@@ -33,13 +35,13 @@ export function useAuthentication() {
 		}
 		loading.value = false;
 	});
-    
+
 	/**
-     * Signs in the user with email and password
-     * @param email
-     * @param password
+	 * Signs in the user with email and password
+	 * @param email
+	 * @param password
 	 * @returns {Promise<UserCredential>}
-     */
+	 */
 	async function signInWithPassword(email: string, password: string): Promise<UserCredential> {
 		return signInWithEmailAndPassword(auth, email, password)
 			.then((result) => {
@@ -51,10 +53,10 @@ export function useAuthentication() {
 				throw error;
 			});
 	}
-	
+
 	/**
-     * Logs the user out
-     */
+	 * Logs the user out
+	 */
 	function logout() {
 		signOut(auth)
 			.then(async () => {
@@ -64,7 +66,7 @@ export function useAuthentication() {
 				console.error('🔴 Sign out threw an error!', error);
 			});
 	}
-    
+
 	return {
 		loading,
 		user,

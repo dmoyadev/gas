@@ -3,11 +3,11 @@ import { computed } from 'vue';
 import { useRecentRefills } from '@/modules/refills/composables/useRecentRefills.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { IconSize } from '@/components/icon/types.ts';
-import { Refill } from '@/modules/refills/models/Refill.ts';
+import type { Refill } from '@/modules/refills/models/Refill.ts';
 
 const { refills } = useRecentRefills();
 
-const lastRefill = computed<Refill | undefined>(() => refills.value[0] || undefined );
+const lastRefill = computed<Refill | undefined>(() => refills.value[0] || undefined);
 const title = computed(() => {
 	return lastRefill.value?.fuelType.type
 		? 'Último repostaje'
@@ -15,7 +15,6 @@ const title = computed(() => {
 });
 const isRecharge = computed<boolean>(() => lastRefill.value?.fuelType.type === 'electric');
 const units = computed<string>(() => isRecharge.value ? 'kW' : 'L');
-
 </script>
 
 <template>
@@ -49,7 +48,7 @@ const units = computed<string>(() => isRecharge.value ? 'kW' : 'L');
 				{{ lastRefill.station?.name || '???' }}
 			</div>
 		</header>
-		
+
 		<table>
 			<thead>
 				<tr>
@@ -123,7 +122,7 @@ section {
 	font-weight: var(--font-light);
 	padding: 8px;
 	position: relative;
-	
+
 	// Make the effect of a folded paper corner at the top right
 	&::after {
 		content: '';
@@ -136,7 +135,7 @@ section {
 		border-left: 18px solid var(--color-secondary-accent);
 		box-shadow: -4px 4px 6px 0 rgba(0,0,0,0.50);
 	}
-	
+
 	header {
 		padding: 8px 4px;
 		display: flex;
@@ -144,23 +143,23 @@ section {
 		align-items: center;
 		flex-wrap: wrap;
 		gap: 8px;
-		
+
 		h3 {
 			font-size: var(--font-size-body);
 			font-weight: var(--font-heavy);
 			font-style: italic;
 		}
-		
+
 		.station {
 			width: 100%;
 			display: flex;
 			align-items: center;
 			gap: 6px;
-			
+
 			.logo-wrapper {
 				width: 14px;
 				height: 14px;
-				
+
 				img {
 					width: 100%;
 					height: 100%;
@@ -169,39 +168,39 @@ section {
 			}
 		}
 	}
-	
+
 	table {
 		width: 100%;
 		border-collapse: collapse;
-		
+
 		thead {
 			padding: 0 4px;
 			border-top: 1px dashed var(--color-secondary);
 			border-bottom: 1px dashed var(--color-secondary);
 		}
-		
+
 		th,
 		td {
 			padding: 4px;
 			font-size: var(--font-size-small);
-			
+
 			&:last-child {
 				text-align: right;
 			}
-			
+
 			i {
 				margin-right: 4px;
 				position: relative;
 				bottom: -1px;
 			}
 		}
-		
+
 		tbody {
 			td {
 				padding: 8px 4px;
 			}
 		}
-		
+
 		tfoot {
 			td:last-child {
 				font-weight: var(--font-heavy);

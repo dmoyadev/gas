@@ -29,7 +29,7 @@ const tabs = [
 
 <template>
 	<router-view />
-	
+
 	<nav>
 		<BaseButton
 			v-for="(tab, index) in tabs"
@@ -57,7 +57,7 @@ nav {
 	box-shadow: 0 -8px 8px -4px rgba(0, 0, 0, 0.2);
 	display: flex;
 	align-items: center;
-	
+
 	a {
 		flex: 1;
 		height: 100%;
@@ -67,11 +67,11 @@ nav {
 		justify-content: center;
 		gap: 8px;
 		font-weight: var(--font-medium);
-		
+
 		&.router-link-exact-active {
 			color: var(--color-primary) !important;
 		}
-		
+
 		span {
 			font-size: var(--font-size-small);
 		}

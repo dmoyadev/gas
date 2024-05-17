@@ -11,7 +11,7 @@ const props = withDefaults(
 		/**
 		 * The value of the input
 		 */
-		modelValue?: string | number,
+		modelValue?: string | number;
 		/**
 		 * The type of the input
 		 */
@@ -51,22 +51,24 @@ defineEmits<{
 	 * Emitted when the input value changes
 	 * @arg {string | number} value - The new value of the input
 	 */
-	'update:modelValue': [value: string | number]
+	'update:modelValue': [value: string | number];
 }>();
 
-const _componentUID =  Date.now().toString(36) + Math.random().toString(36).substring(2);
+const _componentUID = Date.now().toString(36) + Math.random().toString(36).substring(2);
 
 const showPassword = ref(false);
 
 watch(() => props.hasError, (value) => {
 	const input = document.getElementById(_componentUID) as HTMLInputElement;
-	if(!input) { return; }
-	
-	if(!value) {
+	if (!input) {
+		return;
+	}
+
+	if (!value) {
 		input.setCustomValidity('');
 		return;
 	}
-	
+
 	input.setCustomValidity(props.customValidity);
 });
 </script>
@@ -96,7 +98,7 @@ watch(() => props.hasError, (value) => {
 					aria-label=""
 					@input="$emit('update:modelValue', (($event.target as HTMLInputElement).value))"
 				>
-				
+
 				<textarea
 					v-else
 					:id="($attrs.id as string) || _componentUID"
@@ -108,10 +110,10 @@ watch(() => props.hasError, (value) => {
 					aria-label=""
 					@input="$emit('update:modelValue', (($event.target as HTMLInputElement).value))"
 				/>
-				
+
 				<!-- Icon right -->
 				<span
-					v-if="$slots.append 
+					v-if="$slots.append
 						|| loading
 						|| [InputType.TEXT, InputType.SEARCH, InputType.PASSWORD].includes(inputType)"
 					class="append"
@@ -126,7 +128,7 @@ watch(() => props.hasError, (value) => {
 							v-if="inputType === InputType.SEARCH"
 							icon="fa-solid fa-search"
 						/>
-						
+
 						<!-- Toggle password visibility button -->
 						<BaseButton
 							v-if="inputType === InputType.PASSWORD"
@@ -141,7 +143,7 @@ watch(() => props.hasError, (value) => {
 							<BaseIcon :icon="showPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'" />
 						</BaseButton>
 					</slot>
-					
+
 					<BaseIcon
 						v-else
 						icon="fa-solid fa-gear"
@@ -150,7 +152,7 @@ watch(() => props.hasError, (value) => {
 					/>
 				</span>
 			</span>
-			
+
 			<!-- Label -->
 			<span
 				v-if="!loading && hasSlotContent($slots.default)"
@@ -160,7 +162,7 @@ watch(() => props.hasError, (value) => {
 				<slot />
 			</span>
 		</label>
-		
+
 		<!-- Error slot -->
 		<p
 			v-if="!loading && hasError && hasSlotContent($slots.error)"
@@ -171,7 +173,7 @@ watch(() => props.hasError, (value) => {
 				{{ customValidity }}
 			</slot>
 		</p>
-		
+
 		<!-- Helper slot -->
 		<p
 			v-if="hasSlotContent($slots.helper)"
@@ -189,25 +191,25 @@ div {
 	flex-direction: column;
 	justify-content: flex-end;
 	gap: 4px;
-	
+
 	&:has(.input-form-notched-left),
 	&:has(.input-form-notched-right) {
 		flex: 1;
 	}
-	
+
 	label {
 		position: relative;
-		
+
 		.input-wrapper {
 			width: 100%;
 			overflow: hidden;
-			
+
 			&.input-form {
 				&-notched-left,
 				&-notched-right {
 					display: inline-flex;
 					position: relative;
-					
+
 					&:before {
 						content: '';
 						position: absolute;
@@ -220,42 +222,42 @@ div {
 						border: 1px solid var(--color-secondary-accent);
 					}
 				}
-				
+
 				&-notched-left {
 					input, textarea {
 						border-radius: 0 4px 4px 0;
 						padding-left: 22px;
 					}
-					
+
 					& ~ .label {
 						left: 24px;
 					}
-					
+
 					&:before {
 						left: -50px;
 					}
 				}
-				
+
 				&-notched-right {
 					input, textarea {
 						border-radius: 4px 0 0 4px;
 						padding-right: 22px;
 					}
-					
+
 					& .append {
 						right: 8px;
-						
+
 						&:not(:has(.input-button)) {
 							right: 20px;
 						}
 					}
-					
+
 					&:before {
 						right: -50px;
 					}
 				}
 			}
-			
+
 			&.has-error {
 				@keyframes shake {
 					0% {
@@ -271,7 +273,7 @@ div {
 						margin-left: 0;
 					}
 				}
-				
+
 				input,
 				input:invalid,
 				textarea,
@@ -279,7 +281,7 @@ div {
 					border-color: var(--color-danger) !important;
 					animation: shake 0.2s ease-in-out 0s 2;
 				}
-				
+
 				&.input-form {
 					&-notched-left,
 					&-notched-right {
@@ -289,13 +291,13 @@ div {
 					}
 				}
 			}
-			
+
 			&:not(:has(:disabled)):focus-within {
 				input,
 				textarea {
 					border-color: var(--color-primary);
 				}
-				
+
 				&.input-form {
 					&-notched-left,
 					&-notched-right {
@@ -305,7 +307,7 @@ div {
 					}
 				}
 			}
-			
+
 			&:not(:has(:disabled)):focus-within,
 			&.has-value {
 				& ~ .label {
@@ -313,7 +315,7 @@ div {
 					transform: none;
 					font-size: var(--font-size-small);
 					z-index: 10;
-					
+
 					&:before {
 						content: '';
 						position: absolute;
@@ -326,7 +328,7 @@ div {
 					}
 				}
 			}
-			
+
 			input,
 			textarea {
 				height: 42px;
@@ -335,22 +337,22 @@ div {
 				border-radius: 4px;
 				padding: 12px;
 				font-size: var(--font-size-body);
-				
+
 				&::placeholder {
 					color: transparent;
 				}
 			}
-			
+
 			textarea {
 				height: 84px;
 			}
-			
+
 			.append {
 				position: absolute;
 				top: 50%;
 				transform: translateY(-50%);
 				right: 0;
-				
+
 				&:not(:has(.input-button)) {
 					right: 12px;
 					height: 16px;
@@ -358,22 +360,22 @@ div {
 				}
 			}
 		}
-		
+
 		.label {
 			position: absolute;
 			left: 12px;
 			transition: all .15s ease-out;
 		}
-		
+
 		:has(input) ~ .label {
 			top: 50%;
 			transform: translateY(-50%);
 		}
-		
+
 		:has(textarea) ~ .label {
 			top: 12px;
 		}
-		
+
 		&:has(input:read-only),
 		&:has(input:disabled),
 		&:has(textarea:read-only),
@@ -381,13 +383,13 @@ div {
 			opacity: .5;
 		}
 	}
-	
+
 	.error {
 		color: var(--color-danger);
 		font-size: var(--font-size-small);
 		line-height: var(--font-size-small);
 	}
-	
+
 	.helper {
 		color: var(--color-primary);
 		font-size: var(--font-size-small);

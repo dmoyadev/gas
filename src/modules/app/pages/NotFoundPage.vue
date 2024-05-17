@@ -5,7 +5,7 @@ import BaseButton from '@/components/button/BaseButton.vue';
 <template>
 	<main>
 		Algo ha ido mal... esta página no existe
-		
+
 		<BaseButton to="/">
 			Volver al inicio
 		</BaseButton>

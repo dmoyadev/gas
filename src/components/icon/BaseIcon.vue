@@ -12,7 +12,8 @@ withDefaults(
 		 * The icon to display.
 		 */
 		icon?: string;
-	}>(), {
+	}>(),
+	{
 		iconSize: IconSize.M,
 		icon: undefined,
 	},
@@ -42,7 +43,7 @@ i {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	
+
 	position: relative;
 	bottom: 1px;
 
@@ -53,7 +54,7 @@ i {
 		font-size: var(--icon-s);
 		line-height: var(--icon-s);
 	}
-	
+
 	&.m,
 	&.m svg {
 		width: var(--icon-m);
@@ -61,7 +62,7 @@ i {
 		font-size: var(--icon-m);
 		line-height: var(--icon-m);
 	}
-	
+
 	&.l,
 	&.l svg {
 		width: var(--icon-l);
@@ -69,7 +70,7 @@ i {
 		font-size: var(--icon-l);
 		line-height: var(--icon-l);
 	}
-	
+
 	&.xl,
 	&.xl svg {
 		width: var(--icon-xl);
@@ -77,7 +78,7 @@ i {
 		font-size: var(--icon-xl);
 		line-height: var(--icon-xl);
 	}
-	
+
 	&.xxl,
 	&.xxl svg {
 		width: var(--icon-xxl);
