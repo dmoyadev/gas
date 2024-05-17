@@ -49,6 +49,13 @@ const routes: Array<RouteRecordRaw> = [
 	},
 
 	{
+		path: '/vehicles/:id',
+		name: 'Edit Vehicle',
+		component: () => import('@/modules/vehicles/pages/EditVehiclePage.vue'),
+		meta: { title: 'Editar vehículo' },
+	},
+
+	{
 		path: '/vehicles/:id/success',
 		name: 'Vehicle Creation Success',
 		component: () => import('@/modules/vehicles/pages/CreateVehicleSuccessPage.vue'),
