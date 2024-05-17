@@ -31,7 +31,7 @@ export const i18n = createI18n<[MessageSchema], typeof SUPPORTED_LOCALES[number]
 
 	availableLocales: [...SUPPORTED_LOCALES],
 });
-await changeLocale(getDefaultLocale() as typeof SUPPORTED_LOCALES[number]);
+void changeLocale(getDefaultLocale() as typeof SUPPORTED_LOCALES[number]);
 
 export async function changeLocale(locale: typeof SUPPORTED_LOCALES[number]) {
 	// load locale messages with dynamic import
