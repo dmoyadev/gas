@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import BaseButton from '@/components/button/BaseButton.vue';
-import { ButtonForm, ButtonMode } from '@/components/button/types.ts';
+import { ButtonForm, ButtonMode } from '@/components/button/BaseButton.types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import type { VehicleBrand } from '@/modules/app/models/Vehicle.ts';
 import { VehicleType } from '@/modules/app/models/Vehicle.ts';

@@ -1,44 +1,23 @@
 <script setup lang="ts">
 import type { ComponentPublicInstance } from 'vue';
 import { ref } from 'vue';
-import { ButtonColor, ButtonForm, ButtonMode } from '@/components/button/types';
+import { ButtonColor, ButtonForm, ButtonMode } from './BaseButton.types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 
-const props = withDefaults(
-	defineProps<{
-		/**
-		 * The mode of the button
-		 */
-		mode?: ButtonMode;
-		/**
-		 * The color to use for the button
-		 */
-		color?: ButtonColor;
-		/**
-		 * The form of the button
-		 */
-		form?: ButtonForm;
-		/**
-		 * Indicates the route to which the button should redirect when clicked
-		 */
-		to?: string;
-		/**
-		 * Indicates the URL to which the button should redirect when clicked
-		 */
-		href?: string;
-		/**
-		 * Indicates if the button is loading
-		 */
-		loading?: boolean;
-	}>(),
-	{
-		mode: ButtonMode.SOLID,
-		color: ButtonColor.PRIMARY,
-		form: ButtonForm.BLOCK,
-		to: undefined,
-		href: undefined,
-	},
-);
+interface Props {
+	mode?: ButtonMode; /* The mode of the button. @defaults ButtonMode.SOLID */
+	color?: ButtonColor; /* The color to use for the button. @defaults ButtonColor.PRIMARY */
+	form?: ButtonForm; /* The form of the button. @defaults ButtonForm.BLOCK */
+	to?: string; /* Indicates the route to which the button should redirect when clicked */
+	href?: string; /* Indicates the URL to which the button should redirect when clicked */
+	loading?: boolean; /* Indicates if the button is loading */
+}
+
+const props = withDefaults(defineProps<Props>(),	{
+	mode: ButtonMode.SOLID,
+	color: ButtonColor.PRIMARY,
+	form: ButtonForm.BLOCK,
+});
 
 /* Ripple effect */
 // This effect needs the button to have a position property set to relative or absolute so that the ripple element
@@ -233,6 +212,7 @@ router-link {
 		&-circle {
 			display: inline-flex;
 			border-radius: 100%;
+			max-width: 42px;
 		}
 
 		&-notched-left,

@@ -3,7 +3,7 @@ import { ref, watch } from 'vue';
 import BaseButton from '@/components/button/BaseButton.vue';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { InputForm, InputType } from '@/components/input/types';
-import { ButtonColor, ButtonForm, ButtonMode } from '@/components/button/types';
+import { ButtonColor, ButtonForm, ButtonMode } from '@/components/button/BaseButton.types.ts';
 import { hasSlotContent } from '@/utils/helpers.ts';
 
 const props = withDefaults(

@@ -5,7 +5,7 @@ import { useAuthentication } from '@/modules/auth/composables/useAuthentication.
 import router from '@/router.ts';
 import AuthLayout from '@/layouts/AuthLayout.vue';
 import BaseButton from '@/components/button/BaseButton.vue';
-import { ButtonColor, ButtonForm } from '@/components/button/types.ts';
+import { ButtonColor, ButtonForm } from '@/components/button/BaseButton.types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import BaseInput from '@/components/input/BaseInput.vue';
 import { InputForm, InputType } from '@/components/input/types.ts';
