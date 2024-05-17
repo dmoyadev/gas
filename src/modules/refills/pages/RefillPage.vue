@@ -1,16 +1,16 @@
 <script setup lang="ts">
+import { computed, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import BaseButton from '@/components/button/BaseButton.vue';
 import { ButtonForm, ButtonMode } from '@/components/button/types.ts';
-import { computed, ref, watch } from 'vue';
 import { useSelectedVehicle } from '@/modules/vehicles/composables/useSelectedVehicle.ts';
 import { VehicleFuelType } from '@/modules/app/models/Vehicle.ts';
 import BaseSpinner from '@/components/spinner/BaseSpinner.vue';
 import ElectricRefill from '@/modules/refills/partials/ElectricRefill.vue';
 import FuelRefill from '@/modules/refills/partials/FuelRefill.vue';
-import { Refill } from '@/modules/refills/models/Refill.ts';
+import type { Refill } from '@/modules/refills/models/Refill.ts';
 import { useDB } from '@/modules/app/composables/useDB.ts';
-import { useRouter } from 'vue-router';
 import LastRefill from '@/modules/refills/components/LastRefill.vue';
 
 const {
@@ -20,15 +20,17 @@ const {
 
 const refillType = ref<'fuel' | 'electric'>('fuel');
 watch(vehicle, (value) => {
-	if(value?.fuelType === VehicleFuelType.ELECTRIC) {
+	if (value?.fuelType === VehicleFuelType.ELECTRIC) {
 		refillType.value = 'electric';
 	}
 });
 
 const fuelText = computed<string>(() => {
-	if(!vehicle.value) { return ''; }
-	
-	switch(vehicle.value?.fuelType) {
+	if (!vehicle.value) {
+		return '';
+	}
+
+	switch (vehicle.value?.fuelType) {
 		case VehicleFuelType.GASOLINE:
 			return 'Repostaje';
 		case VehicleFuelType.DIESEL:
@@ -44,8 +46,10 @@ const fuelText = computed<string>(() => {
 
 const refill = ref<Refill>({} as Refill);
 watch(refillType, (value, oldValue) => {
-	if(value === oldValue) { return; }
-	
+	if (value === oldValue) {
+		return;
+	}
+
 	refill.value = {} as Refill;
 });
 const {
@@ -55,7 +59,7 @@ const {
 const router = useRouter();
 function createRefill() {
 	loadingRefill.value = true;
-	if(!refill.value.fuelType) {
+	if (!refill.value.fuelType) {
 		refill.value.fuelType = {
 			name: 'Enchufe',
 			type: 'electric',
@@ -91,45 +95,45 @@ function createRefill() {
 				{{ fuelText }}
 			</h1>
 		</header>
-		
+
 		<!-- ⏳ Loading state -->
 		<template v-if="loading">
 			<BaseSpinner class="icon-loading" />
 		</template>
-		
+
 		<!-- ✅ Success state -->
 		<template v-else>
 			<nav v-if="vehicle?.fuelType === VehicleFuelType.HYBRID">
 				<button
-					:class="{ 'selected': refillType === 'fuel' }"
+					:class="{ selected: refillType === 'fuel' }"
 					@click="refillType = 'fuel'"
 				>
 					Gasolina
 				</button>
-				
+
 				<button
-					:class="{ 'selected': refillType === 'electric' }"
+					:class="{ selected: refillType === 'electric' }"
 					@click="refillType = 'electric'"
 				>
 					Eléctrico
 				</button>
 			</nav>
-			
+
 			<LastRefill class="last-refill" />
-			
+
 			<form @submit.prevent="createRefill()">
 				<!-- 🔋 Electric refill -->
 				<ElectricRefill
 					v-if="refillType === 'electric'"
 					:refill="refill"
 				/>
-			
+
 				<!-- ⛽️ Fuel refill -->
 				<FuelRefill
 					v-if="refillType === 'fuel'"
 					:refill="refill"
 				/>
-				
+
 				<BaseButton
 					type="submit"
 					:loading="loadingRefill"
@@ -152,7 +156,7 @@ header {
 	display: flex;
 	align-items: center;
 	padding: 16px 16px 8px;
-	
+
 	h1 {
 		font-size: var(--font-size-title);
 		font-weight: var(--font-heavy);
@@ -171,18 +175,18 @@ nav {
 	display: flex;
 	align-items: center;
 	border-bottom: 1px solid var(--color-secondary-accent);
-	
+
 	button {
 		flex: 1;
 		text-transform: uppercase;
 		padding: 8px;
 		text-align: center;
 		font-size: var(--font-size-small);
-		
+
 		&:not(:last-child) {
 			border-right: 1px solid var(--color-secondary-accent);
 		}
-		
+
 		&.selected {
 			color: var(--color-primary);
 		}

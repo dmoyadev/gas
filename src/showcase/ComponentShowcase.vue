@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import BaseButton from '@/components/button/BaseButton.vue';
-import { ButtonColor, ButtonMode, ButtonForm } from '@/components/button/types';
+import { ButtonColor, ButtonForm, ButtonMode } from '@/components/button/types';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 
-const show = ref(false);
-
 defineProps<{
-	sheet: { name: string, component: any }
+	sheet: { name: string; component: any };
 }>();
+
+const show = ref(false);
 </script>
 
 <template>
@@ -22,7 +22,7 @@ defineProps<{
 			<BaseIcon :icon="`fa-solid ${show ? 'fa-chevron-up' : 'fa-chevron-down'}`" />
 		</BaseButton>
 	</h1>
-	
+
 	<component
 		:is="sheet.component"
 		v-if="show"
@@ -34,13 +34,13 @@ main {
 	padding: 16px;
 	display: flex;
 	flex-direction: column;
-	
+
 	h1 {
 		display: flex;
 		align-items: center;
 		gap: 8px;
 	}
-	
+
 	h1:not(:first-child) {
 		margin-top: 16px;
 	}

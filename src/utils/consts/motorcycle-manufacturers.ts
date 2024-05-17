@@ -1,4 +1,4 @@
-import { VehicleBrand } from '@/modules/app/models/Vehicle.ts';
+import type { VehicleBrand } from '@/modules/app/models/Vehicle.ts';
 
 export const motorcycleManufacturers: VehicleBrand[] = [
 	{
@@ -101,7 +101,7 @@ export const motorcycleManufacturers: VehicleBrand[] = [
 		logo: '/manufacturers/motorcycle/yamaha.svg',
 		highlighted: true,
 	},
-	{ 
+	{
 		name: 'Victory',
 		logo: '/manufacturers/motorcycle/victory.svg',
 	},

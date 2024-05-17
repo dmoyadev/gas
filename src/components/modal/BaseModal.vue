@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ButtonColor, ButtonForm, ButtonMode } from '@/components/button/types';
 import { watch } from 'vue';
+import { ButtonColor, ButtonForm, ButtonMode } from '@/components/button/types';
 import BaseButton from '@/components/button/BaseButton.vue';
 
 const props = defineProps<{
@@ -19,7 +19,7 @@ defineEmits<{
 	/**
 	 * Emitted when the modal is closed
 	 */
-	close: []
+	close: [];
 }>();
 
 const app = document.querySelector('#app');
@@ -47,7 +47,7 @@ watch(() => props.show, () => {
 					>
 						<header>
 							<div class="placeholder" />
-							
+
 							<!-- @slot The title of the modal -->
 							<span
 								v-if="title"
@@ -55,7 +55,7 @@ watch(() => props.show, () => {
 							>
 								{{ title }}
 							</span>
-							
+
 							<!-- Close button -->
 							<BaseButton
 								class="btn-close"
@@ -67,7 +67,7 @@ watch(() => props.show, () => {
 								Cerrar
 							</BaseButton>
 						</header>
-						
+
 						<!-- @slot The main content of the modal -->
 						<slot />
 					</dialog>
@@ -86,7 +86,7 @@ watch(() => props.show, () => {
 	z-index: 1000;
 	background: var(--color-secondary);
 	border-radius: 8px 8px 0 0;
-	
+
 	dialog {
 		header {
 			position: sticky;
@@ -97,17 +97,17 @@ watch(() => props.show, () => {
 			justify-content: space-between;
 			border-radius: 8px 8px 0 0;
 			background: var(--color-secondary-dark);
-			
+
 			.placeholder {
 				width: 72px;
 			}
-			
+
 			.title {
 				flex: 1;
 				text-align: center;
 				color: var(--color-secondary-accent);
 			}
-			
+
 			.btn-close {
 				margin-left: auto;
 			}
@@ -119,7 +119,7 @@ watch(() => props.show, () => {
 <style lang="scss">
 #app {
 	transition: transform 0.2s ease;
-	
+
 	&.modal-opened {
 		border-radius: 8px;
 		position: fixed;

@@ -1,7 +1,7 @@
-import { useDB } from '@/modules/app/composables/useDB.ts';
 import { ref } from 'vue';
-import { Vehicle } from '@/modules/app/models/Vehicle.ts';
 import { where } from 'firebase/firestore';
+import { useDB } from '@/modules/app/composables/useDB.ts';
+import type { Vehicle } from '@/modules/app/models/Vehicle.ts';
 
 const vehicle = ref<Vehicle>();
 const hasBeenCalled = ref(false);
@@ -11,9 +11,9 @@ export function useSelectedVehicle() {
 		error,
 		loading: loadingVehicle,
 	} = useDB('vehicles');
-	
+
 	const emptyLoading = ref(false);
-	if(!hasBeenCalled.value && !vehicle.value) {
+	if (!hasBeenCalled.value && !vehicle.value) {
 		console.log('Getting vehicle!');
 		loadingVehicle.value = true;
 		hasBeenCalled.value = true;
@@ -37,7 +37,7 @@ export function useSelectedVehicle() {
 				hasBeenCalled.value = false;
 			});
 	}
-	
+
 	return {
 		vehicle,
 		loadingVehicle,

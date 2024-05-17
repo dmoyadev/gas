@@ -1,7 +1,11 @@
-import { initializeApp, FirebaseApp } from 'firebase/app';
-import { getMessaging, Messaging } from 'firebase/messaging';
-import { getAuth, Auth } from 'firebase/auth';
-import { getFirestore, Firestore } from 'firebase/firestore';
+import type { FirebaseApp } from 'firebase/app';
+import { initializeApp } from 'firebase/app';
+import type { Messaging } from 'firebase/messaging';
+import { getMessaging } from 'firebase/messaging';
+import type { Auth } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
+import type { Firestore } from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore';
 
 let firebaseApp: FirebaseApp;
 let messaging: Messaging;
@@ -23,7 +27,7 @@ try {
 	messaging = getMessaging(firebaseApp);
 	auth = getAuth(firebaseApp);
 	db = getFirestore(firebaseApp);
-} catch(error) {
+} catch (error) {
 	console.error('🔴 Something went wrong: ', error);
 }
 

@@ -14,7 +14,7 @@ import BaseButton from '@/components/button/BaseButton.vue';
 			Todavía no has añadido ningún vehículo a la aplicación...
 			<span class="empty-state__highlight">¿Empezamos?</span>
 		</p>
-		
+
 		<BaseButton
 			class="empty-state--button"
 			to="/vehicles/__new__"
@@ -44,7 +44,7 @@ header {
 	align-items: center;
 	justify-content: center;
 	text-align: center;
-	
+
 	&--title {
 		font-size: var(--font-size-big);
 		display: flex;
@@ -52,7 +52,7 @@ header {
 		gap: 4px;
 		max-width: 304px;
 	}
-	
+
 	&__highlight {
 		font-size: var(--font-size-big);
 		color: var(--color-primary);

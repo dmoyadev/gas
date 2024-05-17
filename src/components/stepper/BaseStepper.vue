@@ -22,7 +22,7 @@ withDefaults(
 		<div
 			v-for="n in totalSteps"
 			:key="n"
-			:class="{'active': n <= currentStep}"
+			:class="{ active: n <= currentStep }"
 		/>
 	</nav>
 </template>
@@ -46,7 +46,7 @@ nav {
 		&.active {
 			border: none;
 			animation: pop .5s ease-in-out forwards;
-			
+
 			@keyframes pop {
 			0% {
 				transform: scale(1);

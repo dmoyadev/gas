@@ -1,11 +1,12 @@
-import { Comment, Slot } from 'vue';
+import type { Slot } from 'vue';
+import { Comment } from 'vue';
 
 /**
  * Capitalizes the first letter of a string
  *
- * @param {String} str - The string to capitalize
+ * @param {string} str - The string to capitalize
  *
- * @returns {String} The capitalized string
+ * @returns {string} The capitalized string
  */
 export function capitalize(str: string): string {
 	const lowercase = str.toLowerCase();
@@ -22,7 +23,9 @@ export function capitalize(str: string): string {
  * @returns {boolean} True if the slot has content, false otherwise
  */
 export function hasSlotContent(slot?: Slot, slotProps: any = {}): boolean {
-	if (!slot) return false;
+	if (!slot) {
+		return false;
+	}
 
 	return slot(slotProps).some((vnode) => {
 		if (Array.isArray(vnode.children)) {

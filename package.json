@@ -1,41 +1,40 @@
 {
 	"name": "gas",
 	"private": true,
+	"type": "module",
 	"version": "0.0.1-alpha.8",
 	"scripts": {
 		"dev": "vite --mode localhost --host --port 5777",
 		"build": "rm -rf dist && vue-tsc && vite build",
-		"preview": "vite preview --host --port 4777 ",
-		"lint": "eslint --fix ./src --ext .vue,.js,.ts --ignore-path .gitignore",
+		"preview": "vite preview --host --port 4777",
+		"lint": "eslint --fix",
 		"check-typing": "vue-tsc --noEmit",
-		"build:ios": "npm run build && npm run sync-ios && npm run open-ios",
-		"sync-ios": "npx cap sync ios",
-		"open-ios": "npx cap open ios"
+		"check-deps": "npx taze"
 	},
 	"dependencies": {
-		"@fortawesome/fontawesome-free": "^6.4.2",
-		"@fortawesome/fontawesome-svg-core": "^6.4.2",
-		"@fortawesome/free-regular-svg-icons": "^6.4.2",
-		"@fortawesome/free-solid-svg-icons": "^6.4.2",
-		"@fortawesome/vue-fontawesome": "^3.0.3",
-		"@rushstack/eslint-patch": "^1.5.1",
-		"@vue/eslint-config-typescript": "^12.0.0",
-		"firebase": "^10.4.0",
-		"vue": "^3.3.4",
-		"vue-i18n": "^9.5.0",
-		"vue-router": "^4.2.5"
+		"@fortawesome/fontawesome-free": "^6.5.2",
+		"@fortawesome/fontawesome-svg-core": "^6.5.2",
+		"@fortawesome/free-regular-svg-icons": "^6.5.2",
+		"@fortawesome/free-solid-svg-icons": "^6.5.2",
+		"@fortawesome/vue-fontawesome": "^3.0.6",
+		"@rushstack/eslint-patch": "^1.10.3",
+		"@vue/eslint-config-typescript": "^13.0.0",
+		"canvas-confetti": "^1.9.3",
+		"firebase": "^10.12.0",
+		"vue": "^3.4.27",
+		"vue-i18n": "^9.13.1",
+		"vue-router": "^4.3.2"
 	},
 	"devDependencies": {
-		"@intlify/unplugin-vue-i18n": "^1.4.0",
-		"@typescript-eslint/eslint-plugin": "^6.7.5",
-		"@typescript-eslint/parser": "^6.7.5",
-		"@vitejs/plugin-vue": "^4.2.3",
-		"eslint": "^8.51.0",
-		"eslint-plugin-vue": "^9.17.0",
-		"sass": "^1.69.2",
-		"typescript": "^5.0.2",
-		"vite": "^4.4.5",
-		"vite-plugin-mkcert": "^1.16.0",
-		"vue-tsc": "^1.8.5"
+		"@antfu/eslint-config": "^2.18.0",
+		"@intlify/unplugin-vue-i18n": "^4.0.0",
+		"@types/canvas-confetti": "^1.6.4",
+		"@vitejs/plugin-vue": "^5.0.4",
+		"eslint": "^8.57.0",
+		"eslint-plugin-vue": "^9.25.0",
+		"sass": "^1.77.2",
+		"typescript": "^5.4.5",
+		"vite": "^5.2.11",
+		"vite-plugin-mkcert": "^1.17.5"
 	}
 }

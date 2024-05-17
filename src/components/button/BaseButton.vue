@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ButtonColor, ButtonMode, ButtonForm } from '@/components/button/types';
+import type { ComponentPublicInstance } from 'vue';
+import { ref } from 'vue';
+import { ButtonColor, ButtonForm, ButtonMode } from '@/components/button/types';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
-import { ComponentPublicInstance, ref } from 'vue';
 
 const props = withDefaults(
 	defineProps<{
@@ -28,7 +29,7 @@ const props = withDefaults(
 		/**
 		 * Indicates if the button is loading
 		 */
-		loading?: boolean
+		loading?: boolean;
 	}>(),
 	{
 		mode: ButtonMode.SOLID,
@@ -43,29 +44,33 @@ const props = withDefaults(
 // This effect needs the button to have a position property set to relative or absolute so that the ripple element
 // can be positioned absolutely, as well as hiding the overflow of the button.
 const element = ref<HTMLButtonElement | HTMLAnchorElement | ComponentPublicInstance | null>(null);
-const isRouterLink = (element: any): element is ComponentPublicInstance  => Boolean(props.to) && element.$el?.tagName === 'A';
+const isRouterLink = (element: any): element is ComponentPublicInstance => Boolean(props.to) && element.$el?.tagName === 'A';
 function createRippleEffect(event: MouseEvent) {
-	if(!element.value) { return; }
-	
+	if (!element.value) {
+		return;
+	}
+
 	const button = isRouterLink(element.value) ? element.value.$el : element.value;
-	if(!button) { return; }
-	
+	if (!button) {
+		return;
+	}
+
 	const circle = document.createElement('span');
 	const diameter = Math.max(button.clientWidth, button.clientHeight);
 	const radius = diameter / 2;
-	
+
 	circle.style.width = circle.style.height = `${diameter}px`;
 	const buttonPosition = button.getBoundingClientRect();
 	circle.style.left = `${event.clientX - buttonPosition.left - radius}px`;
 	circle.style.top = `${event.clientY - buttonPosition.top - radius}px`;
 	circle.classList.add('ripple');
-	
+
 	const ripple = button.getElementsByClassName('ripple')[0];
-	
+
 	if (ripple) {
 		ripple.remove();
 	}
-	
+
 	button.appendChild(circle);
 }
 </script>
@@ -86,7 +91,7 @@ function createRippleEffect(event: MouseEvent) {
 	>
 		<!-- @slot Content of the button -->
 		<slot v-if="!loading" />
-		
+
 		<!-- @slot Content of a loading button -->
 		<slot
 			v-else
@@ -117,62 +122,62 @@ router-link {
 	font-weight: var(--font-heavy);
 	position: relative;
 	overflow: hidden;
-	
+
 	@media (max-width: 768px) {
 		cursor: default;
 	}
-	
+
 	&.button-color {
 		&-primary {
 			background: var(--color-primary);
 			color: var(--color-primary-accent);
 			border-color: var(--color-primary);
 		}
-		
+
 		&-grayscale {
 			background: var(--color-gray-0);
 			color: var(--color-gray-10);
 			border-color: var(--color-gray-0);
 		}
-		
+
 		&-danger {
 			background: var(--color-danger);
 			color: var(--color-danger-accent);
 			border-color: var(--color-danger);
 		}
 	}
-	
+
 	&.button-mode {
 		&-outline {
 			border: 1px solid;
 			background: none;
-			
+
 			&.button-color {
 				&-primary {
 					color: var(--color-primary);
-					
+
 					&:before {
 						border-color: var(--color-primary);
 					}
 				}
-				
+
 				&-grayscale {
 					color: var(--color-gray-0);
-					
+
 					&:before {
 						border-color: var(--color-gray-0);
 					}
 				}
-				
+
 				&-danger {
 					color: var(--color-danger);
-					
+
 					&:before {
 						border-color: var(--color-danger);
 					}
 				}
 			}
-			
+
 			&.button-form {
 				&-notched-left,
 				&-notched-right {
@@ -180,63 +185,63 @@ router-link {
 						border: 1px solid
 					}
 				}
-				
+
 				&-notched-left {
 					border-left: none;
 				}
-				
+
 				&-notched-right {
 					border-right: none;
 				}
 			}
 		}
-		
+
 		&-clear {
 			background: transparent;
-			
+
 			&:before {
 				display: none;
 			}
-			
+
 			&.button-color {
 				&-primary {
 					color: var(--color-primary);
 				}
-				
+
 				&-grayscale {
 					color: var(--color-gray-0);
 				}
-				
+
 				&-danger {
 					color: var(--color-danger);
 				}
 			}
 		}
 	}
-	
+
 	&.button-form {
 		&-block {
 			width: 100%;
 			border-radius: 4px;
 		}
-		
+
 		&-inline {
 			display: inline-flex;
 			border-radius: 4px;
 		}
-		
+
 		&-circle {
 			display: inline-flex;
 			border-radius: 100%;
 		}
-		
+
 		&-notched-left,
 		&-notched-right {
 			position: relative;
 			overflow: hidden;
 			display: inline-flex;
 			flex: 1;
-			
+
 			&:before {
 				content: '';
 				position: absolute;
@@ -248,26 +253,26 @@ router-link {
 				border-radius: 100%;
 			}
 		}
-		
+
 		&-notched-left {
 			border-radius: 0 4px 4px 0;
 			padding-left: 22px;
-			
+
 			&:before {
 				left: -50px;
 			}
 		}
-		
+
 		&-notched-right {
 			border-radius: 4px 0 0 4px;
 			padding-right: 22px;
-			
+
 			&:before {
 				right: -50px;
 			}
 		}
 	}
-	
+
 	&.button-loading,
 	&:disabled {
 		opacity: .5;

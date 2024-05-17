@@ -1,22 +1,21 @@
 <script setup lang="ts">
+import { onMounted, onUnmounted, ref } from 'vue';
+import confetti from 'canvas-confetti';
 import BaseButton from '@/components/button/BaseButton.vue';
 import { ButtonForm, ButtonMode } from '@/components/button/types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { IconSize } from '@/components/icon/types.ts';
-import { onMounted, onUnmounted, ref } from 'vue';
-// @ts-ignore
-import confetti from 'https://cdn.skypack.dev/canvas-confetti';
 
 const interval = ref();
 onMounted(() => {
-	confetti({ colors: [ '#FFF180', '#ffffff' ] });
-	interval.value = window.setInterval(function(){
+	confetti({ colors: ['#FFF180', '#ffffff'] });
+	interval.value = window.setInterval(() => {
 		confetti({
 			origin: {
 				x: Math.random() * 0.8 + 0.1,
 				y: Math.random() * 0.8 + 0.1,
 			},
-			colors: [ '#FFF180', '#ffffff' ],
+			colors: ['#FFF180', '#ffffff'],
 		});
 	}, 1500);
 });
@@ -37,25 +36,25 @@ onUnmounted(() => {
 			>
 				<BaseIcon icon="fa-solid fa-arrow-left" />
 			</BaseButton>
-			
+
 			<img
 				src="/assets/logo.svg"
 				alt="logo"
 			>
-			
+
 			<!-- This is a placeholder for the logo to be centered -->
 			<span />
 		</header>
-		
+
 		<main>
 			<BaseIcon
 				class="icon"
 				icon="fa-regular fa-circle-check"
 				:icon-size="IconSize.XXL"
 			/>
-			
+
 			<h1>¡Listo!</h1>
-			
+
 			<BaseButton to="/">
 				Empezar a usar la app
 			</BaseButton>
@@ -75,15 +74,15 @@ header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	
+
 	&:not(:has(span)) {
 		justify-content: center;
 	}
-	
+
 	img {
 		width: 104px;
 	}
-	
+
 	span {
 		width: 42px;
 	}
@@ -98,7 +97,7 @@ main {
 	justify-content: center;
 	gap: 24px;
 	text-align: center;
-	
+
 	.icon {
 		color: var(--color-success);
 	}

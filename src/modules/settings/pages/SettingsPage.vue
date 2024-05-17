@@ -8,13 +8,13 @@ const { user, logout } = useAuthentication();
 
 <template>
 	Settings!
-	
+
 	<pre>{{ user }}</pre>
-	
+
 	<BaseButton @click="logout()">
 		Cerrar sesión
 	</BaseButton>
-	
+
 	{{ pkg.version }}
 </template>
 

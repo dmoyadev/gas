@@ -5,7 +5,7 @@ import BackgroundImage from '@/modules/auth/components/BackgroundImage.vue';
 <template>
 	<header>
 		<BackgroundImage />
-		
+
 		<img
 			class="logo"
 			src="/assets/logo.svg"
@@ -14,7 +14,7 @@ import BackgroundImage from '@/modules/auth/components/BackgroundImage.vue';
 			alt="'Logo"
 		>
 	</header>
-	
+
 	<main>
 		<slot />
 	</main>
@@ -23,14 +23,14 @@ import BackgroundImage from '@/modules/auth/components/BackgroundImage.vue';
 <style lang="scss" scoped>
 header {
 	height: 260px;
-	
+
 	.auth-bg {
 		position: absolute;
 		top: 0;
 		right: 0;
 		z-index: -1;
 	}
-	
+
 	.logo {
 		position: absolute;
 		top: 204px;

@@ -1,4 +1,4 @@
-import { VehicleBrand } from '@/modules/app/models/Vehicle.ts';
+import type { VehicleBrand } from '@/modules/app/models/Vehicle.ts';
 
 export const carManufacturers: VehicleBrand[] = [
 	{

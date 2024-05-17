@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { computed } from 'vue';
-import { isElectricVehicle, VehicleFuelType } from '@/modules/app/models/Vehicle.ts';
+import BaseIcon from '@/components/icon/BaseIcon.vue';
+import { VehicleFuelType, isElectricVehicle } from '@/modules/app/models/Vehicle.ts';
 import HomeEmptyPartial from '@/modules/app/partials/HomeEmptyPartial.vue';
 import { IconSize } from '@/components/icon/types.ts';
 import RecentRefills from '@/modules/app/components/RecentRefills.vue';
@@ -16,9 +16,11 @@ const {
 } = useSelectedVehicle();
 
 const fuelText = computed<string>(() => {
-	if(!vehicle.value) { return ''; }
-	
-	switch(vehicle.value?.fuelType) {
+	if (!vehicle.value) {
+		return '';
+	}
+
+	switch (vehicle.value?.fuelType) {
 		case VehicleFuelType.GASOLINE:
 			return 'Repostaje';
 		case VehicleFuelType.DIESEL:
@@ -36,9 +38,9 @@ const fuelText = computed<string>(() => {
 <template>
 	<!-- ⏳ Loading state -->
 	<template v-if="loading || emptyLoading">
-		<HomeHeader :class="{ 'broken': emptyLoading }" />
-		
-		<main :class="{ 'broken': emptyLoading }">
+		<HomeHeader :class="{ broken: emptyLoading }" />
+
+		<main :class="{ broken: emptyLoading }">
 			<section class="car-details">
 				<div class="car-details--info">
 					<div class="car-details--info--card">
@@ -48,7 +50,7 @@ const fuelText = computed<string>(() => {
 						</div>
 						<span class="skeleton-item" />
 					</div>
-					
+
 					<div class="car-details--info--card">
 						<div class="car-details--info--card--title">
 							<BaseIcon icon="fa-solid fa-gauge" />
@@ -57,36 +59,36 @@ const fuelText = computed<string>(() => {
 						<span class="skeleton-item" />
 					</div>
 				</div>
-				
+
 				<img
 					src="/images/car-silhouette.svg"
 					alt="Silueta de coche"
 					class="car-details--image"
 				>
 			</section>
-			
+
 			<section class="car-actions">
 				<span class="skeleton-item skeleton-item--big-square" />
 				<span class="skeleton-item skeleton-item--big-square" />
 				<span class="skeleton-item skeleton-item--big-square" />
 			</section>
-			
+
 			<RecentRefills />
 		</main>
 	</template>
-	
+
 	<!-- 🚨 Error state -->
 	<template v-else-if="error">
 		Error
 	</template>
-	
+
 	<!-- 📃 Empty state -->
 	<HomeEmptyPartial v-else-if="!vehicle" />
-	
+
 	<!-- ✅ Success state -->
 	<template v-else>
 		<HomeHeader :vehicle="vehicle" />
-		
+
 		<main>
 			<section class="car-details">
 				<div class="car-details--info">
@@ -97,7 +99,7 @@ const fuelText = computed<string>(() => {
 						</div>
 						<span class="car-details--info--card--value">{{ vehicle?.plate }}</span>
 					</div>
-					
+
 					<div class="car-details--info--card">
 						<div class="car-details--info--card--title">
 							<BaseIcon icon="fa-solid fa-gauge" />
@@ -106,16 +108,16 @@ const fuelText = computed<string>(() => {
 						<span class="car-details--info--card--value">{{ vehicle?.odometer?.toLocaleString() }}</span>
 					</div>
 				</div>
-				
+
 				<img
 					:src="`/images/${vehicle?.vehicleType || 'car'}-silhouette.svg`"
 					alt="Silueta del vehículo"
 					class="car-details--image"
 				>
 			</section>
-			
+
 			<section class="car-actions">
-				<router-link 
+				<router-link
 					class="car-actions--action"
 					:to="`/vehicles/${vehicle?.id}/refill`"
 				>
@@ -141,10 +143,10 @@ const fuelText = computed<string>(() => {
 							:icon-size="IconSize.M"
 						/>
 					</div>
-					
+
 					{{ fuelText }}
 				</router-link>
-				
+
 				<router-link
 					class="car-actions--action"
 					:to="`/vehicles/${vehicle?.id}/garage`"
@@ -154,10 +156,10 @@ const fuelText = computed<string>(() => {
 						icon="fa-solid fa-wrench"
 						:icon-size="IconSize.XL"
 					/>
-					
+
 					Taller
 				</router-link>
-				
+
 				<router-link
 					:to="`/vehicles/${vehicle?.id}/expense`"
 					class="car-actions--action"
@@ -167,11 +169,11 @@ const fuelText = computed<string>(() => {
 						icon="fa-solid fa-file-invoice-dollar"
 						:icon-size="IconSize.XL"
 					/>
-					
+
 					Otros
 				</router-link>
 			</section>
-			
+
 			<RecentRefills :vehicle="vehicle" />
 		</main>
 	</template>
@@ -180,7 +182,7 @@ const fuelText = computed<string>(() => {
 <style lang="scss" scoped>
 .broken {
 	animation: break .5s ease-in-out forwards, fall .5s ease-in-out;
-	
+
 	@keyframes break {
 		0% {
 			transform: scale(1);
@@ -190,7 +192,7 @@ const fuelText = computed<string>(() => {
 			opacity: 0;
 		}
 	}
-	
+
 	@keyframes fall {
 		0% {
 			transform: translateY(0);
@@ -207,47 +209,47 @@ main {
 	display: flex;
 	flex-direction: column;
 	gap: 24px;
-	
+
 	h2 {
 		display: flex;
 		align-items: center;
 		gap: 8px;
 	}
-	
+
 	.car-details {
 		display: flex;
 		gap: 32px;
-		
+
 		&--info {
 			margin: auto 0;
 			display: flex;
 			flex-direction: column;
 			gap: 24px;
 			flex: 3;
-			
+
 			&--card {
 				display: flex;
 				flex-direction: column;
 				gap: 4px;
-				
+
 				&--title {
 					display: flex;
 					align-items: center;
 					gap: 4px;
-					
+
 					span {
 						font-size: var(--font-size-small);
 						font-weight: var(--font-light);
 					}
 				}
-				
+
 				&--value {
 					font-size: var(--font-size-big);
 					font-weight: var(--font-heavy);
 				}
 			}
 		}
-		
+
 		&--image {
 			flex: 1;
 			width: 100%;
@@ -255,11 +257,11 @@ main {
 			transform: scaleX(-1);
 		}
 	}
-	
+
 	.car-actions {
 		display: flex;
 		gap: 8px;
-		
+
 		router-link,
 		a {
 			flex: 1;
@@ -275,11 +277,11 @@ main {
 			gap: 8px;
 			font-size: var(--font-size-small);
 			font-weight: var(--font-heavy);
-			
+
 			div {
 				display: flex;
 				height: 32px;
-				
+
 				.icon:last-child {
 					align-self: flex-end;
 				}

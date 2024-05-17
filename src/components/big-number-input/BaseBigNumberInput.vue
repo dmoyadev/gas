@@ -7,7 +7,7 @@ withDefaults(
 		/**
 		 * The value of the input
 		 */
-		modelValue?: number,
+		modelValue?: number;
 		/**
 		 * Indicates if the input has an error. Determines if the `error` slot
 		 * will be shown
@@ -33,10 +33,10 @@ defineEmits<{
 	 * Emitted when the input value changes
 	 * @arg {number} value - The new value of the input
 	 */
-	'update:modelValue': [value?: number]
+	'update:modelValue': [value?: number];
 }>();
 
-const _componentUID =  Date.now().toString(36) + Math.random().toString(36).substring(2);
+const _componentUID = Date.now().toString(36) + Math.random().toString(36).substring(2);
 </script>
 
 <template>
@@ -61,14 +61,14 @@ const _componentUID =  Date.now().toString(36) + Math.random().toString(36).subs
 				aria-label=""
 				@input="$emit('update:modelValue', +(($event.target as HTMLInputElement).value) || undefined)"
 			>
-			
+
 			<!-- Icon right -->
 			<span class="append">
 				<!-- @slot Element shown on the inside right of the input -->
 				<slot name="append" />
 			</span>
 		</span>
-		
+
 		<!-- Label -->
 		<span
 			v-if="!loading && hasSlotContent($slots.default)"
@@ -86,7 +86,7 @@ label {
 	flex-direction: column;
 	justify-content: flex-end;
 	gap: 4px;
-	
+
 	.input-wrapper {
 		display: flex;
 		align-items: flex-end;
@@ -94,11 +94,11 @@ label {
 		gap: 4px;
 		border-bottom: 1px solid var(--color-secondary-accent);
 		padding: 4px 0 4px 12px;
-		
+
 		&.has-error {
 			border-color: var(--color-danger) !important;
 			animation: shake 0.2s ease-in-out 0s 2;
-			
+
 			@keyframes shake {
 				0% {
 					margin-left: 0;
@@ -113,22 +113,22 @@ label {
 					margin-left: 0;
 				}
 			}
-			
+
 			input {
 				color: var(--color-danger);
 			}
-			
+
 			.append {
 				color: var(--color-danger);
 			}
 		}
-		
+
 		&:not(:has(:disabled)):focus-within {
 			input {
 				border-color: var(--color-danger-accent);
 			}
 		}
-		
+
 		input {
 			height: 32px;
 			width: 100%;
@@ -138,12 +138,12 @@ label {
 			font-family: var(--font-family-monospace);
 			color: var(--color-primary);
 		}
-		
+
 		.append {
 			margin-bottom: 3px;
 		}
 	}
-	
+
 	.label {
 		margin-left: auto;
 		font-size: var(--font-size-small);
@@ -153,7 +153,7 @@ label {
 		align-items: center;
 		gap: 8px;
 	}
-	
+
 	&:has(input:read-only),
 	&:has(input:disabled) {
 		opacity: .5;

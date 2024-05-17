@@ -27,7 +27,7 @@ import BaseIcon from '@/components/icon/BaseIcon.vue';
 div {
 	display: flex;
 	height: 80px;
-	
+
 	.icon-gear:last-child {
 		margin-left: -8px;
 		align-self: flex-end;
