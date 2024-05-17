@@ -4,6 +4,7 @@ import ComponentShowcase from '@/showcase/ComponentShowcase.vue';
 import ButtonSheet from '@/showcase/sheets/ButtonSheet.vue';
 import BigNumberInputSheet from '@/showcase/sheets/BigNumberInputSheet.vue';
 import IconSheet from '@/showcase/sheets/IconSheet.vue';
+import ModalSheet from '@/showcase/sheets/ModalSheet.vue';
 import SpinnerSheet from '@/showcase/sheets/SpinnerSheet.vue';
 import StepperSheet from '@/showcase/sheets/StepperSheet.vue';
 
@@ -23,6 +24,10 @@ const sheets = [
 	{
 		name: 'Icon',
 		component: IconSheet,
+	},
+	{
+		name: 'Modal',
+		component: ModalSheet,
 	},
 	{
 		name: 'Spinner',

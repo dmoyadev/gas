@@ -107,6 +107,7 @@ export const carManufacturers: VehicleBrand[] = [
 	{
 		name: 'Hyundai',
 		logo: '/manufacturers/car/hyundai.svg',
+		highlighted: true,
 	},
 	{
 		name: 'INEOS',
@@ -221,7 +222,6 @@ export const carManufacturers: VehicleBrand[] = [
 	{
 		name: 'Peugeot',
 		logo: '/manufacturers/car/peugeot.svg',
-		highlighted: true,
 	},
 	{
 		name: 'Polestar',

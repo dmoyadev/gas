@@ -98,7 +98,7 @@ watch(() => props.brand, (value, oldValue) => {
 				</label>
 
 				<BaseModal
-					:show="showBrandModal"
+					v-if="showBrandModal"
 					title="Marcas"
 					@close="showBrandModal = false"
 				>

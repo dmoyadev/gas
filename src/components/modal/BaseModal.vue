@@ -1,19 +1,17 @@
 <script setup lang="ts">
-import { watch } from 'vue';
-import { ButtonColor, ButtonForm, ButtonMode } from '@/components/button/types';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { ButtonForm, ButtonMode } from '@/components/button/types';
 import BaseButton from '@/components/button/BaseButton.vue';
 
-const props = defineProps<{
-	/**
-	 * Whether the modal should be shown or not. It is needed over the
-	 * `v-if` directive for the transitions to work properly
-	 */
-	show?: boolean;
-	/**
-	 * The title of the modal
-	 */
-	title?: string;
-}>();
+interface Props {
+	closeBtnText?: string; /* The text of the close button */
+	title?: string; /* The title of the modal */
+	size?: number; /* The percentage of aperture from top of the screen. @defaults: 96 */
+}
+
+const props = withDefaults(defineProps<Props>(),	{
+	size: 96,
+});
 
 defineEmits<{
 	/**
@@ -22,122 +20,150 @@ defineEmits<{
 	close: [];
 }>();
 
-const app = document.querySelector('#app');
-watch(() => props.show, () => {
-	if (props.show) {
-		app?.classList.add('modal-opened');
-	} else {
-		app?.classList.remove('modal-opened');
+const $modal = ref<HTMLElement>();
+onMounted(() => {
+	if (!$modal.value) {
+		return;
 	}
+
+	const initialSize = window.innerHeight * props.size / 100;
+	$modal.value.style.height = `${initialSize}px`;
+	$modal.value.style.maxHeight = `${initialSize}px`;
+});
+
+onBeforeUnmount(() => {
+	if (!$modal.value) {
+		return;
+	}
+
+	$modal.value.style.height = '0px';
+	$modal.value.style.maxHeight = '0px';
 });
 </script>
 
 <template>
 	<Teleport to="body">
-		<Transition name="slide-fade">
-			<div
-				v-if="show"
-				class="modal"
-			>
-				<!-- @slot The content of the modal -->
-				<slot name="dialog">
-					<dialog
-						open
-						v-bind="$attrs"
-					>
-						<header>
-							<div class="placeholder" />
+		<div
+			class="overlay"
+			@click="$emit('close')"
+		/>
 
-							<!-- @slot The title of the modal -->
-							<span
-								v-if="title"
-								class="title"
-							>
-								{{ title }}
-							</span>
+		<dialog
+			v-bind="$attrs"
+			ref="$modal"
+			class="modal"
+			:style="{ '--modal-height': `${size}dvh` }"
+			open
+		>
+			<header>
+				<!-- Close button -->
+				<BaseButton
+					class="btn-close"
+					:mode="ButtonMode.CLEAR"
+					:form="ButtonForm.INLINE"
+					@click="$emit('close')"
+				>
+					{{ closeBtnText || 'Cancelar' }}
+				</BaseButton>
 
-							<!-- Close button -->
-							<BaseButton
-								class="btn-close"
-								:mode="ButtonMode.CLEAR"
-								:form="ButtonForm.INLINE"
-								:color="ButtonColor.PRIMARY"
-								@click="$emit('close')"
-							>
-								Cerrar
-							</BaseButton>
-						</header>
+				<span
+					v-if="title"
+					class="title"
+				>
+					{{ title }}
+				</span>
 
-						<!-- @slot The main content of the modal -->
-						<slot />
-					</dialog>
-				</slot>
-			</div>
-		</Transition>
+				<div class="header-action">
+					<!-- @slot Main action of the modal -->
+					<slot name="header-action" />
+				</div>
+			</header>
+
+			<main>
+				<!-- @slot The main content of the modal -->
+				<slot />
+			</main>
+		</dialog>
 	</Teleport>
 </template>
 
 <style scoped lang="scss">
-.modal {
+.overlay {
+	position: fixed;
+	inset: 0;
+	content: '';
+	background: rgba(0, 0, 0, 0.2);
+	z-index: 1999;
+}
+
+dialog {
+	--header-height: 58px;
+	--base-border-radius: 8px 8px 0 0;
 	position: absolute;
-	top: 24px;
-	width: 100%;
-	min-height: calc(100% - 24px);
-	z-index: 1000;
 	background: var(--color-secondary);
-	border-radius: 8px 8px 0 0;
+	color: var(--color-secondary-accent);
+	width: 100%;
+	bottom: 0;
+	max-height: 0;
+	transition: all .1s;
+	border-radius: var(--base-border-radius);
+	z-index: 2000;
+	border: none;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
 
-	dialog {
-		header {
-			position: sticky;
-			top: 0;
-			z-index: 100;
+	header {
+		position: absolute;
+		top: 0;
+		z-index: 2000;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		border-radius: var(--base-border-radius);
+		padding: 8px 4px;
+		width: 100%;
+
+		/* Glass effect */
+		background: var(--color-secondary-alpha);
+		backdrop-filter: blur(4px);
+		-webkit-backdrop-filter: blur(4px);
+
+		.btn-close {
 			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			border-radius: 8px 8px 0 0;
-			background: var(--color-secondary-dark);
-
-			.placeholder {
-				width: 72px;
-			}
-
-			.title {
-				flex: 1;
-				text-align: center;
-				color: var(--color-secondary-accent);
-			}
-
-			.btn-close {
-				margin-left: auto;
-			}
+			justify-content: flex-start;
 		}
+
+		.title {
+			text-align: center;
+			color: var(--color-secondary-accent);
+		}
+
+		.header-action {
+			min-width: 90px;
+			display: flex;
+			justify-content: flex-end;
+		}
+	}
+
+	main {
+		overflow-y: auto;
+		padding-top: var(--header-height);
+		min-height: calc(var(--modal-height) + var(--header-height));
 	}
 }
 </style>
 
 <style lang="scss">
-#app {
-	transition: transform 0.2s ease;
+body:has(.modal) {
+	background: black;
 
-	&.modal-opened {
+	#app {
 		border-radius: 8px;
 		position: fixed;
 		overflow: hidden;
 		transform: scale(.95, .97);
+		transition: transform .2s;
 	}
-}
-
-.slide-fade-enter-active {
-	transition: all 0.2s ease-out;
-}
-
-.slide-fade-leave-active {
-	transition: all 0.2s ease-out;
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-	transform: translateY(100%);
 }
 </style>
