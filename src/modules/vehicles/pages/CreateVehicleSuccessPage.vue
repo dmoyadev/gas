@@ -4,7 +4,7 @@ import confetti from 'canvas-confetti';
 import BaseButton from '@/components/button/BaseButton.vue';
 import { ButtonForm, ButtonMode } from '@/components/button/types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
-import { IconSize } from '@/components/icon/types.ts';
+import { IconSize } from '@/components/icon/BaseIcon.types.ts';
 
 const interval = ref();
 onMounted(() => {

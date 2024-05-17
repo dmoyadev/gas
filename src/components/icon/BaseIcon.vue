@@ -1,23 +1,15 @@
 <script lang="ts" setup>
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { IconSize } from '@/components/icon/types';
+import { IconSize } from './BaseIcon.types.ts';
 
-withDefaults(
-	defineProps<{
-		/**
-		 * The size of the icon.
-		 */
-		iconSize?: IconSize;
-		/**
-		 * The icon to display.
-		 */
-		icon?: string;
-	}>(),
-	{
-		iconSize: IconSize.M,
-		icon: undefined,
-	},
-);
+interface Props {
+	iconSize?: IconSize; /* The size of the icon. @defaults: IconSize.M */
+	icon?: string; /* The icon to display. */
+}
+
+withDefaults(defineProps<Props>(),	{
+	iconSize: IconSize.M,
+});
 </script>
 
 <template>
@@ -28,6 +20,8 @@ withDefaults(
 			:icon="icon"
 			fixed-width
 		/>
+
+		<!-- @slot Element shown when no icon is provided -->
 		<slot v-else />
 	</i>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconSize } from '@/components/icon/types.ts';
+import { IconSize } from '@/components/icon/BaseIcon.types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 </script>
 

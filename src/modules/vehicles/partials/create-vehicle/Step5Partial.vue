@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
-import { IconSize } from '@/components/icon/types.ts';
+import { IconSize } from '@/components/icon/BaseIcon.types.ts';
 import { useDB } from '@/modules/app/composables/useDB.ts';
 import type { Vehicle } from '@/modules/app/models/Vehicle.ts';
 import { useStorage } from '@/modules/app/composables/useStorage.ts';

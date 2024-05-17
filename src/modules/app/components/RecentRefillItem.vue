@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import type { Refill } from '@/modules/refills/models/Refill.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
-import { IconSize } from '@/components/icon/types.ts';
+import { IconSize } from '@/components/icon/BaseIcon.types.ts';
 
 const props = defineProps<{
 	refill?: Refill;

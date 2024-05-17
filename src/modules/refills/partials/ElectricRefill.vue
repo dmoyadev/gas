@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { IconSize } from '@/components/icon/types.ts';
+import { IconSize } from '@/components/icon/BaseIcon.types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import BaseBigNumberInput from '@/components/big-number-input/BaseBigNumberInput.vue';
 import type { Refill } from '@/modules/refills/models/Refill.ts';
