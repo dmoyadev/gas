@@ -1,34 +1,27 @@
 <script setup lang="ts">
-withDefaults(
-	defineProps<{
-		/**
-		 * Indicates the current step in the stepper
-		 */
-		currentStep?: number;
-		/**
-		 * Indicates the number of steps in the stepper
-		 */
-		totalSteps?: number;
-	}>(),
-	{
-		currentStep: 1,
-		totalSteps: 1,
-	},
-);
+interface Props {
+	current?: number; /* Indicates the current step in the stepper */
+	total?: number; /* Indicates the number of steps in the stepper */
+}
+
+withDefaults(defineProps<Props>(),	{
+	current: 1,
+	total: 1,
+});
 </script>
 
 <template>
 	<nav class="stepper">
 		<div
-			v-for="n in totalSteps"
+			v-for="n in total"
 			:key="n"
-			:class="{ active: n <= currentStep }"
+			:class="{ active: n <= current }"
 		/>
 	</nav>
 </template>
 
 <style scoped lang="scss">
-nav {
+.stepper {
 	display: flex;
 	justify-content: center;
 	gap: 16px;
@@ -48,19 +41,19 @@ nav {
 			animation: pop .5s ease-in-out forwards;
 
 			@keyframes pop {
-			0% {
-				transform: scale(1);
-				background: var(--color-secondary-accent);
+				0% {
+					transform: scale(1);
+					background: var(--color-secondary-accent);
+				}
+				50% {
+					transform: scale(1.2);
+					background-color: var(--color-primary);
+				}
+				100% {
+					transform: scale(1);
+					background-color: var(--color-primary);
+				}
 			}
-			50% {
-				transform: scale(1.2);
-				background-color: var(--color-primary);
-			}
-			100% {
-				transform: scale(1);
-				background-color: var(--color-primary);
-			}
-		}
 		}
 	}
 }
