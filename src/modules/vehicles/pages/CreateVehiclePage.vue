@@ -111,8 +111,8 @@ async function submitStep(step: number) {
 
 		<BaseStepper
 			class="stepper"
-			:current-step="currentStep"
-			:total-steps="4"
+			:current="currentStep"
+			:total="4"
 		/>
 	</div>
 </template>

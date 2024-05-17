@@ -2,16 +2,20 @@
 import InputSheet from '@/showcase/sheets/InputSheet.vue';
 import ComponentShowcase from '@/showcase/ComponentShowcase.vue';
 import ButtonSheet from '@/showcase/sheets/ButtonSheet.vue';
+import StepperSheet from '@/showcase/sheets/StepperSheet.vue';
 
 const sheets = [
 	{
 		name: 'Button',
 		component: ButtonSheet,
 	},
-
 	{
 		name: 'Input',
 		component: InputSheet,
+	},
+	{
+		name: 'Stepper',
+		component: StepperSheet,
 	},
 ];
 </script>
