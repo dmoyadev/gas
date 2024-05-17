@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue';
-import { ButtonForm, ButtonMode } from '@/components/button/types';
+import { ButtonForm, ButtonMode } from '@/components/button/BaseButton.types.ts';
 import BaseButton from '@/components/button/BaseButton.vue';
 
 interface Props {

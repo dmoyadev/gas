@@ -2,7 +2,7 @@
 import { onMounted, onUnmounted, ref } from 'vue';
 import confetti from 'canvas-confetti';
 import BaseButton from '@/components/button/BaseButton.vue';
-import { ButtonForm, ButtonMode } from '@/components/button/types.ts';
+import { ButtonForm, ButtonMode } from '@/components/button/BaseButton.types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { IconSize } from '@/components/icon/BaseIcon.types.ts';
 

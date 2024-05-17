@@ -8,7 +8,7 @@ import Step3Partial from '@/modules/vehicles/partials/create-vehicle/Step3Partia
 import Step4Partial from '@/modules/vehicles/partials/create-vehicle/Step4Partial.vue';
 import Step5Partial from '@/modules/vehicles/partials/create-vehicle/Step5Partial.vue';
 import BaseButton from '@/components/button/BaseButton.vue';
-import { ButtonForm, ButtonMode } from '@/components/button/types.ts';
+import { ButtonForm, ButtonMode } from '@/components/button/BaseButton.types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import type { Vehicle } from '@/modules/app/models/Vehicle.ts';
 import { useStorage } from '@/modules/app/composables/useStorage.ts';

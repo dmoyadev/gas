@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import BaseButton from '@/components/button/BaseButton.vue';
-import { ButtonColor, ButtonForm, ButtonMode } from '@/components/button/types.ts';
+import { ButtonColor, ButtonForm, ButtonMode } from '@/components/button/BaseButton.types.ts';
 
 const tabs = [
 	{

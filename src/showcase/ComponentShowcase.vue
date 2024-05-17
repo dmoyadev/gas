@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import BaseButton from '@/components/button/BaseButton.vue';
-import { ButtonColor, ButtonForm, ButtonMode } from '@/components/button/types';
+import { ButtonColor, ButtonForm, ButtonMode } from '@/components/button/BaseButton.types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 
 defineProps<{

@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import BaseButton from '@/components/button/BaseButton.vue';
-import { ButtonForm, ButtonMode } from '@/components/button/types.ts';
+import { ButtonForm, ButtonMode } from '@/components/button/BaseButton.types.ts';
 import { useSelectedVehicle } from '@/modules/vehicles/composables/useSelectedVehicle.ts';
 import { VehicleFuelType } from '@/modules/app/models/Vehicle.ts';
 import BaseSpinner from '@/components/spinner/BaseSpinner.vue';
