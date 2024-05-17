@@ -6,7 +6,10 @@ import ShowcaseElements from '@/showcase/ShowcaseElements.vue';
 
 <template>
 	<section class="sheet">
-		<template v-for="mode in ButtonMode">
+		<template
+			v-for="mode in ButtonMode"
+			:key="mode"
+		>
 			<ShowcaseElements>
 				<template #title>
 					{{ mode }}

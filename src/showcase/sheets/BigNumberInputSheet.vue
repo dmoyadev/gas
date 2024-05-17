@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import ShowcaseElements from '@/showcase/ShowcaseElements.vue';
 import BaseBigNumberInput from '@/components/big-number-input/BaseBigNumberInput.vue';
+import BaseIcon from '@/components/icon/BaseIcon.vue';
 
 const num = ref();
 </script>
@@ -18,6 +19,9 @@ const num = ref();
 				placeholder="·,···"
 			>
 				This is a very basic label
+				<template #append>
+					€
+				</template>
 			</BaseBigNumberInput>
 		</ShowcaseElements>
 
@@ -32,6 +36,9 @@ const num = ref();
 				has-error
 			>
 				This is a very basic label
+				<template #append>
+					<BaseIcon icon="fa-solid fa-car" />
+				</template>
 			</BaseBigNumberInput>
 		</ShowcaseElements>
 
