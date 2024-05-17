@@ -139,7 +139,7 @@ function updateUnitsAndUnitCost(totalCost?: number) {
 		<BaseBigNumberInput
 			v-model.number="data.totalCost"
 			placeholder="·,···"
-			is-required
+			required
 			@update:model-value="updateUnitsAndUnitCost($event)"
 		>
 			Coste total
@@ -153,7 +153,7 @@ function updateUnitsAndUnitCost(totalCost?: number) {
 			<BaseBigNumberInput
 				v-model.number="data.unitCost"
 				placeholder="·,···"
-				is-required
+				required
 				@update:model-value="updateUnits($event)"
 			>
 				Precio del litro
@@ -166,7 +166,7 @@ function updateUnitsAndUnitCost(totalCost?: number) {
 			<BaseBigNumberInput
 				v-model.number="data.units"
 				placeholder="·,···"
-				is-required
+				required
 				@update:model-value="updateUnitCost($event)"
 			>
 				Litros repostados

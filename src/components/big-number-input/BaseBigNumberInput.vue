@@ -1,40 +1,13 @@
 <script setup lang="ts">
-import { InputForm } from '@/components/input/types';
 import { hasSlotContent } from '@/utils/helpers.ts';
 
-withDefaults(
-	defineProps<{
-		/**
-		 * The value of the input
-		 */
-		modelValue?: number;
-		/**
-		 * Indicates if the input has an error. Determines if the `error` slot
-		 * will be shown
-		 */
-		hasError?: boolean;
-		/**
-		 * Indicates if the input is required
-		 */
-		isRequired?: boolean;
-		/**
-		 * Indicates if the input is loading
-		 */
-		loading?: boolean;
-	}>(),
-	{
-		modelValue: undefined,
-		form: InputForm.BLOCK,
-	},
-);
+interface Props {
+	hasError?: boolean; /* Indicates if the input has an error. Determines if the `error` slot will be shown */
+	loading?: boolean; /* Indicates if the input is loading */
+}
+defineProps<Props>();
 
-defineEmits<{
-	/**
-	 * Emitted when the input value changes
-	 * @arg {number} value - The new value of the input
-	 */
-	'update:modelValue': [value?: number];
-}>();
+const modelValue = defineModel<number>();
 
 const _componentUID = Date.now().toString(36) + Math.random().toString(36).substring(2);
 </script>
@@ -57,9 +30,9 @@ const _componentUID = Date.now().toString(36) + Math.random().toString(36).subst
 				:value="modelValue"
 				:readonly="!!($attrs.readonly || loading)"
 				:disabled="!!($attrs.disabled || loading)"
-				:required="!!isRequired"
+				:required="!!($attrs.disabled)"
 				aria-label=""
-				@input="$emit('update:modelValue', +(($event.target as HTMLInputElement).value) || undefined)"
+				@input="modelValue = +(($event.target as HTMLInputElement).value) || undefined"
 			>
 
 			<!-- Icon right -->
