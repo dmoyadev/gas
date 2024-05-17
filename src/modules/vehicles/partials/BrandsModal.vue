@@ -5,7 +5,7 @@ import { VehicleType } from '@/modules/app/models/Vehicle.ts';
 import { carManufacturers } from '@/utils/consts/car-manufacturers.ts';
 import { motorcycleManufacturers } from '@/utils/consts/motorcycle-manufacturers.ts';
 import BaseInput from '@/components/input/BaseInput.vue';
-import { InputType } from '@/components/input/types.ts';
+import { InputType } from '@/components/input/BaseInput.types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 
 const props = defineProps<{

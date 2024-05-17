@@ -4,7 +4,7 @@ import { IconSize } from '@/components/icon/BaseIcon.types.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import BaseBigNumberInput from '@/components/big-number-input/BaseBigNumberInput.vue';
 import type { Refill } from '@/modules/refills/models/Refill.ts';
-import { InputType } from '@/components/input/types.ts';
+import { InputType } from '@/components/input/BaseInput.types.ts';
 import BaseInput from '@/components/input/BaseInput.vue';
 import { useSelectedVehicle } from '@/modules/vehicles/composables/useSelectedVehicle.ts';
 import { useRecentRefills } from '@/modules/refills/composables/useRecentRefills.ts';
@@ -154,7 +154,7 @@ watch(totalCost, (value) => {
 			:input-type="InputType.NUMBER"
 			:has-error="odometerError"
 			custom-validity="El kilometraje actual no puede ser inferior al anterior"
-			is-required
+			required
 			@blur="canCheckOdometer = true"
 		>
 			Kilometraje actual
