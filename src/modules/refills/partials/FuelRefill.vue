@@ -7,7 +7,7 @@ import type { Fuel, Refill } from '@/modules/refills/models/Refill.ts';
 import { useSelectedVehicle } from '@/modules/vehicles/composables/useSelectedVehicle.ts';
 import { VehicleFuelType } from '@/modules/app/models/Vehicle.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
-import { IconSize } from '@/components/icon/types.ts';
+import { IconSize } from '@/components/icon/BaseIcon.types.ts';
 import { useRecentRefills } from '@/modules/refills/composables/useRecentRefills.ts';
 
 const props = defineProps<{

@@ -7,7 +7,7 @@ import type { VehicleBrand } from '@/modules/app/models/Vehicle.ts';
 import { VehicleType } from '@/modules/app/models/Vehicle.ts';
 import { carManufacturers } from '@/utils/consts/car-manufacturers.ts';
 import { motorcycleManufacturers } from '@/utils/consts/motorcycle-manufacturers.ts';
-import { IconSize } from '@/components/icon/types.ts';
+import { IconSize } from '@/components/icon/BaseIcon.types.ts';
 import BaseInput from '@/components/input/BaseInput.vue';
 import { InputType } from '@/components/input/types.ts';
 import BaseModal from '@/components/modal/BaseModal.vue';

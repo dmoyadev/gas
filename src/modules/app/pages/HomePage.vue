@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { VehicleFuelType, isElectricVehicle } from '@/modules/app/models/Vehicle.ts';
 import HomeEmptyPartial from '@/modules/app/partials/HomeEmptyPartial.vue';
-import { IconSize } from '@/components/icon/types.ts';
+import { IconSize } from '@/components/icon/BaseIcon.types.ts';
 import RecentRefills from '@/modules/app/components/RecentRefills.vue';
 import HomeHeader from '@/modules/app/components/HomeHeader.vue';
 import { useSelectedVehicle } from '@/modules/vehicles/composables/useSelectedVehicle.ts';

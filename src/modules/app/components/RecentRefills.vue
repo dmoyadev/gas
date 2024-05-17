@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import type { Vehicle } from '@/modules/app/models/Vehicle.ts';
 import { VehicleFuelType } from '@/modules/app/models/Vehicle.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
-import { IconSize } from '@/components/icon/types.ts';
+import { IconSize } from '@/components/icon/BaseIcon.types.ts';
 import BaseButton from '@/components/button/BaseButton.vue';
 import RecentRefillItem from '@/modules/app/components/RecentRefillItem.vue';
 import { useRecentRefills } from '@/modules/refills/composables/useRecentRefills.ts';
