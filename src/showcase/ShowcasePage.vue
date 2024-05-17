@@ -2,6 +2,7 @@
 import InputSheet from '@/showcase/sheets/InputSheet.vue';
 import ComponentShowcase from '@/showcase/ComponentShowcase.vue';
 import ButtonSheet from '@/showcase/sheets/ButtonSheet.vue';
+import BigNumberInputSheet from '@/showcase/sheets/BigNumberInputSheet.vue';
 import StepperSheet from '@/showcase/sheets/StepperSheet.vue';
 
 const sheets = [
@@ -12,6 +13,10 @@ const sheets = [
 	{
 		name: 'Input',
 		component: InputSheet,
+	},
+	{
+		name: 'BigNumberInput',
+		component: BigNumberInputSheet,
 	},
 	{
 		name: 'Stepper',

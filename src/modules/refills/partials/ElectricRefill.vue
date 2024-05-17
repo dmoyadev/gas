@@ -72,7 +72,7 @@ watch(totalCost, (value) => {
 			<BaseBigNumberInput
 				v-model.number="data.unitCost"
 				placeholder="·,···"
-				is-required
+				required
 			>
 				Precio del Kw
 
@@ -95,7 +95,7 @@ watch(totalCost, (value) => {
 				v-model.number="data.chargeInitial"
 				placeholder="··"
 				step="1"
-				is-required
+				required
 			>
 				<BaseIcon
 					class="icon-battery"
@@ -126,7 +126,7 @@ watch(totalCost, (value) => {
 				placeholder="···"
 				step="1"
 				max="100"
-				is-required
+				required
 				:has-error="hasBatteryError"
 			>
 				<BaseIcon
