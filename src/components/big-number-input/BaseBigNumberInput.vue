@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { hasSlotContent } from '@/utils/helpers.ts';
+import BaseIcon from '@/components/icon/BaseIcon.vue';
 
 interface Props {
 	hasError?: boolean; /* Indicates if the input has an error. Determines if the `error` slot will be shown */
@@ -37,8 +38,16 @@ const _componentUID = Date.now().toString(36) + Math.random().toString(36).subst
 
 			<!-- Icon right -->
 			<span class="append">
+				<BaseIcon
+					v-if="loading"
+					icon="fa-solid fa-gear"
+					spin-pulse
+					spin-reverse
+					class="icon-loading"
+				/>
+
 				<!-- @slot Element shown on the inside right of the input -->
-				<slot name="append" />
+				<slot v-else name="append" />
 			</span>
 		</span>
 
@@ -114,6 +123,10 @@ label {
 
 		.append {
 			margin-bottom: 3px;
+
+			.icon-loading {
+				color: var(--color-primary);
+			}
 		}
 	}
 

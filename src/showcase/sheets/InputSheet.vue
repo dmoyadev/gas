@@ -11,7 +11,10 @@ const testText = ref('');
 
 <template>
 	<section class="sheet">
-		<template v-for="form in InputForm">
+		<template
+			v-for="form in InputForm"
+			:key="form"
+		>
 			<ShowcaseElements>
 				<template #title>
 					Text input
