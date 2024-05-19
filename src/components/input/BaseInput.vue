@@ -15,14 +15,11 @@ interface Props {
 	isClearable?: boolean; /* Indicates if the input is clearable. @defaults true */
 }
 
-const props = withDefaults(
-	defineProps<Props>(),
-	{
-		form: InputForm.BLOCK,
-		inputType: InputType.TEXT,
-		isClearable: true,
-	},
-);
+const props = withDefaults(defineProps<Props>(),	{
+	form: InputForm.BLOCK,
+	inputType: InputType.TEXT,
+	isClearable: true,
+});
 
 const modelValue = defineModel<string | number>();
 
@@ -86,6 +83,22 @@ watch(() => props.hasError, (value) => {
 						|| [InputType.SEARCH, InputType.PASSWORD].includes(inputType)"
 					class="append"
 				>
+					<!-- Clearable button -->
+					<BaseButton
+						v-if="isClearable
+							&& !!modelValue
+							&& !loading
+							&& inputType !== InputType.PASSWORD
+							&& !($attrs.disabled || $attrs.readonly)"
+						:mode="ButtonMode.CLEAR"
+						:form="ButtonForm.CIRCLE"
+						type="button"
+						class="input-button"
+						@click="modelValue = inputType === InputType.NUMBER ? 0 : ''"
+					>
+						<BaseIcon icon="fa-solid fa-delete-left" />
+					</BaseButton>
+
 					<!-- @slot Element shown on the inside right of the input -->
 					<slot
 						v-if="!loading"
@@ -117,22 +130,6 @@ watch(() => props.hasError, (value) => {
 						spin-pulse
 						spin-reverse
 					/>
-
-					<!-- Clearable button -->
-					<BaseButton
-						v-if="isClearable
-							&& !!modelValue
-							&& !loading
-							&& inputType !== InputType.PASSWORD
-							&& !($attrs.disabled || $attrs.readonly)"
-						:mode="ButtonMode.CLEAR"
-						:form="ButtonForm.CIRCLE"
-						type="button"
-						class="input-button"
-						@click="modelValue = inputType === InputType.NUMBER ? 0 : ''"
-					>
-						<BaseIcon icon="fa-solid fa-delete-left" />
-					</BaseButton>
 				</span>
 			</span>
 
@@ -228,10 +225,10 @@ div {
 					}
 
 					& .append {
-						right: 8px;
+						right: 20px;
 
-						&:not(:has(.input-button)) {
-							right: 20px;
+						&:has(.input-button:only-child) {
+							right: 8px;
 						}
 					}
 
@@ -327,15 +324,16 @@ div {
 			}
 
 			.append {
+				display: flex;
+				align-items: center;
 				position: absolute;
 				top: 50%;
 				transform: translateY(-50%);
-				right: 0;
+				right: 12px;
+				min-width: 16px;
 
-				&:not(:has(.input-button)) {
-					right: 12px;
-					height: 16px;
-					width: 16px;
+				&:has(.input-button:only-child) {
+					right: 0;
 				}
 			}
 
@@ -345,6 +343,10 @@ div {
 				~ .append {
 					top: 12px;
 					transform: none;
+
+					&:has(.input-button) {
+						top: 0;
+					}
 				}
 			}
 		}
