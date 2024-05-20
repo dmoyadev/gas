@@ -159,7 +159,7 @@ header {
 
 	h1 {
 		font-size: var(--font-size-title);
-		font-weight: var(--font-heavy);
+		font-weight: var(--font-weight-heavy);
 	}
 }
 

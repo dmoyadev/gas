@@ -119,7 +119,7 @@ section {
 	background: var(--color-secondary-accent);
 	color: var(--color-secondary);
 	font-family: var(--font-family-monospace);
-	font-weight: var(--font-light);
+	font-weight: var(--font-weight-light);
 	padding: 8px;
 	position: relative;
 
@@ -146,7 +146,7 @@ section {
 
 		h3 {
 			font-size: var(--font-size-body);
-			font-weight: var(--font-heavy);
+			font-weight: var(--font-weight-heavy);
 			font-style: italic;
 		}
 
@@ -203,7 +203,7 @@ section {
 
 		tfoot {
 			td:last-child {
-				font-weight: var(--font-heavy);
+				font-weight: var(--font-weight-heavy);
 			}
 		}
 	}

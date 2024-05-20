@@ -153,13 +153,13 @@ header {
 	.instructions {
 		h1 {
 			font-size: var(--font-size-big);
-			font-weight: var(--font-heavy);
+			font-weight: var(--font-weight-heavy);
 			margin-bottom: 8px;
 		}
 
 		p {
 			color: var(--color-primary);
-			font-weight: var(--font-light);
+			font-weight: var(--font-weight-light);
 		}
 	}
 

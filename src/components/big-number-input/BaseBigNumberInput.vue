@@ -116,7 +116,7 @@ label {
 			width: 100%;
 			text-align: right;
 			font-size: 32px;
-			font-weight: var(--font-heavy);
+			font-weight: var(--font-weight-heavy);
 			font-family: var(--font-family-monospace);
 			color: var(--color-primary);
 		}
@@ -133,7 +133,7 @@ label {
 	.label {
 		margin-left: auto;
 		font-size: var(--font-size-small);
-		font-weight: var(--font-light);
+		font-weight: var(--font-weight-light);
 		font-style: italic;
 		display: flex;
 		align-items: center;

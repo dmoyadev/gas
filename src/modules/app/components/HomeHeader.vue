@@ -114,7 +114,7 @@ header {
 			em {
 				font-size: var(--font-size-body);
 				font-style: italic;
-				font-weight: var(--font-light);
+				font-weight: var(--font-weight-light);
 			}
 		}
 	}
