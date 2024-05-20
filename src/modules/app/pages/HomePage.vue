@@ -239,13 +239,13 @@ main {
 
 					span {
 						font-size: var(--font-size-small);
-						font-weight: var(--font-light);
+						font-weight: var(--font-weight-light);
 					}
 				}
 
 				&--value {
 					font-size: var(--font-size-big);
-					font-weight: var(--font-heavy);
+					font-weight: var(--font-weight-heavy);
 				}
 			}
 		}
@@ -276,7 +276,7 @@ main {
 			justify-content: center;
 			gap: 8px;
 			font-size: var(--font-size-small);
-			font-weight: var(--font-heavy);
+			font-weight: var(--font-weight-heavy);
 
 			div {
 				display: flex;

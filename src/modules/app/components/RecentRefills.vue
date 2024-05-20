@@ -146,7 +146,7 @@ section {
 		text-align: center;
 
 		p {
-			font-weight: var(--font-light);
+			font-weight: var(--font-weight-light);
 		}
 	}
 
@@ -154,7 +154,7 @@ section {
 		display: flex;
 		align-items: center;
 		gap: 4px;
-		font-weight: var(--font-heavy);
+		font-weight: var(--font-weight-heavy);
 		font-size: var(--font-size-body);
 	}
 

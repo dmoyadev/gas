@@ -98,7 +98,7 @@ router-link {
 	justify-content: center;
 	align-items: center;
 	text-align: center;
-	font-weight: var(--font-heavy);
+	font-weight: var(--font-weight-heavy);
 	position: relative;
 	overflow: hidden;
 

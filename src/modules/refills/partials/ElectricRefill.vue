@@ -197,14 +197,14 @@ main {
 
 			.label {
 				font-size: var(--font-size-small);
-				font-weight: var(--font-light);
+				font-weight: var(--font-weight-light);
 				font-style: italic;
 			}
 
 			.cost {
 				min-height: 32px;
 				font-size: 32px;
-				font-weight: var(--font-heavy);
+				font-weight: var(--font-weight-heavy);
 				color: var(--color-success);
 				font-family: var(--font-family-monospace);
 				display: flex;
@@ -238,13 +238,13 @@ main {
 				flex-direction: column;
 
 				.filled-capacity {
-					font-weight: var(--font-heavy);
+					font-weight: var(--font-weight-heavy);
 					font-family: var(--font-family-monospace);
 				}
 
 				.battery-capacity {
 					font-size: var(--font-size-small);
-					font-weight: var(--font-light);
+					font-weight: var(--font-weight-light);
 					font-family: var(--font-family-monospace);
 				}
 			}

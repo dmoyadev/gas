@@ -185,7 +185,7 @@ li {
 		font-size: var(--font-size-small);
 
 		:not(.title) {
-			font-weight: var(--font-light);
+			font-weight: var(--font-weight-light);
 			font-size: var(--font-size-legal);
 		}
 	}
@@ -200,12 +200,12 @@ li {
 		flex-shrink: 0;
 
 		.title {
-			font-weight: var(--font-heavy);
+			font-weight: var(--font-weight-heavy);
 			font-size: var(--font-size-title);
 		}
 
 		:not(.title) {
-			font-weight: var(--font-light);
+			font-weight: var(--font-weight-light);
 			font-size: var(--font-size-small);
 		}
 
