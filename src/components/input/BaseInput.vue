@@ -93,7 +93,7 @@ watch(() => props.hasError, (value) => {
 						:mode="ButtonMode.CLEAR"
 						:form="ButtonForm.CIRCLE"
 						type="button"
-						class="input-button"
+						class="btn-append"
 						@click="modelValue = inputType === InputType.NUMBER ? 0 : ''"
 					>
 						<BaseIcon icon="fa-solid fa-delete-left" />
@@ -117,7 +117,7 @@ watch(() => props.hasError, (value) => {
 							:form="ButtonForm.INLINE"
 							:disabled="(!!($attrs.disabled || loading || $attrs.readonly))"
 							type="button"
-							class="input-button"
+							class="btn-append"
 							@click="showPassword = !showPassword"
 						>
 							<BaseIcon :icon="showPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'" />
@@ -227,7 +227,7 @@ div {
 					& .append {
 						right: 20px;
 
-						&:has(.input-button:only-child) {
+						&:has(.btn-append:only-child) {
 							right: 8px;
 						}
 					}
@@ -290,6 +290,24 @@ div {
 
 			&:not(:has(:disabled)):focus-within,
 			&.has-value {
+				&:has(.btn-append) {
+					.input {
+						padding-right: 42px;
+					}
+				}
+
+				&:has(.append) {
+					.input {
+						padding-right: 28px;
+					}
+				}
+
+				&:has(.append):has(.btn-append) {
+					.input {
+						padding-right: 70px;
+					}
+				}
+
 				& ~ .label {
 					top: -6px;
 					transform: none;
@@ -332,7 +350,7 @@ div {
 				right: 12px;
 				min-width: 16px;
 
-				&:has(.input-button:only-child) {
+				&:has(.btn-append:only-child) {
 					right: 0;
 				}
 			}
@@ -344,7 +362,7 @@ div {
 					top: 12px;
 					transform: none;
 
-					&:has(.input-button) {
+					&:has(.btn-append) {
 						top: 0;
 					}
 				}

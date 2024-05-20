@@ -1,4 +1,5 @@
 import type { DTO } from '@/modules/app/models/DTO.ts';
+import type { RefillStation } from '@/modules/refills/models/RefillStation.ts';
 
 export interface Refill extends DTO {
 	idVehicle: string;
@@ -9,17 +10,11 @@ export interface Refill extends DTO {
 	units: number;
 	fuelType: Fuel;
 	odometer: number;
-	station: Station;
+	station: RefillStation;
 	notes: string;
 }
 
 export interface Fuel {
 	name: string;
 	type: 'fuel' | 'electric';
-}
-
-export interface Station {
-	name: string;
-	logo?: string;
-	address: string;
 }
