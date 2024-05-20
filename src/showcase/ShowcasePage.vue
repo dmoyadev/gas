@@ -5,6 +5,7 @@ import ButtonSheet from '@/showcase/sheets/ButtonSheet.vue';
 import BigNumberInputSheet from '@/showcase/sheets/BigNumberInputSheet.vue';
 import IconSheet from '@/showcase/sheets/IconSheet.vue';
 import ModalSheet from '@/showcase/sheets/ModalSheet.vue';
+import SelectSheet from '@/showcase/sheets/SelectSheet.vue';
 import SpinnerSheet from '@/showcase/sheets/SpinnerSheet.vue';
 import StepperSheet from '@/showcase/sheets/StepperSheet.vue';
 
@@ -28,6 +29,10 @@ const sheets = [
 	{
 		name: 'Modal',
 		component: ModalSheet,
+	},
+	{
+		name: 'Select',
+		component: SelectSheet,
 	},
 	{
 		name: 'Spinner',
