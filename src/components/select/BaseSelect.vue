@@ -19,6 +19,7 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+const emit = defineEmits<{ openModal: [] }>();
 
 const modelValue = defineModel<T>();
 
@@ -49,6 +50,7 @@ function openModal() {
 	}
 
 	showModal.value = true;
+	emit('openModal');
 }
 
 function selectItem(item: T) {
@@ -100,7 +102,7 @@ function selectItem(item: T) {
 						:mode="ButtonMode.CLEAR"
 						:form="ButtonForm.CIRCLE"
 						type="button"
-						class="input-button"
+						class="btn-append"
 						@click.stop="modelValue = undefined"
 					>
 						<BaseIcon icon="fa-solid fa-delete-left" />
@@ -237,6 +239,24 @@ function selectItem(item: T) {
 			}
 
 			&.has-value {
+				&:has(.btn-append) {
+					.input {
+						padding-right: 42px;
+					}
+				}
+
+				&:has(.append) {
+					.input {
+						padding-right: 28px;
+					}
+				}
+
+				&:has(.append):has(.btn-append) {
+					.input {
+						padding-right: 70px;
+					}
+				}
+
 				& ~ .label {
 					top: -6px;
 					transform: none;
@@ -313,7 +333,7 @@ function selectItem(item: T) {
 }
 
 .modal-content {
-	padding: 0 16px 16px;
+	padding: 8px 16px 16px;
 	display: flex;
 	flex-direction: column;
 	gap: 16px;

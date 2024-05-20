@@ -149,7 +149,7 @@ dialog {
 	main {
 		overflow-y: auto;
 		padding-top: var(--header-height);
-		min-height: calc(var(--modal-height) + var(--header-height));
+		min-height: calc(var(--modal-height) - var(--header-height));
 	}
 }
 </style>

@@ -3,7 +3,6 @@ import { Comment } from 'vue';
 
 /**
  * Capitalizes the first letter of a string
- *
  * @param {string} str - The string to capitalize
  *
  * @returns {string} The capitalized string
@@ -11,6 +10,19 @@ import { Comment } from 'vue';
 export function capitalize(str: string): string {
 	const lowercase = str.toLowerCase();
 	return lowercase.charAt(0).toUpperCase() + lowercase.slice(1);
+}
+
+/**
+ * Capitalizes the first letter of each word in a string
+ * @param {string} str - The string to capitalize
+ *
+ * @returns {string} The capitalized string
+ */
+export function capitalizeAll(str: string): string {
+	return str
+		.split(' ')
+		.map(word => capitalize(word))
+		.join(' ');
 }
 
 /**
@@ -22,10 +34,12 @@ export function capitalize(str: string): string {
  */
 export function normalize(str: string) {
 	return String(str)
-		.normalize('NFD')
-		.replace(/[\u0300-\u036F]/g, '')
-		.toLowerCase()
-		.trim();
+		.normalize('NFD') // Normalize to decomposed form
+		.replace(/[\u0300-\u036F]/g, '') // Remove combining diacritical marks
+		.replace(/[^a-z0-9 ]/gi, '') // Remove non-alphanumeric characters but spaces
+		.toLowerCase() // Lowercase
+		.trim() // Remove spaces at the beginning and end
+	;
 }
 
 /**

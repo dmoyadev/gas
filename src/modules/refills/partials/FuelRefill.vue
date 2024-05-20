@@ -9,6 +9,7 @@ import { VehicleFuelType } from '@/modules/app/models/Vehicle.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { IconSize } from '@/components/icon/BaseIcon.types.ts';
 import { useRecentRefills } from '@/modules/refills/composables/useRecentRefills.ts';
+import StationsSelect from '@/modules/refills/partials/StationsSelect.vue';
 
 const props = defineProps<{
 	refill: Refill;
@@ -117,7 +118,10 @@ function updateUnitsAndUnitCost(totalCost?: number) {
 
 <template>
 	<main>
-		<section class="fuel-types">
+		<section
+			v-if="fuelTypes.length"
+			class="fuel-types"
+		>
 			<label
 				v-for="(fuelType, index) in fuelTypes"
 				:key="index"
@@ -188,9 +192,11 @@ function updateUnitsAndUnitCost(totalCost?: number) {
 			Kilometraje actual
 
 			<template #append>
-				Km
+				<span>Km</span>
 			</template>
 		</BaseInput>
+
+		<StationsSelect v-model="data.station" />
 
 		<BaseInput
 			v-model="data.notes"
