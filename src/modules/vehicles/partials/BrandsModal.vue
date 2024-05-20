@@ -13,7 +13,7 @@ const props = defineProps<{
 }>();
 
 defineEmits<{
-	'select-brand': [value?: VehicleBrand];
+	selectBrand: [value?: VehicleBrand];
 }>();
 
 const searchQuery = ref('');
@@ -41,7 +41,7 @@ const brands = computed(() => {
 			<li
 				v-for="(brand, index) in brands"
 				:key="index"
-				@click="$emit('select-brand', brand)"
+				@click="$emit('selectBrand', brand)"
 			>
 				<div class="img-wrapper">
 					<img
