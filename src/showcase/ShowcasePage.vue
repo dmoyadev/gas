@@ -8,6 +8,7 @@ import ModalSheet from '@/showcase/sheets/ModalSheet.vue';
 import SelectSheet from '@/showcase/sheets/SelectSheet.vue';
 import SpinnerSheet from '@/showcase/sheets/SpinnerSheet.vue';
 import StepperSheet from '@/showcase/sheets/StepperSheet.vue';
+import SwitchSheet from '@/showcase/sheets/SwitchSheet.vue';
 
 const sheets = [
 	{
@@ -41,6 +42,10 @@ const sheets = [
 	{
 		name: 'Stepper',
 		component: StepperSheet,
+	},
+	{
+		name: 'Switch',
+		component: SwitchSheet,
 	},
 ];
 </script>
