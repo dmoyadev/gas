@@ -62,7 +62,7 @@ useStickyObserver($header);
 
 		<BaseButton
 			:mode="ButtonMode.OUTLINE"
-			:form="ButtonForm.CIRCLE"
+			:button-form="ButtonForm.CIRCLE"
 			:to="`/vehicles/${vehicle?.id}`"
 			class="btn-edit"
 		>

@@ -96,7 +96,7 @@ const canProceed = computed<boolean>(() => {
 			<section class="actions">
 				<BaseButton
 					type="button"
-					:form="ButtonForm.CIRCLE"
+					:button-form="ButtonForm.CIRCLE"
 					:mode="ButtonMode.OUTLINE"
 					@click="$emit('stepBack')"
 				>
@@ -105,7 +105,7 @@ const canProceed = computed<boolean>(() => {
 				<BaseButton
 					type="submit"
 					:disabled="!canProceed"
-					:form="ButtonForm.NOTCHED_LEFT"
+					:button-form="ButtonForm.NOTCHED_LEFT"
 				>
 					Terminar
 				</BaseButton>

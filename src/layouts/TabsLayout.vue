@@ -35,7 +35,7 @@ const tabs = [
 			v-for="(tab, index) in tabs"
 			:key="index"
 			:to="tab.route"
-			:form="ButtonForm.INLINE"
+			:button-form="ButtonForm.INLINE"
 			:mode="ButtonMode.CLEAR"
 			:color="ButtonColor.GRAYSCALE"
 		>

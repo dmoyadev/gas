@@ -100,7 +100,7 @@ function selectItem(item: T) {
 							&& !loading
 							&& !disabled"
 						:mode="ButtonMode.CLEAR"
-						:form="ButtonForm.CIRCLE"
+						:button-form="ButtonForm.CIRCLE"
 						type="button"
 						class="btn-append"
 						@click.stop="modelValue = undefined"

@@ -60,7 +60,7 @@ onBeforeUnmount(() => {
 				<BaseButton
 					class="btn-close"
 					:mode="ButtonMode.CLEAR"
-					:form="ButtonForm.INLINE"
+					:button-form="ButtonForm.INLINE"
 					@click="$emit('close')"
 				>
 					{{ closeBtnText || 'Cancelar' }}
