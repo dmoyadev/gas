@@ -17,7 +17,7 @@ const show = ref(false);
 		<BaseButton
 			:mode="ButtonMode.CLEAR"
 			:color="ButtonColor.GRAYSCALE"
-			:form="ButtonForm.INLINE"
+			:button-form="ButtonForm.INLINE"
 		>
 			<BaseIcon :icon="`fa-solid ${show ? 'fa-chevron-up' : 'fa-chevron-down'}`" />
 		</BaseButton>

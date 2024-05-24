@@ -27,7 +27,7 @@ import ShowcaseElements from '@/showcase/ShowcaseElements.vue';
 				<BaseButton
 					v-for="(form, f) in ButtonForm"
 					:key="f"
-					:form="form"
+					:button-form="form"
 					:mode="mode"
 				>
 					{{ form }}

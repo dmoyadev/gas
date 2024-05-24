@@ -109,7 +109,7 @@ async function doSignIn() {
 
 				<BaseButton
 					type="submit"
-					:form="ButtonForm.CIRCLE"
+					:button-form="ButtonForm.CIRCLE"
 					:color="(triedSubmit && errorLogin) ? ButtonColor.DANGER : ButtonColor.PRIMARY"
 					:loading="loadingLogin"
 					:disabled="!isEmailValid || loadingLogin"

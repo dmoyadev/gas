@@ -50,7 +50,7 @@ async function submitStep(step: number) {
 			<BaseButton
 				v-if="currentStep < 5"
 				:mode="ButtonMode.CLEAR"
-				:form="ButtonForm.CIRCLE"
+				:button-form="ButtonForm.CIRCLE"
 				to="/"
 			>
 				<BaseIcon icon="fa-solid fa-arrow-left" />

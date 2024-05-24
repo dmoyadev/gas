@@ -7,7 +7,7 @@ import BaseIcon from '@/components/icon/BaseIcon.vue';
 interface Props {
 	mode?: ButtonMode; /* The mode of the button. @defaults ButtonMode.SOLID */
 	color?: ButtonColor; /* The color to use for the button. @defaults ButtonColor.PRIMARY */
-	form?: ButtonForm; /* The form of the button. @defaults ButtonForm.BLOCK */
+	buttonForm?: ButtonForm; /* The form of the button. @defaults ButtonForm.BLOCK */
 	to?: string; /* Indicates the route to which the button should redirect when clicked */
 	href?: string; /* Indicates the URL to which the button should redirect when clicked */
 	loading?: boolean; /* Indicates if the button is loading */
@@ -16,7 +16,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(),	{
 	mode: ButtonMode.SOLID,
 	color: ButtonColor.PRIMARY,
-	form: ButtonForm.BLOCK,
+	buttonForm: ButtonForm.BLOCK,
 });
 
 /* Ripple effect */
@@ -58,11 +58,12 @@ function createRippleEffect(event: MouseEvent) {
 	<component
 		:is="href ? 'a' : (to ? 'router-link' : 'button')"
 		ref="element"
+		v-bind="$attrs"
 		:disabled="!!loading"
 		:class="{
 			[`button-mode-${mode}`]: true,
 			[`button-color-${color}`]: true,
-			[`button-form-${form}`]: true,
+			[`button-form-${buttonForm}`]: true,
 			'button-disabled': loading,
 		}"
 		:to="to"

@@ -57,9 +57,8 @@ watch(() => props.hasError, (value) => {
 					v-bind="$attrs"
 					:type="(showPassword ? InputType.TEXT : inputType)"
 					:value="modelValue"
-					:readonly="!!($attrs.readonly || loading)"
-					:disabled="!!($attrs.disabled || loading)"
-					:required="!!$attrs.required"
+					:readonly="!!(('readonly' in $attrs && (!!$attrs.readonly || $attrs.readonly === '')) || loading)"
+					:disabled="!!(('disabled' in $attrs && (!!$attrs.disabled || $attrs.disabled === '')) || loading)"
 					aria-label=""
 					@input="modelValue = ($event.target as HTMLInputElement).value"
 				>
@@ -69,9 +68,8 @@ watch(() => props.hasError, (value) => {
 					:id="($attrs.id as string) || _componentUID"
 					v-bind="$attrs"
 					:value="modelValue as (string | undefined)"
-					:readonly="!!($attrs.readonly || loading)"
-					:disabled="!!($attrs.disabled || loading)"
-					:required="!!$attrs.required"
+					:readonly="!!(('readonly' in $attrs && (!!$attrs.readonly || $attrs.readonly === '')) || loading)"
+					:disabled="!!(('disabled' in $attrs && (!!$attrs.disabled || $attrs.disabled === '')) || loading)"
 					aria-label=""
 					@input="modelValue = ($event.target as HTMLInputElement).value"
 				/>
@@ -91,7 +89,7 @@ watch(() => props.hasError, (value) => {
 							&& inputType !== InputType.PASSWORD
 							&& !($attrs.disabled || $attrs.readonly)"
 						:mode="ButtonMode.CLEAR"
-						:form="ButtonForm.CIRCLE"
+						:button-form="ButtonForm.CIRCLE"
 						type="button"
 						class="btn-append"
 						@click="modelValue = inputType === InputType.NUMBER ? 0 : ''"
@@ -114,7 +112,7 @@ watch(() => props.hasError, (value) => {
 						<BaseButton
 							v-if="inputType === InputType.PASSWORD"
 							:mode="ButtonMode.CLEAR"
-							:form="ButtonForm.INLINE"
+							:button-form="ButtonForm.INLINE"
 							:disabled="(!!($attrs.disabled || loading || $attrs.readonly))"
 							type="button"
 							class="btn-append"

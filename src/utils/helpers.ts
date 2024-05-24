@@ -91,3 +91,52 @@ export function haversineDistance(lat1: number, long1: number, lat2: number, lon
 
 	return R * c; // Distance in kilometers
 }
+
+/**
+ * Gets the logo for a refill station based on its name
+ *
+ * @param {string} name - The refill station name
+ *
+ * @return {string|undefined} The logo path if anyone matches
+ */
+export function getLogoForStation(name: string): string | undefined {
+	const normalizedName = normalize(name);
+	const savedLogos = [
+		'agla',
+		'alcampo',
+		'avia',
+		'ballenoil',
+		'bonarea',
+		'bp',
+		'campsa',
+		'carrefour',
+		'cepsa',
+		'disa',
+		'eroski',
+		'galp',
+		'meroil',
+		'naturgy',
+		'petronor',
+		'petroprix',
+		'plenoil',
+		'q8',
+		'repsol',
+		'shell',
+		'tamoil',
+		'valcarce',
+	] as const;
+	for (const logo of savedLogos) {
+		if (normalizedName.includes(logo)) {
+			return `/eess/${logo}.svg`;
+		}
+	}
+
+	if (normalizedName.includes('sca')
+		|| normalizedName.includes('cooperativa')
+		|| normalizedName.includes('coop')
+		|| normalizedName.includes('s.c.a.')) {
+		return '/eess/cooperativa.svg';
+	}
+
+	return undefined;
+}

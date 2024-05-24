@@ -133,7 +133,7 @@ watch(() => props.brand, (value, oldValue) => {
 			<section class="actions">
 				<BaseButton
 					type="button"
-					:form="ButtonForm.CIRCLE"
+					:button-form="ButtonForm.CIRCLE"
 					:mode="ButtonMode.OUTLINE"
 					@click="$emit('stepBack')"
 				>
@@ -141,7 +141,7 @@ watch(() => props.brand, (value, oldValue) => {
 				</BaseButton>
 				<BaseButton
 					type="submit"
-					:form="ButtonForm.NOTCHED_LEFT"
+					:button-form="ButtonForm.NOTCHED_LEFT"
 				>
 					{{ !hasFilledSomething ? 'Rellenar más tarde' : 'Continuar' }}
 				</BaseButton>

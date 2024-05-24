@@ -87,7 +87,7 @@ function createRefill() {
 			<BaseButton
 				to="/"
 				:mode="ButtonMode.CLEAR"
-				:form="ButtonForm.INLINE"
+				:button-form="ButtonForm.INLINE"
 			>
 				<BaseIcon icon="fa-solid fa-arrow-left" />
 			</BaseButton>

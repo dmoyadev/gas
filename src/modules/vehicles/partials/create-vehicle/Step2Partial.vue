@@ -120,7 +120,7 @@ const buttonText = computed<string>(() => {
 			<section class="actions">
 				<BaseButton
 					type="button"
-					:form="ButtonForm.CIRCLE"
+					:button-form="ButtonForm.CIRCLE"
 					:mode="ButtonMode.OUTLINE"
 					@click="$emit('stepBack')"
 				>
@@ -128,7 +128,7 @@ const buttonText = computed<string>(() => {
 				</BaseButton>
 				<BaseButton
 					type="submit"
-					:form="ButtonForm.NOTCHED_LEFT"
+					:button-form="ButtonForm.NOTCHED_LEFT"
 					:disabled="!modelValue"
 				>
 					{{ buttonText }}
