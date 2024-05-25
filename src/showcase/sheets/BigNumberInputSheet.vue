@@ -15,7 +15,7 @@ const num = ref();
 			</template>
 
 			<BaseBigNumberInput
-				v-model.number="num"
+				v-model="num"
 				placeholder="·,···"
 			>
 				This is a very basic label

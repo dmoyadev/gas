@@ -14,7 +14,6 @@ export function useSelectedVehicle() {
 
 	const emptyLoading = ref(false);
 	if (!hasBeenCalled.value && !vehicle.value) {
-		console.log('Getting vehicle!');
 		loadingVehicle.value = true;
 		hasBeenCalled.value = true;
 		getBy<Vehicle>(where('selected', '==', true))

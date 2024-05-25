@@ -8,7 +8,7 @@ interface Props {
 }
 defineProps<Props>();
 
-const modelValue = defineModel<number>();
+const modelValue = defineModel<string | number>();
 
 const _componentUID = Date.now().toString(36) + Math.random().toString(36).substring(2);
 </script>
@@ -25,15 +25,13 @@ const _componentUID = Date.now().toString(36) + Math.random().toString(36).subst
 			<input
 				:id="($attrs.id as string) || _componentUID"
 				v-bind="$attrs"
-				type="number"
+				v-model="modelValue"
+				type="text"
 				step="any"
 				min="0"
-				:value="modelValue"
-				:readonly="!!($attrs.readonly || loading)"
-				:disabled="!!($attrs.disabled || loading)"
-				:required="!!($attrs.disabled)"
+				:readonly="!!(('readonly' in $attrs && (!!$attrs.readonly || $attrs.readonly === '')) || loading)"
+				:disabled="!!(('disabled' in $attrs && (!!$attrs.disabled || $attrs.disabled === '')) || loading)"
 				aria-label=""
-				@input="modelValue = +(($event.target as HTMLInputElement).value) || undefined"
 			>
 
 			<!-- Icon right -->

@@ -26,6 +26,20 @@ export function capitalizeAll(str: string): string {
 }
 
 /**
+ * Converts a string to a number by removing all non-numeric characters
+ * @param {string | number} value - The string to convert
+ *
+ * @returns {number} The number
+ */
+export function stringToNumber(value?: string | number): number {
+	if (!value) {
+		return 0;
+	}
+
+	return +(String(value).replaceAll(',', '.'));
+}
+
+/**
  * Normalize a string by removing accents and special characters, lower-casing it and removing spaces at the
  * beginning and end, but not in the middle.
  * @param str - string to normalize

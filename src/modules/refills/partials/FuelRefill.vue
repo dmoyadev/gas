@@ -10,36 +10,19 @@ import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { IconSize } from '@/components/icon/BaseIcon.types.ts';
 import { useRecentRefills } from '@/modules/refills/composables/useRecentRefills.ts';
 import StationsSelect from '@/modules/refills/partials/StationsSelect.vue';
+import { stringToNumber } from '@/utils/helpers.ts';
 
-const props = defineProps<{
-	refill: Refill;
-}>();
-
-const emit = defineEmits<{
-	'update:refill': [value: Refill];
-}>();
-
-const data = computed<Refill>({
-	get: () => props.refill,
-	set: (value: Refill) => emit('update:refill', value),
-});
+const refill = defineModel<Refill>('refill', { required: true });
 
 const { vehicle } = useSelectedVehicle();
 
 const { refills } = useRecentRefills();
-const canCheckOdometer = ref(false);
-const odometerError = computed<boolean>(() => {
-	if (!canCheckOdometer.value) {
-		return false;
-	}
-	if (!data.value.odometer) {
-		return false;
-	}
-	if (!refills.value[0]) {
+const hasOdometerError = computed<boolean>(() => {
+	if (refill.value.odometer === undefined || refills.value[0]?.odometer === undefined) {
 		return false;
 	}
 
-	return data.value.odometer < refills.value[0].odometer;
+	return refill.value.odometer < refills.value[0].odometer;
 });
 
 const fuelTypes = ref<Fuel[]>([]);
@@ -91,27 +74,68 @@ watch(vehicle, (value) => {
 	}
 
 	if (fuelTypes.value.length > 0) {
-		data.value.fuelType = fuelTypes.value[0];
+		refill.value.fuelType = fuelTypes.value[0];
 	}
 }, { immediate: true });
 
-function updateUnits(unitCost?: number) {
-	if (data.value.totalCost && unitCost) {
-		data.value.units = +(data.value.totalCost / unitCost).toFixed(2);
+const hasErrorUnitCost = ref(false);
+function updateUnits(unitCost?: string) {
+	hasErrorUnitCost.value = false;
+	const parsedUnitCost = stringToNumber(unitCost);
+	if (isNaN(parsedUnitCost)) {
+		hasErrorUnitCost.value = true;
+		return;
+	}
+
+	if (refill.value.totalCost && unitCost) {
+		const parsedTotalCost = stringToNumber(refill.value.totalCost);
+		const units = +(parsedTotalCost / parsedUnitCost).toFixed(2);
+		if (units !== Number.POSITIVE_INFINITY && !isNaN(units)) {
+			refill.value.units = units;
+		}
 	}
 }
 
-function updateUnitCost(units?: number) {
-	if (data.value.totalCost && units) {
-		data.value.unitCost = +(data.value.totalCost / units).toFixed(3);
+const hasErrorUnits = ref(false);
+function updateUnitCost(units?: string) {
+	hasErrorUnits.value = false;
+	const parsedUnits = stringToNumber(units);
+	if (isNaN(parsedUnits)) {
+		hasErrorUnits.value = true;
+		return;
+	}
+
+	if (refill.value.totalCost && units) {
+		const parsedTotalCost = stringToNumber(refill.value.totalCost);
+		const unitCost = +(parsedTotalCost / parsedUnits).toFixed(3);
+		if (unitCost !== Number.POSITIVE_INFINITY && !isNaN(unitCost)) {
+			refill.value.unitCost = unitCost;
+		}
 	}
 }
 
-function updateUnitsAndUnitCost(totalCost?: number) {
-	if (totalCost && data.value.units) {
-		data.value.unitCost = +(totalCost / data.value.units).toFixed(3);
-	} else if (totalCost && data.value.unitCost) {
-		data.value.units = +(totalCost / data.value.unitCost).toFixed(2);
+const hasErrorTotalCost = ref(false);
+function updateUnitsAndUnitCost(totalCost?: string) {
+	hasErrorTotalCost.value = false;
+	const parsedTotalCost: number = stringToNumber(totalCost);
+	if (isNaN(parsedTotalCost)) {
+		hasErrorTotalCost.value = true;
+		return;
+	}
+
+	if (totalCost && refill.value.units) {
+		const parsedUnits = stringToNumber(refill.value.units);
+		const unitCost = +(parsedTotalCost / parsedUnits).toFixed(3);
+		if (unitCost !== Number.POSITIVE_INFINITY && !isNaN(unitCost)) {
+			refill.value.unitCost = unitCost;
+		}
+		refill.value.unitCost = +(parsedTotalCost / refill.value.units).toFixed(3);
+	} else if (totalCost && refill.value.unitCost) {
+		const parsedUnitCost = stringToNumber(refill.value.unitCost);
+		const units = +(parsedTotalCost / parsedUnitCost).toFixed(2);
+		if (units !== Number.POSITIVE_INFINITY && !isNaN(units)) {
+			refill.value.units = units;
+		}
 	}
 }
 </script>
@@ -128,7 +152,7 @@ function updateUnitsAndUnitCost(totalCost?: number) {
 				class="fuel-type"
 			>
 				<input
-					v-model="data.fuelType"
+					v-model="refill.fuelType"
 					type="radio"
 					:value="fuelType"
 				>
@@ -140,10 +164,18 @@ function updateUnitsAndUnitCost(totalCost?: number) {
 			</label>
 		</section>
 
+		<p
+			v-if="hasErrorUnitCost || hasErrorUnits || hasErrorTotalCost"
+			class="error"
+		>
+			Solo puedes introducir números válidos.
+		</p>
+
 		<BaseBigNumberInput
-			v-model.number="data.totalCost"
+			v-model="refill.totalCost"
 			placeholder="·,···"
 			required
+			:has-error="hasErrorTotalCost"
 			@update:model-value="updateUnitsAndUnitCost($event)"
 		>
 			Coste total
@@ -155,9 +187,10 @@ function updateUnitsAndUnitCost(totalCost?: number) {
 
 		<section class="refill-cost">
 			<BaseBigNumberInput
-				v-model.number="data.unitCost"
+				v-model="refill.unitCost"
 				placeholder="·,···"
 				required
+				:has-error="hasErrorUnitCost"
 				@update:model-value="updateUnits($event)"
 			>
 				Precio del litro
@@ -168,9 +201,10 @@ function updateUnitsAndUnitCost(totalCost?: number) {
 			</BaseBigNumberInput>
 
 			<BaseBigNumberInput
-				v-model.number="data.units"
+				v-model="refill.units"
 				placeholder="·,···"
 				required
+				:has-error="hasErrorUnits"
 				@update:model-value="updateUnitCost($event)"
 			>
 				Litros repostados
@@ -182,12 +216,11 @@ function updateUnitsAndUnitCost(totalCost?: number) {
 		</section>
 
 		<BaseInput
-			v-model.number="data.odometer"
+			v-model.number="refill.odometer"
 			:input-type="InputType.NUMBER"
-			:has-error="odometerError"
+			:has-error="hasOdometerError"
 			custom-validity="El kilometraje actual no puede ser inferior al anterior"
 			required
-			@blur="canCheckOdometer = true"
 		>
 			Kilometraje actual
 
@@ -196,10 +229,10 @@ function updateUnitsAndUnitCost(totalCost?: number) {
 			</template>
 		</BaseInput>
 
-		<StationsSelect v-model="data.station" />
+		<StationsSelect v-model="refill.station" />
 
 		<BaseInput
-			v-model="data.notes"
+			v-model="refill.notes"
 			:input-type="InputType.TEXTAREA"
 		>
 			Anotaciones
@@ -249,6 +282,13 @@ main {
 				display: none;
 			}
 		}
+	}
+
+	.error {
+		font-size: var(--font-size-small);
+		font-style: italic;
+		color: var(--color-danger);
+		text-align: center;
 	}
 }
 </style>

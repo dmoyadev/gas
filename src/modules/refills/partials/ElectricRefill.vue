@@ -8,71 +8,89 @@ import { InputType } from '@/components/input/BaseInput.types.ts';
 import BaseInput from '@/components/input/BaseInput.vue';
 import { useSelectedVehicle } from '@/modules/vehicles/composables/useSelectedVehicle.ts';
 import { useRecentRefills } from '@/modules/refills/composables/useRecentRefills.ts';
+import { stringToNumber } from '@/utils/helpers.ts';
 
-const props = defineProps<{
-	refill: Refill;
-}>();
-
-const emit = defineEmits<{
-	'update:refill': [value: Refill];
-}>();
-
-const data = computed<Refill>({
-	get: () => props.refill,
-	set: (value: Refill) => emit('update:refill', value),
-});
+const refill = defineModel<Refill>('refill', { required: true });
 
 const { refills } = useRecentRefills();
-const canCheckOdometer = ref(false);
-const odometerError = computed<boolean>(() => {
-	if (!canCheckOdometer.value) {
-		return false;
-	}
-	if (!data.value.odometer) {
-		return false;
-	}
-	if (!refills.value[0]) {
+const hasOdometerError = computed<boolean>(() => {
+	if (refill.value.odometer === undefined || refills.value[0]?.odometer === undefined) {
 		return false;
 	}
 
-	return data.value.odometer < refills.value[0].odometer;
+	return refill.value.odometer < refills.value[0].odometer;
 });
 
 const hasBatteryError = computed<boolean>(() => {
-	return data.value.chargeFinal <= data.value.chargeInitial;
+	const parsedInitial = stringToNumber(refill.value.chargeInitial);
+	const parsedFinal = stringToNumber(refill.value.chargeFinal);
+	if ((isNaN(parsedInitial) || parsedInitial === 0)
+		|| (isNaN(parsedFinal) || parsedFinal === 0)) {
+		return false;
+	}
+
+	return parsedFinal <= parsedInitial;
 });
 
 const { vehicle } = useSelectedVehicle();
 const filledCapacity = computed<string>(() => {
-	if (!vehicle.value || !data.value.chargeFinal) {
-		return (0).toFixed(2);
-	}
-	if (data.value.chargeInitial > data.value.chargeFinal) {
+	const parsedInitial = stringToNumber(refill.value.chargeInitial);
+	const parsedFinal = stringToNumber(refill.value.chargeFinal);
+	if ((isNaN(parsedInitial) || parsedInitial === 0)
+		|| (isNaN(parsedFinal) || parsedFinal === 0)) {
 		return (0).toFixed(2);
 	}
 
-	const filledBattery = data.value.chargeFinal - (data.value.chargeInitial ?? 0);
+	if (!vehicle.value) {
+		return (0).toFixed(2);
+	}
+
+	if (hasBatteryError.value) {
+		return (0).toFixed(2);
+	}
+
+	const filledBattery = parsedFinal - parsedInitial;
 	return (filledBattery * vehicle.value?.batteryCapacity / 100).toFixed(2);
 });
 
 const totalCost = computed<string>(() => {
-	if (!data.value.unitCost) {
+	const parsedUnitCost = stringToNumber(refill.value.unitCost);
+	if (isNaN(parsedUnitCost) || parsedUnitCost === 0) {
 		return '';
 	}
-	return (+filledCapacity.value * (data.value.unitCost ?? 0)).toFixed(2);
+
+	return (+filledCapacity.value * parsedUnitCost).toFixed(2);
 });
 watch(totalCost, (value) => {
-	data.value.totalCost = +value;
+	refill.value.totalCost = +value;
 });
+
+const hasErrorNumber = ref(false);
+function checkNumberError(value?: string) {
+	hasErrorNumber.value = false;
+	const parsedUnitCost = stringToNumber(value);
+	if (isNaN(parsedUnitCost)) {
+		hasErrorNumber.value = true;
+	}
+}
 </script>
 
 <template>
 	<main>
+		<p
+			v-if="hasErrorNumber"
+			class="error"
+		>
+			Solo puedes introducir números válidos.
+		</p>
+
 		<section class="costs">
 			<BaseBigNumberInput
-				v-model.number="data.unitCost"
+				v-model="refill.unitCost"
 				placeholder="·,···"
 				required
+				:has-error="hasErrorNumber"
+				@update:model-value="checkNumberError($event)"
 			>
 				Precio del Kw
 
@@ -92,10 +110,12 @@ watch(totalCost, (value) => {
 
 		<section class="battery">
 			<BaseBigNumberInput
-				v-model.number="data.chargeInitial"
+				v-model="refill.chargeInitial"
 				placeholder="··"
 				step="1"
 				required
+				:has-error="hasBatteryError"
+				@update:model-value="checkNumberError($event)"
 			>
 				<BaseIcon
 					class="icon-battery"
@@ -117,17 +137,18 @@ watch(totalCost, (value) => {
 				/>
 				<div class="capacity-info">
 					<span class="filled-capacity">{{ filledCapacity }}Kw /</span>
-					<span class="battery-capacity">{{ vehicle?.batteryCapacity.toFixed(2) }}Kw</span>
+					<span class="battery-capacity">{{ vehicle?.batteryCapacity.toFixed(2) || '' }}Kw</span>
 				</div>
 			</div>
 
 			<BaseBigNumberInput
-				v-model.number="data.chargeFinal"
+				v-model="refill.chargeFinal"
 				placeholder="···"
 				step="1"
 				max="100"
 				required
 				:has-error="hasBatteryError"
+				@update:model-value="checkNumberError($event)"
 			>
 				<BaseIcon
 					class="icon-battery"
@@ -142,20 +163,19 @@ watch(totalCost, (value) => {
 			</BaseBigNumberInput>
 		</section>
 
-		<span
+		<p
 			v-if="hasBatteryError"
 			class="error"
 		>
 			La batería final tiene que ser superior a la inicial
-		</span>
+		</p>
 
 		<BaseInput
-			v-model.number="data.odometer"
+			v-model="refill.odometer"
 			:input-type="InputType.NUMBER"
-			:has-error="odometerError"
+			:has-error="hasOdometerError"
 			custom-validity="El kilometraje actual no puede ser inferior al anterior"
 			required
-			@blur="canCheckOdometer = true"
 		>
 			Kilometraje actual
 
@@ -165,7 +185,7 @@ watch(totalCost, (value) => {
 		</BaseInput>
 
 		<BaseInput
-			v-model="data.notes"
+			v-model="refill.notes"
 			:input-type="InputType.TEXTAREA"
 		>
 			Anotaciones
