@@ -10,7 +10,9 @@ import {
 	doc,
 	getDoc,
 	getDocs,
+	query,
 	setDoc,
+	where,
 } from 'firebase/firestore';
 import { ref } from 'vue';
 import { db } from '@/utils/firebase.ts';
@@ -74,26 +76,25 @@ export function useDB(collectionName: string) {
 
 		loading.value = true;
 		return new Promise((resolve, reject) => {
-			// const collectionRef = collection(db, collectionName).withConverter(getConverter<T>());
-			// const collectionQuery = query(collectionRef, where('user_uuid', '==', user.value?.uid), ...searchQueries);
-			// getDocs(collectionQuery)
-			// 	.then((snapshot) => {
-			// 		if (snapshot.empty) {
-			// 			resolve([] as T[]);
-			// 		} else {
-			// 			resolve(snapshot.docs.map((doc) => {
-			// 				return {
-			// 					...doc.data(),
-			// 					id: doc.id,
-			// 				};
-			// 			}) as T[]);
-			// 		}
-			// 	})
-			// 	.catch((error) => {
-			// 		reject(error);
-			// 	})
-			// 	.finally(() => loading.value = false);
-			resolve([]);
+			const collectionRef = collection(db, collectionName).withConverter(getConverter<T>());
+			const collectionQuery = query(collectionRef, where('user_uuid', '==', user.value?.uid), ...searchQueries);
+			getDocs(collectionQuery)
+				.then((snapshot) => {
+					if (snapshot.empty) {
+						resolve([] as T[]);
+					} else {
+						resolve(snapshot.docs.map((doc) => {
+							return {
+								...doc.data(),
+								id: doc.id,
+							};
+						}) as T[]);
+					}
+				})
+				.catch((error) => {
+					reject(error);
+				})
+				.finally(() => loading.value = false);
 		});
 	}
 

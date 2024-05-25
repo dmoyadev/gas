@@ -53,10 +53,10 @@ watch(() => props.hasError, (value) => {
 					v-if="inputType !== InputType.TEXTAREA"
 					:id="($attrs.id as string) || _componentUID"
 					ref="$input"
+					v-model="modelValue"
 					step="any"
 					v-bind="$attrs"
 					:type="(showPassword ? InputType.TEXT : inputType)"
-					:value="modelValue"
 					:readonly="!!(('readonly' in $attrs && (!!$attrs.readonly || $attrs.readonly === '')) || loading)"
 					:disabled="!!(('disabled' in $attrs && (!!$attrs.disabled || $attrs.disabled === '')) || loading)"
 					aria-label=""
@@ -66,12 +66,11 @@ watch(() => props.hasError, (value) => {
 				<textarea
 					v-else
 					:id="($attrs.id as string) || _componentUID"
+					v-model="modelValue"
 					v-bind="$attrs"
-					:value="modelValue as (string | undefined)"
 					:readonly="!!(('readonly' in $attrs && (!!$attrs.readonly || $attrs.readonly === '')) || loading)"
 					:disabled="!!(('disabled' in $attrs && (!!$attrs.disabled || $attrs.disabled === '')) || loading)"
 					aria-label=""
-					@input="modelValue = ($event.target as HTMLInputElement).value"
 				/>
 
 				<!-- Icon right -->
