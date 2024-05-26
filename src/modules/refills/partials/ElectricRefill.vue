@@ -13,7 +13,12 @@ import { stringToNumber } from '@/utils/helpers.ts';
 const refill = defineModel<Refill>('refill', { required: true });
 
 const { refills } = useRecentRefills();
+const canCheckOdometer = ref(false);
 const hasOdometerError = computed<boolean>(() => {
+	if (!canCheckOdometer.value) {
+		return false;
+	}
+
 	if (refill.value.odometer === undefined || refills.value[0]?.odometer === undefined) {
 		return false;
 	}
@@ -51,6 +56,9 @@ const filledCapacity = computed<string>(() => {
 
 	const filledBattery = parsedFinal - parsedInitial;
 	return (filledBattery * vehicle.value?.batteryCapacity / 100).toFixed(2);
+});
+watch(filledCapacity, (value) => {
+	refill.value.units = +value;
 });
 
 const totalCost = computed<string>(() => {
@@ -176,11 +184,23 @@ function checkNumberError(value?: string) {
 			:has-error="hasOdometerError"
 			custom-validity="El kilometraje actual no puede ser inferior al anterior"
 			required
+			@blur="canCheckOdometer = true"
 		>
 			Kilometraje actual
 
 			<template #append>
 				Km
+			</template>
+
+			<template #error>
+				{{ `El kilometraje actual no puede ser inferior al anterior (${vehicle?.odometer}km)` }}
+			</template>
+
+			<template
+				v-if="!hasOdometerError && vehicle?.odometer"
+				#helper
+			>
+				{{ `El último kilometraje registrado es de ${vehicle.odometer}km` }}
 			</template>
 		</BaseInput>
 

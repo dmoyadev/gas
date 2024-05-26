@@ -3,38 +3,42 @@ import { computed } from 'vue';
 import type { Refill } from '@/modules/refills/models/Refill.ts';
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { IconSize } from '@/components/icon/BaseIcon.types.ts';
+import { getLogoForStation, stringToNumber } from '@/utils/helpers.ts';
 
 const props = defineProps<{
 	refill?: Refill;
-	previousOdometer?: number;
+	previousOdometer?: number | string;
 	loading?: boolean;
 }>();
 
+const isElectric = computed<boolean>(() => props.refill?.fuelType?.type === 'electric');
+
 const icon = computed<string>(() => {
-	if (props.refill?.fuelType?.type === 'electric') {
-		return 'fa-solid fa-plug-circle-bolt';
-	} else {
-		return 'fa-solid fa-gas-pump';
-	}
+	return isElectric.value
+		? 'fa-solid fa-plug-circle-bolt'
+		: 'fa-solid fa-gas-pump';
 });
 
 const units = computed<string>(() => {
-	if (props.refill?.fuelType?.type === 'electric') {
-		return ' / kW';
-	} else {
-		return ' / L';
-	}
+	return isElectric.value
+		? ' / kW'
+		: ' / L';
 });
 
-const kmUsed = computed<string>(() => {
+const unitsPer100 = computed<string>(() => {
 	if (!props.previousOdometer) {
 		return 'Usando...';
 	}
 	if (!props.refill?.odometer) {
-		return '??? Km';
+		return '??? L/100';
 	}
 
-	return (`${(props.previousOdometer - props.refill?.odometer).toLocaleString('es-ES')} Km`);
+	const realizedUnits = stringToNumber(props.previousOdometer) - props.refill.odometer;
+	const units = (100 * stringToNumber(props.refill.units) / realizedUnits)
+		.toLocaleString('es-ES', { maximumFractionDigits: 1 });
+	return isElectric.value
+		? `${units} kW/100`
+		: `${units} L/100`;
 });
 </script>
 
@@ -75,82 +79,106 @@ const kmUsed = computed<string>(() => {
 	<!-- ✅ Loaded state -->
 	<template v-else-if="refill">
 		<li>
+			<!-- Station logo -->
 			<div
-				v-if="refill.station?.logo"
-				class="logo-wrapper"
+				v-if="getLogoForStation(refill.station?.name)"
+				class="img-wrapper"
 			>
 				<img
-					:src="refill.station?.logo"
-					alt="Logo de la estación de servicio"
+					:src="getLogoForStation(refill.station?.name)"
+					:alt="refill.station.name"
 					class="logo"
 				>
 			</div>
+
 			<BaseIcon
 				v-else
-				:class="{ 'icon-success': refill.fuelType.type === 'electric' }"
 				:icon="icon"
 				:icon-size="IconSize.L"
+				class="img-wrapper"
+				:class="{ 'icon-success': isElectric }"
 			/>
 
+			<!-- Refill info -->
 			<div class="info">
 				<span class="title">
 					{{ refill.station?.name || '???' }}
 				</span>
+
 				<span>{{ refill.fuelType?.name }}</span>
-				<span v-if="refill.created_at">{{ (refill.created_at).toDate().toLocaleDateString('es-ES', {
-					year: 'numeric',
-					month: 'short',
-					day: 'numeric',
-				}) }}</span>
+
+				<span v-if="refill.created_at">
+					{{
+						(refill.created_at).toDate().toLocaleDateString('es-ES', {
+							year: 'numeric',
+							month: 'short',
+							day: 'numeric',
+						})
+					}}
+				</span>
 			</div>
 
+			<!-- Refill Stats -->
 			<div
 				class="price"
-				:class="{ electric: refill.fuelType.type === 'electric' }"
+				:class="{ electric: isElectric }"
 			>
+				<!-- Price per unit -->
 				<span class="title">
-					{{ refill?.unitCost?.toLocaleString('es-ES', {
-						currency: 'EUR',
-						style: 'currency',
-						minimumFractionDigits: 3,
-					}) }} {{ units }}
+					{{
+						stringToNumber(refill?.unitCost)?.toLocaleString('es-ES', {
+							currency: 'EUR',
+							style: 'currency',
+							minimumFractionDigits: 3,
+						})
+					}} {{ units }}
 				</span>
-				<span
-					v-if="refill.fuelType.type === 'electric'"
-					class="units"
-				>
-					<BaseIcon
-						class="icon-success"
-						icon="fa-solid fa-battery-2"
-						:icon-size="IconSize.S"
-					/>
-					{{ refill.chargeInitial }}%
+
+				<!-- Units consumed -->
+				<span class="units">
+					<template v-if="isElectric">
+						<BaseIcon
+							class="icon-success"
+							icon="fa-solid fa-battery-2"
+							:icon-size="IconSize.S"
+						/>
+						{{ refill.chargeInitial }}%
+						-
+						{{ refill.chargeFinal }}%
+						<BaseIcon
+							class="icon-success"
+							icon="fa-solid fa-battery-full"
+							:icon-size="IconSize.S"
+						/>
+					</template>
+
+					<template v-else>
+						<BaseIcon
+							icon="fa-solid fa-oil-can"
+							:icon-size="IconSize.S"
+						/>
+						{{ refill.units }} L
+					</template>
+
+					<span
+						v-if="previousOdometer && refill.odometer"
+						class="stat"
+					>
+						{{ stringToNumber(previousOdometer) - refill.odometer }}km
+					</span>
+				</span>
+
+				<!-- Consumption -->
+				<span class="consumption">
+					{{
+						stringToNumber(refill?.totalCost)?.toLocaleString('es-ES', {
+							currency: 'EUR',
+							style: 'currency',
+							maximumFractionDigits: 2,
+						})
+					}}
 					-
-					{{ refill.chargeFinal }}%
-					<BaseIcon
-						class="icon-success"
-						icon="fa-solid fa-battery-full"
-						:icon-size="IconSize.S"
-					/>
-				</span>
-				<span
-					v-else
-					class="units"
-				>
-					<BaseIcon
-						icon="fa-solid fa-oil-can"
-						:icon-size="IconSize.S"
-					/>
-					{{ refill.units }} L
-				</span>
-				<span>
-					{{ refill?.totalCost?.toLocaleString('es-ES', {
-						currency: 'EUR',
-						style: 'currency',
-						maximumFractionDigits: 2,
-					}) }}
-					-
-					{{ kmUsed }}
+					{{ unitsPer100 }}
 				</span>
 			</div>
 		</li>
@@ -163,14 +191,12 @@ li {
 	align-items: center;
 	gap: 16px;
 
-	.logo-wrapper {
-		display: flex;
-		align-items: center;
-		justify-content: center;
+	.img-wrapper {
+		flex-shrink: 0;
 		width: 24px;
 		height: 24px;
 
-		.logo {
+		img {
 			width: 100%;
 			height: 100%;
 			object-fit: contain;
@@ -213,6 +239,14 @@ li {
 			display: flex;
 			align-items: center;
 			gap: 2px;
+			font-size: var(--font-size-legal);
+
+			.stat {
+				margin-left: 8px;
+			}
+		}
+
+		.consumption {
 			font-size: var(--font-size-legal);
 		}
 	}

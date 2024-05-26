@@ -31,7 +31,7 @@ export function useDB(collectionName: string) {
 	}
 
 	async function getAll<T>(): Promise<T[]> {
-		console.log(`From API: getAll (${collectionName})`);
+		console.log(`API: getAll (${collectionName})`);
 
 		loading.value = true;
 		return new Promise((resolve, reject) => {
@@ -57,7 +57,7 @@ export function useDB(collectionName: string) {
 	}
 
 	async function get<T>(id: string) {
-		console.log(`From API: get (${collectionName})`);
+		console.log(`API: get (${collectionName})`);
 
 		const docRef = doc(db, collectionName, id).withConverter(getConverter<T>());
 		const docSnap = await getDoc(docRef);
@@ -70,14 +70,15 @@ export function useDB(collectionName: string) {
 	}
 
 	async function getBy<T>(...searchQueries: QueryConstraint[]): Promise<T[]> {
-		console.log(`From API: getBy (${collectionName})`);
+		console.log(`API: getBy (${collectionName})`);
 
 		const { user } = useAuthentication();
 
 		loading.value = true;
 		return new Promise((resolve, reject) => {
 			const collectionRef = collection(db, collectionName).withConverter(getConverter<T>());
-			const collectionQuery = query(collectionRef, where('user_uuid', '==', user.value?.uid), ...searchQueries);
+			const sameUserQuery = where('user_uuid', '==', user.value?.uid);
+			const collectionQuery = query(collectionRef, sameUserQuery, ...searchQueries);
 			getDocs(collectionQuery)
 				.then((snapshot) => {
 					if (snapshot.empty) {
@@ -99,7 +100,7 @@ export function useDB(collectionName: string) {
 	}
 
 	async function create<T>(element: WithFieldValue<T>) {
-		console.log(`From API: create (${collectionName})`);
+		console.log(`API: create (${collectionName})`);
 		const { user } = useAuthentication();
 
 		const collectionRef = collection(db, collectionName).withConverter(getConverter<T>());
@@ -115,12 +116,34 @@ export function useDB(collectionName: string) {
 		}
 	}
 
+	async function update<T>(element: WithFieldValue<T>, uuid: string) {
+		console.log(`API: update (${collectionName})`);
+
+		const elementRef = doc(db, collectionName, uuid).withConverter(getConverter<T>());
+		const elementSnap = await getDoc(elementRef);
+		if (elementSnap.exists() && typeof element === 'object') {
+			const date: Timestamp = Timestamp.now();
+			await setDoc(elementRef, {
+				...element,
+				updated_at: date,
+			});
+		}
+	}
+
+	async function upsert<T>(element: WithFieldValue<T>, uuid?: string) {
+		if (!uuid) {
+			await create<T>(element);
+		} else {
+			await update(element, uuid);
+		}
+	}
+
 	return {
 		loading,
 		error,
 		getAll,
 		get,
 		getBy,
-		create,
+		upsert,
 	};
 }

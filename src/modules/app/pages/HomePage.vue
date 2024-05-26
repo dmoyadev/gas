@@ -105,7 +105,7 @@ const fuelText = computed<string>(() => {
 							<BaseIcon icon="fa-solid fa-gauge" />
 							<span>Kilometraje</span>
 						</div>
-						<span class="car-details--info--card--value">{{ vehicle?.odometer?.toLocaleString() }}</span>
+						<span class="car-details--info--card--value">{{ vehicle?.odometer?.toLocaleString() }}Km</span>
 					</div>
 				</div>
 
