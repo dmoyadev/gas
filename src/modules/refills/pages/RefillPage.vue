@@ -16,6 +16,7 @@ import LastRefill from '@/modules/refills/components/LastRefill.vue';
 const {
 	vehicle,
 	loadingVehicle: loading,
+	updateVehicle,
 } = useSelectedVehicle();
 
 const refillType = ref<'fuel' | 'electric'>('fuel');
@@ -52,12 +53,13 @@ watch(refillType, (value, oldValue) => {
 
 	refill.value = {} as Refill;
 });
+
 const {
 	loading: loadingRefill,
-	create,
+	upsert: createRefill,
 } = useDB('refills');
 const router = useRouter();
-function createRefill() {
+async function saveRefill() {
 	loadingRefill.value = true;
 	if (!refill.value.fuelType) {
 		refill.value.fuelType = {
@@ -65,19 +67,20 @@ function createRefill() {
 			type: 'electric',
 		};
 	}
-	create<Refill>({
+
+	await createRefill<Refill>({
 		...refill.value,
 		idVehicle: vehicle.value!.id,
-	})
-		.then(() => {
-			router.push({
-				name: 'Home',
-				query: { refill_success: 'true' },
-			});
-		})
-		.finally(() => {
-			loadingRefill.value = false;
-		});
+	});
+	await updateVehicle({
+		...vehicle.value!,
+		odometer: refill.value.odometer!,
+	});
+	loadingRefill.value = false;
+	await router.push({
+		name: 'Home',
+		query: { refill_success: 'true' },
+	});
 }
 </script>
 
@@ -121,7 +124,7 @@ function createRefill() {
 
 			<LastRefill class="last-refill" />
 
-			<form @submit.prevent="createRefill()">
+			<form @submit.prevent="saveRefill()">
 				<!-- 🔋 Electric refill -->
 				<ElectricRefill
 					v-if="refillType === 'electric'"

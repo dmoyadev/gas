@@ -18,12 +18,12 @@ const router = useRouter();
 const {
 	loading,
 	error,
-	create,
+	upsert,
 } = useDB('vehicles');
 
 loading.value = true;
 if (vehicle.value) {
-	create<Vehicle>({
+	upsert<Vehicle>({
 		...vehicle.value,
 		selected: true,
 	})

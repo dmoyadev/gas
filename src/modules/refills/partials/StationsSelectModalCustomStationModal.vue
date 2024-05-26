@@ -6,7 +6,6 @@ import { useStorage } from '@/modules/app/composables/useStorage.ts';
 import BaseButton from '@/components/button/BaseButton.vue';
 import { ButtonMode } from '@/components/button/BaseButton.types.ts';
 import BaseInput from '@/components/input/BaseInput.vue';
-import { useDB } from '@/modules/app/composables/useDB.ts';
 
 const emit = defineEmits<{ createStation: [newStation?: RefillStation] }>();
 
@@ -14,10 +13,7 @@ const show = defineModel<boolean>('show');
 
 const newStation = useStorage<RefillStation>('new-station', {} as RefillStation);
 
-const {
-	loading: loadingCreation,
-	create,
-} = useDB('customStations');
+const loadingCreation = ref(false);
 const error = ref(false);
 async function save() {
 	error.value = false;
@@ -41,7 +37,6 @@ async function save() {
 	});
 
 	newStation.value = {
-		id: -1,
 		zip: '',
 		address: '',
 		lat: userPosition?.coords.latitude || -1,
@@ -51,18 +46,10 @@ async function save() {
 		name: newStation.value?.name,
 	};
 
-	create<RefillStation>(newStation.value)
-		.then(() => {
-			const station = newStation.value;
-			newStation.value = undefined;
-			emit('createStation', station);
-		})
-		.catch((e) => {
-			error.value = e;
-		})
-		.finally(() => {
-			loadingCreation.value = false;
-		});
+	const station = newStation.value;
+	newStation.value = undefined;
+	emit('createStation', station);
+	loadingCreation.value = false;
 }
 </script>
 

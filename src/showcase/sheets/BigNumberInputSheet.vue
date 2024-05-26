@@ -31,7 +31,7 @@ const num = ref();
 			</template>
 
 			<BaseBigNumberInput
-				v-model.number="num"
+				v-model="num"
 				placeholder="·,···"
 				has-error
 			>
@@ -48,7 +48,7 @@ const num = ref();
 			</template>
 
 			<BaseBigNumberInput
-				v-model.number="num"
+				v-model="num"
 				placeholder="·,···"
 				loading
 			>

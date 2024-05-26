@@ -3,11 +3,11 @@ import type { RefillStation } from '@/modules/refills/models/RefillStation.ts';
 
 export interface Refill extends DTO {
 	idVehicle: string;
-	totalCost: number;
-	unitCost?: number;
+	totalCost: string | number;
+	unitCost: string | number;
 	chargeInitial?: number;
 	chargeFinal?: number;
-	units: number;
+	units: string | number;
 	fuelType: Fuel;
 	odometer?: number;
 	station: RefillStation;

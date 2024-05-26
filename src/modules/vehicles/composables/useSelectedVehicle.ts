@@ -10,6 +10,7 @@ export function useSelectedVehicle() {
 		getBy,
 		error,
 		loading: loadingVehicle,
+		upsert,
 	} = useDB('vehicles');
 
 	const emptyLoading = ref(false);
@@ -37,10 +38,20 @@ export function useSelectedVehicle() {
 			});
 	}
 
+	async function updateVehicle(data: Vehicle) {
+		if (!vehicle.value) {
+			return;
+		}
+
+		await upsert<Vehicle>(data, vehicle.value.id);
+		vehicle.value = data;
+	}
+
 	return {
 		vehicle,
 		loadingVehicle,
 		error,
 		emptyLoading,
+		updateVehicle,
 	};
 }

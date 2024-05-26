@@ -1,5 +1,5 @@
 export interface RefillStation {
-	id: number;
+	id?: number;
 	zip: string;
 	address: string;
 	lat: number;

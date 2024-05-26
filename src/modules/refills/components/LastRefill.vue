@@ -4,6 +4,7 @@ import { useRecentRefills } from '@/modules/refills/composables/useRecentRefills
 import BaseIcon from '@/components/icon/BaseIcon.vue';
 import { IconSize } from '@/components/icon/BaseIcon.types.ts';
 import type { Refill } from '@/modules/refills/models/Refill.ts';
+import { getLogoForStation } from '@/utils/helpers.ts';
 
 const { refills } = useRecentRefills();
 
@@ -31,20 +32,24 @@ const units = computed<string>(() => isRecharge.value ? 'kW' : 'L');
 			</span>
 			<div class="station">
 				<div
-					v-if="lastRefill.station?.logo"
-					class="logo-wrapper"
+					v-if="getLogoForStation(lastRefill.station?.name)"
+					class="img-wrapper"
 				>
 					<img
-						:src="lastRefill.station?.logo"
-						alt="Logo de la estación de servicio"
+						:src="getLogoForStation(lastRefill.station?.name)"
+						:alt="lastRefill.station.name"
+						class="logo"
 					>
 				</div>
+
 				<BaseIcon
 					v-else
-					:class="{ 'icon-success': isRecharge }"
 					:icon="isRecharge ? 'fa-solid fa-charging-station' : 'fa-solid fa-gas-pump'"
 					:icon-size="IconSize.S"
+					class="img-wrapper"
+					:class="{ 'icon-success': isRecharge }"
 				/>
+
 				{{ lastRefill.station?.name || '???' }}
 			</div>
 		</header>
@@ -74,6 +79,7 @@ const units = computed<string>(() => isRecharge.value ? 'kW' : 'L');
 							{{ lastRefill.fuelType?.name }}
 						</template>
 					</td>
+
 					<td>
 						{{ lastRefill.unitCost.toLocaleString('es-ES', {
 							currency: 'EUR',
@@ -81,6 +87,7 @@ const units = computed<string>(() => isRecharge.value ? 'kW' : 'L');
 							minimumFractionDigits: 3,
 						}) }}/{{ units }}
 					</td>
+
 					<td v-if="!isRecharge">
 						{{ lastRefill.units.toLocaleString('es-ES', {
 							minimumFractionDigits: 2,
@@ -99,14 +106,6 @@ const units = computed<string>(() => isRecharge.value ? 'kW' : 'L');
 							style: 'currency',
 							minimumFractionDigits: 2,
 						}) }}/{{ units }}
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						KILOMETRAJE ANTERIOR
-					</td>
-					<td>
-						{{ lastRefill.odometer }} Km
 					</td>
 				</tr>
 			</tfoot>
@@ -156,7 +155,8 @@ section {
 			align-items: center;
 			gap: 6px;
 
-			.logo-wrapper {
+			.img-wrapper {
+				flex-shrink: 0;
 				width: 14px;
 				height: 14px;
 

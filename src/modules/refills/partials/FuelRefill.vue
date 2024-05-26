@@ -17,7 +17,12 @@ const refill = defineModel<Refill>('refill', { required: true });
 const { vehicle } = useSelectedVehicle();
 
 const { refills } = useRecentRefills();
+const canCheckOdometer = ref(false);
 const hasOdometerError = computed<boolean>(() => {
+	if (!canCheckOdometer.value) {
+		return false;
+	}
+
 	if (refill.value.odometer === undefined || refills.value[0]?.odometer === undefined) {
 		return false;
 	}
@@ -219,13 +224,25 @@ function updateUnitsAndUnitCost(totalCost?: string) {
 			v-model.number="refill.odometer"
 			:input-type="InputType.NUMBER"
 			:has-error="hasOdometerError"
-			custom-validity="El kilometraje actual no puede ser inferior al anterior"
+			:custom-validity="`El kilometraje actual no puede ser inferior al anterior (${vehicle?.odometer})`"
 			required
+			@blur="canCheckOdometer = true"
 		>
 			Kilometraje actual
 
 			<template #append>
 				<span>Km</span>
+			</template>
+
+			<template #error>
+				{{ `El kilometraje actual no puede ser inferior al anterior (${vehicle?.odometer}km)` }}
+			</template>
+
+			<template
+				v-if="!hasOdometerError && vehicle?.odometer"
+				#helper
+			>
+				{{ `El último kilometraje registrado es de ${vehicle.odometer}km` }}
 			</template>
 		</BaseInput>
 
