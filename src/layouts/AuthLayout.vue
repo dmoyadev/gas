@@ -23,20 +23,14 @@ import BackgroundImage from '@/modules/auth/components/BackgroundImage.vue';
 <style lang="scss" scoped>
 header {
 	height: 260px;
-
-	.auth-bg {
-		position: absolute;
-		top: 0;
-		right: 0;
-		z-index: -1;
-	}
+	position: relative;
 
 	.logo {
 		position: absolute;
-		top: 204px;
+		bottom: -8px;
 		left: 20px;
-		width: 144px;
-		height: 56px;
+		width: 50%;
+		height: auto;
 		object-fit: contain;
 	}
 }
